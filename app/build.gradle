@@ -69,4 +69,7 @@ dependencies {
     implementation(project(':screen:history'))
     implementation(project(':screen:home'))
     implementation(project(':screen:profile'))
+
+    // shared
+    implementation(project(':shared:ui:core'))
 }

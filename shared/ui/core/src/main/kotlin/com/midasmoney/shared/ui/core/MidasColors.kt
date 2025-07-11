@@ -1,4 +1,4 @@
-package com.midasmoney.app
+package com.midasmoney.shared.ui.core
 
 import androidx.compose.ui.graphics.Color
 

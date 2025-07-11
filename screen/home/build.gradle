@@ -6,3 +6,7 @@ plugins {
 android {
     namespace 'com.midasmoney.screen.home'
 }
+
+dependencies {
+    implementation(project(':shared:ui:core'))
+}
