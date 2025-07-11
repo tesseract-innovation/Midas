@@ -23,12 +23,8 @@ fun HomeContent(text: String) {
     ) {
         Box(
             modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = text,
-                textAlign = TextAlign.Center
-            )
+            BalanceStatus()
         }
     }
 }
