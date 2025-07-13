@@ -1,4 +1,4 @@
-package com.midasmoney.app
+package com.midasmoney.shared.ui.core
 
 import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -36,7 +36,7 @@ fun MidasTheme(
 private fun midasLightColorScheme(): ColorScheme = ColorScheme(
     primary = MidasColors.Purple.primary,
     onPrimary = MidasColors.White,
-    primaryContainer = MidasColors.Purple.light,
+    primaryContainer = MidasColors.Purple.dark,
     onPrimaryContainer = MidasColors.White,
     inversePrimary = MidasColors.Purple.dark,
     secondary = MidasColors.Green.primary,
@@ -71,12 +71,12 @@ private fun midasLightColorScheme(): ColorScheme = ColorScheme(
 private fun midasDarkColorScheme(isTrueBlack: Boolean): ColorScheme = ColorScheme(
     primary = MidasColors.Purple.primary,
     onPrimary = MidasColors.White,
-    primaryContainer = MidasColors.Purple.light,
+    primaryContainer = MidasColors.Purple.dark,
     onPrimaryContainer = MidasColors.White,
     inversePrimary = MidasColors.Purple.dark,
     secondary = MidasColors.Green.primary,
     onSecondary = MidasColors.White,
-    secondaryContainer = MidasColors.Green.light,
+    secondaryContainer = MidasColors.Green.dark,
     onSecondaryContainer = MidasColors.White,
     tertiary = MidasColors.Green.primary,
     onTertiary = MidasColors.White,
