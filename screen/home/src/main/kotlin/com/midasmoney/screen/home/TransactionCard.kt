@@ -23,6 +23,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.midasmoney.shared.model.mock.Database
+import com.midasmoney.shared.model.data.TransactionHistoryItem
+import com.midasmoney.shared.model.data.TransactionType
+import com.midasmoney.shared.ui.core.ColorConverter
+import com.midasmoney.shared.ui.core.DateTimeUtils
+import com.midasmoney.shared.ui.core.IconMapper
+import com.midasmoney.shared.ui.core.MidasCard
 import com.midasmoney.shared.ui.core.MidasColors
 import com.midasmoney.shared.ui.core.MidasPreview
 import com.midasmoney.shared.ui.core.Theme
@@ -58,14 +65,24 @@ fun TransactionCard(
                         modifier = Modifier
                             .weight(0.2f)
                     ) {
+                        val icon = transactionHistoryItem.category?.icon
+                        val color = transactionHistoryItem.category?.color
                         Icon(
-                            imageVector = transactionHistoryItem.category?.icon ?: Icons.Filled.Category,
                             contentDescription = "Card transaction icon",
-                            tint = transactionHistoryItem.category?.color ?: MidasColors.Green.primary,
+                            imageVector = icon?.let {
+                                IconMapper.getImageVector(it)
+                            } ?: Icons.Filled.Category,
+                            tint = color?.let {
+                                ColorConverter.aRgbToColor(it).copy(alpha = 0.3f)
+                            } ?: MidasColors.Green.primary.copy(alpha = 0.3f),
                             modifier = Modifier
                                 .size(40.dp)
                                 .clip(CircleShape)
-                                .background(transactionHistoryItem.category?.color?.copy(alpha = 0.3f) ?: MidasColors.Green.primary.copy(alpha = 0.3f))
+                                .background(
+                                    color = color?.let {
+                                        ColorConverter.aRgbToColor(it).copy(alpha = 0.3f)
+                                    } ?: MidasColors.Green.primary.copy(alpha = 0.3f)
+                                )
                                 .padding(10.dp)
                         )
                     }
@@ -83,7 +100,9 @@ fun TransactionCard(
                         }
                         Row {
                             Text(
-                                text = DateTimeUtils.formatDate(transactionHistoryItem.date ?: LocalDate.now()),
+                                text = DateTimeUtils.formatDate(
+                                    transactionHistoryItem.date ?: LocalDate.now()
+                                ),
                                 fontSize = 15.sp,
                                 color = if (isDarkTheme) MidasColors.Gray else MidasColors.Gray,
                                 fontWeight = FontWeight.W400

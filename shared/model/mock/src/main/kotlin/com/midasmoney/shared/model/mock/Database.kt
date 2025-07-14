@@ -1,19 +1,19 @@
-package com.midasmoney.screen.home
+package com.midasmoney.shared.model.mock
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Bolt
-import androidx.compose.material.icons.filled.Build
-import androidx.compose.material.icons.filled.CardGiftcard
 import androidx.compose.material.icons.filled.DirectionsCar
 import androidx.compose.material.icons.filled.Flight
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Money
-import androidx.compose.material.icons.filled.Restaurant
 import androidx.compose.material.icons.filled.Savings
-import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material.icons.filled.TheaterComedy
-import androidx.compose.material.icons.filled.TrendingUp
-import androidx.compose.material.icons.filled.Work
+import androidx.compose.ui.graphics.toArgb
+import com.midasmoney.shared.model.data.Category
+import com.midasmoney.shared.model.data.Goal
+import com.midasmoney.shared.model.data.IconModel
+import com.midasmoney.shared.model.data.IconType
+import com.midasmoney.shared.model.data.TransactionHistoryItem
+import com.midasmoney.shared.model.data.TransactionType
+import com.midasmoney.shared.ui.core.IconMapper
 import com.midasmoney.shared.ui.core.MidasColors
 import java.math.BigDecimal
 import java.time.Instant
@@ -29,80 +29,80 @@ object Database {
             name = "Groceries",
             type = TransactionType.Expense,
             description = "Purchases for food and household supplies",
-            icon = Icons.Filled.ShoppingCart,
-            color = MidasColors.Green.primary // Green for food-related expenses
+            icon = IconModel(IconType.SHOPPING_CART),
+            color = MidasColors.Green.primary.toArgb() // Green for food-related expenses
         ),
         Category(
             id = UUID.randomUUID(),
             name = "Utilities",
             type = TransactionType.Expense,
             description = "Bills for electricity, water, gas, and internet",
-            icon = Icons.Filled.Bolt,
-            color = MidasColors.Blue.primary // Blue for utility services
+            icon = IconModel(IconType.BOLT),
+            color = MidasColors.Blue.primary.toArgb() // Blue for utility services
         ),
         Category(
             id = UUID.randomUUID(),
             name = "Rent/Mortgage",
             type = TransactionType.Expense,
             description = "Monthly housing payments",
-            icon = Icons.Filled.Home,
-            color = MidasColors.Orange.primary // Orange for housing stability
+            icon = IconModel(IconType.HOME),
+            color = MidasColors.Orange.primary.toArgb() // Orange for housing stability
         ),
         Category(
             id = UUID.randomUUID(),
             name = "Transportation",
             type = TransactionType.Expense,
             description = "Costs for fuel, public transit, or vehicle maintenance",
-            icon = Icons.Filled.DirectionsCar,
-            color = MidasColors.Yellow.primary // Yellow for mobility
+            icon = IconModel(IconType.DIRECTIONS_CAR),
+            color = MidasColors.Yellow.primary.toArgb() // Yellow for mobility
         ),
         Category(
             id = UUID.randomUUID(),
             name = "Dining Out",
             type = TransactionType.Expense,
             description = "Expenses for restaurants and takeout",
-            icon = Icons.Filled.Restaurant,
-            color = MidasColors.Pink.primary // Pink for leisure dining
+            icon = IconModel(IconType.RESTAURANT),
+            color = MidasColors.Pink.primary.toArgb() // Pink for leisure dining
         ),
         Category(
             id = UUID.randomUUID(),
             name = "Entertainment",
             type = TransactionType.Expense,
             description = "Costs for movies, concerts, and subscriptions",
-            icon = Icons.Filled.TheaterComedy,
-            color = MidasColors.Purple.primary // Purple for fun and creativity
+            icon = IconModel(IconType.THEATER_COMEDY),
+            color = MidasColors.Purple.primary.toArgb() // Purple for fun and creativity
         ),
         Category(
             id = UUID.randomUUID(),
             name = "Salary",
             type = TransactionType.Income,
             description = "Regular income from employment",
-            icon = Icons.Filled.Work,
-            color = MidasColors.Green.kindaLight // Lighter green for steady income
+            icon = IconModel(IconType.WORK),
+            color = MidasColors.Green.kindaLight.toArgb() // Lighter green for steady income
         ),
         Category(
             id = UUID.randomUUID(),
             name = "Freelance",
             type = TransactionType.Income,
             description = "Income from freelance or contract work",
-            icon = Icons.Filled.Build,
-            color = MidasColors.Blue.kindaLight // Lighter blue for flexible work
+            icon = IconModel(IconType.BUILD),
+            color = MidasColors.Blue.kindaLight.toArgb() // Lighter blue for flexible work
         ),
         Category(
             id = UUID.randomUUID(),
             name = "Investments",
             type = TransactionType.Income,
             description = "Returns from investments or dividends",
-            icon = Icons.Filled.TrendingUp,
-            color = MidasColors.Yellow.kindaLight // Lighter yellow for growth
+            icon = IconModel(IconType.TRENDING_UP),
+            color = MidasColors.Yellow.kindaLight.toArgb() // Lighter yellow for growth
         ),
         Category(
             id = UUID.randomUUID(),
             name = "Gifts",
             type = TransactionType.Income,
             description = "Money received as gifts or bonuses",
-            icon = Icons.Filled.CardGiftcard,
-            color = MidasColors.Pink.kindaLight // Lighter pink for celebratory income
+            icon = IconModel(IconType.CARD_GIFT_CARD),
+            color = MidasColors.Pink.kindaLight.toArgb() // Lighter pink for celebratory income
         )
     )
 
@@ -185,40 +185,40 @@ object Database {
             description = "Save for unexpected expenses",
             amount = 5000.0,
             progress = 2000.0,
-            icon = Icons.Filled.Savings,
-            color = MidasColors.Green.primary
+            icon = IconModel(IconMapper.getIconType(Icons.Filled.Savings)!!),
+            color = MidasColors.Green.primary.toArgb()
         ),
         Goal(
             title = "Vacation",
             description = "Trip to Europe next summer",
             amount = 3000.0,
             progress = 750.0,
-            icon = Icons.Filled.Flight,
-            color = MidasColors.Blue.primary
+            icon = IconModel(IconMapper.getIconType(Icons.Filled.Flight)!!),
+            color = MidasColors.Blue.primary.toArgb()
         ),
         Goal(
             title = "New Car",
             description = "Down payment for a new vehicle",
             amount = 10000.0,
             progress = 4000.0,
-            icon = Icons.Filled.DirectionsCar,
-            color = MidasColors.Yellow.primary
+            icon = IconModel(IconMapper.getIconType(Icons.Filled.DirectionsCar)!!),
+            color = MidasColors.Yellow.primary.toArgb()
         ),
         Goal(
             title = "Pay Off Credit Card",
             description = "Clear outstanding credit card debt",
             amount = 2000.0,
             progress = 1200.0,
-            icon = Icons.Filled.Money,
-            color = MidasColors.Red.primary
+            icon = IconModel(IconMapper.getIconType(Icons.Filled.Money)!!),
+            color = MidasColors.Red.primary.toArgb()
         ),
         Goal(
             title = "Home Renovation",
             description = "Remodel kitchen and bathroom",
             amount = 15000.0,
             progress = 3000.0,
-            icon = Icons.Filled.Home,
-            color = MidasColors.Orange.primary
+            icon = IconModel(IconMapper.getIconType(Icons.Filled.Home)!!),
+            color = MidasColors.Orange.primary.toArgb()
         )
     )
 

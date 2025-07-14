@@ -1,4 +1,4 @@
-package com.midasmoney.screen.home
+package com.midasmoney.screen.goals
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -22,14 +22,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.midasmoney.shared.model.mock.Database
-import com.midasmoney.shared.model.data.Goal
-import com.midasmoney.shared.ui.core.ColorConverter
-import com.midasmoney.shared.ui.core.IconMapper
-import com.midasmoney.shared.ui.core.MidasCard
-import com.midasmoney.shared.ui.core.MidasColors
-import com.midasmoney.shared.ui.core.MidasPreview
-import com.midasmoney.shared.ui.core.Theme
+import com.midasmoney.screen.home.Database
+import com.midasmoney.screen.home.Goal
 
 @Composable
 fun GoalCard(
@@ -67,13 +61,13 @@ fun GoalCard(
                                 .weight(0.2f)
                         ) {
                             Icon(
-                                imageVector = IconMapper.getImageVector(goal.icon),
+                                imageVector = goal.icon,
                                 contentDescription = goal.description,
-                                tint = ColorConverter.aRgbToColor(goal.color),
+                                tint = goal.color,
                                 modifier = Modifier
                                     .size(40.dp)
                                     .clip(CircleShape)
-                                    .background(ColorConverter.aRgbToColor(goal.color).copy(alpha = 0.3f))
+                                    .background(goal.color.copy(alpha = 0.3f))
                                     .padding(10.dp)
                             )
                         }
@@ -119,7 +113,7 @@ fun GoalCard(
                                 .fillMaxWidth()
                                 .height(8.dp)
                                 .clip(CircleShape),
-                            color = ColorConverter.aRgbToColor(goal.color),
+                            color = goal.color,
                             trackColor = if (isDarkTheme) MidasColors.DarkGray else MidasColors.ExtraLightGray
                         )
                     }

@@ -6,3 +6,7 @@ plugins {
 android {
     namespace 'com.midasmoney.shared.ui.core'
 }
+
+dependencies {
+    implementation(project(':shared:model:data'))
+}

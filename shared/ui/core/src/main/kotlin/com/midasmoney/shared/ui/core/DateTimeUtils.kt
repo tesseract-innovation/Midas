@@ -1,9 +1,9 @@
-package com.midasmoney.screen.home
+package com.midasmoney.shared.ui.core
 
-import androidx.compose.ui.text.intl.Locale
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
+import java.util.Locale
 
 object DateTimeUtils {
     fun formatDate(localDate: LocalDate): String {
@@ -17,12 +17,12 @@ object DateTimeUtils {
     }
 
     private fun formatToMoreThenOneWeek(localDate: LocalDate): String {
-        val formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy", Locale.current.platformLocale)
+        val formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy", Locale.getDefault())
         return localDate.format(formatter)
     }
 
     private fun formatToLessThenOneWeek(localDate: LocalDate): String {
-        val formatterDay = DateTimeFormatter.ofPattern("EEEE", Locale.current.platformLocale)
+        val formatterDay = DateTimeFormatter.ofPattern("EEEE", Locale.getDefault())
         val day = localDate.format(formatterDay)
         return day
     }
