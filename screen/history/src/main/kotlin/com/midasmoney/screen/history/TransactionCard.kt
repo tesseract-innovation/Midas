@@ -1,6 +1,8 @@
-package com.midasmoney.screen.home
+package com.midasmoney.screen.history
 
+import android.graphics.Color
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -54,7 +56,7 @@ fun TransactionCard(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 15.dp, end = 18.dp)
+                        .padding(start = 15.dp, end = 18.dp),
                 ) {
                     Column(
                         modifier = Modifier
@@ -85,10 +87,29 @@ fun TransactionCard(
                         }
                         Row {
                             Text(
+                                text = transactionHistoryItem.category.name,
+                                fontSize = 15.sp,
+                                color = MaterialTheme.colorScheme.outline,
+                                fontWeight = FontWeight.W400,
+                                modifier = Modifier
+                                    .padding(end = 4.dp)
+                            )
+                            Box(
+                                modifier = Modifier
+                                    .align(Alignment.CenterVertically)
+                                    .clip(CircleShape)
+                                    .size(5.dp)
+                                    .background(
+                                        color = MaterialTheme.colorScheme.outline
+                                    )
+                            )
+                            Text(
                                 text = transactionHistoryItem.formatDate(),
                                 fontSize = 15.sp,
                                 color = MaterialTheme.colorScheme.outline,
-                                fontWeight = FontWeight.W400
+                                fontWeight = FontWeight.W400,
+                                modifier = Modifier
+                                    .padding(start = 4.dp)
                             )
                         }
                     }
@@ -96,11 +117,21 @@ fun TransactionCard(
                         horizontalAlignment = Alignment.End,
                         modifier = Modifier
                             .weight(0.3f)
+                            .align(Alignment.CenterVertically)
                     ) {
                         Text(
                             text = transactionHistoryItem.formatAmount(),
                             color = transactionHistoryItem.formatAmountColor(),
                             fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = transactionHistoryItem.status.toString()
+                                .lowercase()
+                                .replaceFirstChar { it.uppercaseChar() },
+                            color = MaterialTheme.colorScheme.outline,
+                            fontWeight = FontWeight.W400,
+                            modifier = Modifier
+                                .padding(start = 2.dp)
                         )
                     }
                 }
@@ -109,22 +140,22 @@ fun TransactionCard(
     }
 }
 
-@Preview
+@Preview(showBackground = true, backgroundColor = Color.WHITE.toLong())
 @Composable
 fun TransactionCardLightPreview() {
     MidasLightPreview {
         TransactionCard(
-            transactionHistoryItem = Database.transactionHistoryList.first()
+            transactionHistoryItem = Database.transactionHistoryList.first(),
         )
     }
 }
 
-@Preview
+@Preview(showBackground = true, backgroundColor = Color.BLACK.toLong())
 @Composable
 fun TransactionCardDarkPreview() {
     MidasDarkPreview {
         TransactionCard(
-            transactionHistoryItem = Database.transactionHistoryList.first()
+            transactionHistoryItem = Database.transactionHistoryList.first(),
         )
     }
 }

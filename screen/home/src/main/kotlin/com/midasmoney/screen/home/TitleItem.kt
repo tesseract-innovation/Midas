@@ -1,5 +1,6 @@
 package com.midasmoney.screen.home
 
+import android.graphics.Color
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,8 +15,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.midasmoney.shared.ui.core.MidasPreview
-import com.midasmoney.shared.ui.core.Theme
+import com.midasmoney.shared.ui.core.component.MidasDarkPreview
+import com.midasmoney.shared.ui.core.component.MidasLightPreview
 
 @Composable
 fun TitleItem(textTitle: String, textButton: String, actionButton: () -> Unit) {
@@ -36,7 +37,7 @@ fun TitleItem(textTitle: String, textButton: String, actionButton: () -> Unit) {
                 color = MaterialTheme.colorScheme.onSurface,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
-                )
+            )
         }
         Column(
             modifier = Modifier
@@ -57,12 +58,22 @@ fun TitleItem(textTitle: String, textButton: String, actionButton: () -> Unit) {
     }
 }
 
-@Preview
+@Preview(showBackground = true, backgroundColor = Color.WHITE.toLong())
 @Composable
-fun TitleItemPreview() {
-    MidasPreview(
-        theme = Theme.DARK
-    ) {
+fun TitleItemLightPreview() {
+    MidasLightPreview {
+        TitleItem(
+            textTitle = "Recent Transactions",
+            textButton = "View All",
+            actionButton = {}
+        )
+    }
+}
+
+@Preview(showBackground = true, backgroundColor = Color.BLACK.toLong())
+@Composable
+fun TitleItemDarkPreview() {
+    MidasDarkPreview {
         TitleItem(
             textTitle = "Recent Transactions",
             textButton = "View All",

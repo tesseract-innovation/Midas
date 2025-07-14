@@ -1,4 +1,4 @@
-package com.midasmoney.shared.ui.core
+package com.midasmoney.shared.ui.core.color
 
 import android.app.Activity
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -20,7 +20,8 @@ fun MidasTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            val colorScheme = if (!dark) midasDarkColorScheme(isTrueBlack) else midasLightColorScheme()
+            val colorScheme =
+                if (!dark) midasDarkColorScheme(isTrueBlack) else midasLightColorScheme()
             window.statusBarColor = colorScheme.primary.toArgb()
             WindowCompat
                 .getInsetsController(window, view)
@@ -34,12 +35,12 @@ fun MidasTheme(
 }
 
 private fun midasLightColorScheme(): ColorScheme = ColorScheme(
-    primary = MidasColors.Purple.primary,
+    primary = MidasColors.Green.primary,
     onPrimary = MidasColors.White,
     primaryContainer = MidasColors.Purple.dark,
     onPrimaryContainer = MidasColors.White,
     inversePrimary = MidasColors.Purple.dark,
-    secondary = MidasColors.Green.primary,
+    secondary = MidasColors.Green.dark,
     onSecondary = MidasColors.White,
     secondaryContainer = MidasColors.Green.light,
     onSecondaryContainer = MidasColors.White,
@@ -69,12 +70,12 @@ private fun midasLightColorScheme(): ColorScheme = ColorScheme(
 )
 
 private fun midasDarkColorScheme(isTrueBlack: Boolean): ColorScheme = ColorScheme(
-    primary = MidasColors.Purple.primary,
+    primary = MidasColors.Green.primary,
     onPrimary = MidasColors.White,
     primaryContainer = MidasColors.Purple.dark,
     onPrimaryContainer = MidasColors.White,
     inversePrimary = MidasColors.Purple.dark,
-    secondary = MidasColors.Green.primary,
+    secondary = MidasColors.Green.extraLight,
     onSecondary = MidasColors.White,
     secondaryContainer = MidasColors.Green.dark,
     onSecondaryContainer = MidasColors.White,

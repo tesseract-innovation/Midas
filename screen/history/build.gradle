@@ -8,5 +8,8 @@ android {
 }
 
 dependencies {
+    implementation(project(':shared:resource'))
     implementation(project(':shared:ui:core'))
+    implementation(project(':shared:model:data'))
+    implementation(project(':shared:model:mock'))
 }

@@ -1,5 +1,6 @@
 package com.midasmoney.screen.goals
 
+import android.graphics.Color
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
@@ -22,14 +23,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.midasmoney.screen.home.Database
-import com.midasmoney.screen.home.Goal
+import com.midasmoney.shared.model.data.Goal
+import com.midasmoney.shared.model.mock.Database
+import com.midasmoney.shared.ui.core.color.ColorConverter
+import com.midasmoney.shared.ui.core.color.MidasColors
+import com.midasmoney.shared.ui.core.component.MidasCard
+import com.midasmoney.shared.ui.core.component.MidasPreview
+import com.midasmoney.shared.ui.core.component.Theme
+import com.midasmoney.shared.ui.core.icon.IconMapper
 
 @Composable
 fun GoalCard(
     goal: Goal,
     isDarkTheme: Boolean = isSystemInDarkTheme()
 ) {
+    val icon = goal.icon.let {
+        IconMapper.getImageVector(it)
+    }
+    val color = goal.color.let {
+        ColorConverter.aRgbToColor(it)
+    }
     Column(
         modifier = Modifier
             .padding(top = 10.dp, start = 20.dp, end = 20.dp)
@@ -38,7 +51,6 @@ fun GoalCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(100.dp),
-            isDarkTheme = isDarkTheme
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -50,7 +62,6 @@ fun GoalCard(
                         .fillMaxWidth()
                         .padding(start = 15.dp, end = 18.dp),
                 ) {
-
                     Row(
                         modifier = Modifier
                             .fillMaxWidth(),
@@ -61,13 +72,13 @@ fun GoalCard(
                                 .weight(0.2f)
                         ) {
                             Icon(
-                                imageVector = goal.icon,
+                                imageVector = icon,
                                 contentDescription = goal.description,
-                                tint = goal.color,
+                                tint = color,
                                 modifier = Modifier
                                     .size(40.dp)
                                     .clip(CircleShape)
-                                    .background(goal.color.copy(alpha = 0.3f))
+                                    .background(color.copy(alpha = 0.2f))
                                     .padding(10.dp)
                             )
                         }
@@ -113,7 +124,7 @@ fun GoalCard(
                                 .fillMaxWidth()
                                 .height(8.dp)
                                 .clip(CircleShape),
-                            color = goal.color,
+                            color = color,
                             trackColor = if (isDarkTheme) MidasColors.DarkGray else MidasColors.ExtraLightGray
                         )
                     }
@@ -123,7 +134,7 @@ fun GoalCard(
     }
 }
 
-@Preview
+@Preview(showBackground = true, backgroundColor = Color.WHITE.toLong())
 @Composable
 fun GoalsCardLightPreview() {
     MidasPreview(
@@ -133,7 +144,7 @@ fun GoalsCardLightPreview() {
     }
 }
 
-@Preview
+@Preview(showBackground = true, backgroundColor = Color.BLACK.toLong())
 @Composable
 fun GoalsCardDarkPreview() {
     MidasPreview(

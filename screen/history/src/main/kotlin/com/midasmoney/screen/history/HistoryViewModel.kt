@@ -1,13 +1,87 @@
 package com.midasmoney.screen.history
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.midasmoney.shared.model.data.TransactionHistoryItem
+import com.midasmoney.shared.model.data.TransactionType
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
+
+data class GroupedTransactions(val date: String, val transactions: List<TransactionHistoryItem>)
 
 class HistoryViewModel : ViewModel() {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is history content"
+    private var _days = MutableStateFlow<Int>(3)
+    var daysState = _days.asStateFlow()
+
+    private var _selectedTabIndex = MutableStateFlow<Int>(0)
+    var selectedTabIndex = _selectedTabIndex.asStateFlow()
+
+    private var _filterText = MutableStateFlow<String>("")
+    var filterText = _filterText.asStateFlow()
+
+    val combinedState: StateFlow<List<GroupedTransactions>> = combine(
+        filterText,
+        daysState,
+        selectedTabIndex
+    ) { filter, days, tab ->
+        val allTransactions = HistoryHandleDatabase.getTransactionsGroupByDate(
+            filter,
+            days,
+            tab.getType()
+        )
+        allTransactions.map { (date, transactions) ->
+            GroupedTransactions(date.toString(), transactions)
+        }
+    }.stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+
+    fun setSelectedTab(value: Int) {
+        _selectedTabIndex.value = value
     }
-    val text: LiveData<String> = _text
+
+    fun setDays(value: Int) {
+        _days.value = value
+    }
+
+    fun setFilterString(value: String) {
+        _filterText.value = value
+    }
+}
+
+private fun Int.getType(): TransactionType? {
+    return when (this) {
+        1 -> TransactionType.INCOME
+        2 -> TransactionType.EXPENSE
+        else -> null
+    }
+}
+
+fun String.toDays(): Int {
+    return when (this) {
+        "7 days" -> 7
+        "15 days" -> 15
+        "30 days" -> 30
+        "60 days" -> 60
+        "90 days" -> 90
+        "180 days" -> 180
+        "360 days" -> 360
+        else -> 0
+    }
+}
+
+fun Int.toDays(): String {
+    return when (this) {
+        7 -> "7 days"
+        15 -> "15 days"
+        30 -> "30 days"
+        60 -> "60 days"
+        90 -> "90 days"
+        180 -> "180 days"
+        360 -> "360 days"
+        else -> ""
+    }
 }

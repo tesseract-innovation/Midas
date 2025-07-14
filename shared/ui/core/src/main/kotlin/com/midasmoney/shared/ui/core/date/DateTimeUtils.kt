@@ -1,4 +1,4 @@
-package com.midasmoney.shared.ui.core
+package com.midasmoney.shared.ui.core.date
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter

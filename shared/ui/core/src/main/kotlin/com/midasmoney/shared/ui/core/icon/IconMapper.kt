@@ -1,4 +1,4 @@
-package com.midasmoney.shared.ui.core
+package com.midasmoney.shared.ui.core.icon
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bolt
