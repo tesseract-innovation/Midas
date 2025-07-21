@@ -26,29 +26,35 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.midasmoney.shared.ui.core.MidasPreview
-import com.midasmoney.shared.ui.core.Theme
+import com.midasmoney.shared.model.data.Balance
+import com.midasmoney.shared.model.mock.Database
+import com.midasmoney.shared.resource.R.string.expense
+import com.midasmoney.shared.resource.R.string.income
+import com.midasmoney.shared.resource.R.string.total_balance
+import com.midasmoney.shared.ui.core.color.MidasColors
+import com.midasmoney.shared.ui.core.component.MidasDarkPreview
+import com.midasmoney.shared.ui.core.component.MidasLightPreview
+import com.midasmoney.shared.ui.core.values.toCurrency
 
 @Composable
 fun BalanceStatus(
-    totalValue: String,
-    incomeValue: String,
-    expenseValue: String,
+    balance: Balance,
     isDarkTheme: Boolean = isSystemInDarkTheme()
 ) {
     val gradientColors = if (isDarkTheme) {
         listOf(
-            MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.8f),
-            MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.6f)
+            MidasColors.Purple.primary.copy(alpha = 0.7f),
+            MidasColors.Green.primary.copy(alpha = 0.5f)
         )
     } else {
         listOf(
-            MaterialTheme.colorScheme.primary,
-            MaterialTheme.colorScheme.secondary
+            MidasColors.Purple.primary,
+            MidasColors.Green.primary
         )
     }
 
@@ -71,7 +77,7 @@ fun BalanceStatus(
             ) {
                 Row {
                     Text(
-                        text = "Total Balance",
+                        text = stringResource(total_balance),
                         fontWeight = FontWeight.W300,
                         fontSize = 14.sp,
                         color = Color.White,
@@ -82,7 +88,7 @@ fun BalanceStatus(
                         .padding(bottom = 20.dp)
                 ) {
                     Text(
-                        text = totalValue,
+                        text = balance.totalValue.toCurrency(),
                         fontSize = 28.sp,
                         color = Color.White,
                         fontWeight = FontWeight.Bold
@@ -91,14 +97,14 @@ fun BalanceStatus(
                 Row {
                     Column {
                         Text(
-                            text = "Income",
+                            text = stringResource(income),
                             color = Color.White,
                             fontWeight = FontWeight.W300,
                             fontSize = 13.sp
 
                         )
                         Text(
-                            text = incomeValue,
+                            text = balance.incomeValue.toCurrency(),
                             fontWeight = FontWeight.Bold,
                             color = Color.White
                         )
@@ -110,13 +116,13 @@ fun BalanceStatus(
                     )
                     Column {
                         Text(
-                            text = "Expense",
+                            text = stringResource(expense),
                             color = Color.White,
                             fontWeight = FontWeight.W300,
                             fontSize = 13.sp
                         )
                         Text(
-                            text = expenseValue,
+                            text = balance.expenseValue.toCurrency(),
                             fontWeight = FontWeight.Bold,
                             color = Color.White
                         )
@@ -137,7 +143,7 @@ fun BalanceStatus(
                 ) {
                     Icon(
                         imageVector = Icons.Filled.AccountBalanceWallet,
-                        contentDescription = "",
+                        contentDescription = Icons.Filled.AccountBalanceWallet.name,
                         modifier = Modifier
                             .size(25.dp)
                             .alpha(0.8f),
@@ -156,19 +162,12 @@ fun BalanceStatus(
                         modifier = Modifier
                             .clip(RoundedCornerShape(10.dp))
                             .size(40.dp)
-                            .background(
-                                color = Color(
-                                    Color.LightGray.red,
-                                    Color.LightGray.green,
-                                    Color.LightGray.blue,
-                                    0.2f
-                                )
-                            )
+                            .background(color = Color.LightGray.copy(alpha = 0.5f))
                             .padding(11.dp)
                     ) {
                         Icon(
                             imageVector = Icons.Filled.RemoveRedEye,
-                            contentDescription = "",
+                            contentDescription = Icons.Filled.RemoveRedEye.name,
                             tint = MaterialTheme.colorScheme.onPrimaryContainer,
                             modifier = Modifier
                                 .fillMaxSize()
@@ -180,30 +179,22 @@ fun BalanceStatus(
     }
 }
 
-@Preview
+@Preview(showBackground = true, backgroundColor = android.graphics.Color.WHITE.toLong())
 @Composable
 fun BalanceStatusLightPreview() {
-    MidasPreview(
-        theme = Theme.LIGHT
-    ) {
+    MidasLightPreview {
         BalanceStatus(
-            totalValue = "$14,250.50",
-            incomeValue = "+$3,200",
-            expenseValue = "-$1,850"
+            balance = Database.balance
         )
     }
 }
 
-@Preview
+@Preview(showBackground = true, backgroundColor = android.graphics.Color.BLACK.toLong())
 @Composable
 fun BalanceStatusDarkPreview() {
-    MidasPreview(
-        theme = Theme.DARK
-    ) {
+    MidasDarkPreview {
         BalanceStatus(
-            totalValue = "$14,250.50",
-            incomeValue = "+$3,200",
-            expenseValue = "-$1,850",
+            balance = Database.balance,
             isDarkTheme = true
         )
     }

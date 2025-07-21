@@ -1,7 +1,8 @@
-package com.midasmoney.screen.home
+package com.midasmoney.screen.goals
 
 import android.graphics.Color
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,15 +26,16 @@ import androidx.compose.ui.unit.sp
 import com.midasmoney.shared.model.data.Goal
 import com.midasmoney.shared.model.mock.Database
 import com.midasmoney.shared.ui.core.color.ColorConverter
+import com.midasmoney.shared.ui.core.color.MidasColors
 import com.midasmoney.shared.ui.core.component.MidasCard
-import com.midasmoney.shared.ui.core.component.MidasDarkPreview
-import com.midasmoney.shared.ui.core.component.MidasLightPreview
+import com.midasmoney.shared.ui.core.component.MidasPreview
+import com.midasmoney.shared.ui.core.component.Theme
 import com.midasmoney.shared.ui.core.icon.IconMapper
-import com.midasmoney.shared.ui.core.values.toCurrency
 
 @Composable
 fun GoalCard(
     goal: Goal,
+    isDarkTheme: Boolean = isSystemInDarkTheme()
 ) {
     val icon = goal.icon.let {
         IconMapper.getImageVector(it)
@@ -76,7 +78,7 @@ fun GoalCard(
                                 modifier = Modifier
                                     .size(40.dp)
                                     .clip(CircleShape)
-                                    .background(color.copy(alpha = 0.3f))
+                                    .background(color.copy(alpha = 0.2f))
                                     .padding(10.dp)
                             )
                         }
@@ -94,9 +96,9 @@ fun GoalCard(
                             }
                             Row {
                                 Text(
-                                    text = "${goal.progress.toCurrency()} / ${goal.amount.toCurrency()}",
+                                    text = "$${goal.progress} / $${goal.amount}",
                                     fontSize = 15.sp,
-                                    color = MaterialTheme.colorScheme.outline,
+                                    color = if (isDarkTheme) MidasColors.Gray else MidasColors.Gray,
                                     fontWeight = FontWeight.W400
                                 )
                             }
@@ -123,7 +125,7 @@ fun GoalCard(
                                 .height(8.dp)
                                 .clip(CircleShape),
                             color = color,
-                            trackColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)
+                            trackColor = if (isDarkTheme) MidasColors.DarkGray else MidasColors.ExtraLightGray
                         )
                     }
                 }
@@ -135,15 +137,19 @@ fun GoalCard(
 @Preview(showBackground = true, backgroundColor = Color.WHITE.toLong())
 @Composable
 fun GoalsCardLightPreview() {
-    MidasLightPreview {
-        GoalCard(Database.goalList.first())
+    MidasPreview(
+        theme = Theme.LIGHT
+    ) {
+        GoalCard(Database.goalList[0])
     }
 }
 
 @Preview(showBackground = true, backgroundColor = Color.BLACK.toLong())
 @Composable
 fun GoalsCardDarkPreview() {
-    MidasDarkPreview {
-        GoalCard(goal = Database.goalList.first())
+    MidasPreview(
+        theme = Theme.DARK
+    ) {
+        GoalCard(goal = Database.goalList[0], isDarkTheme = true)
     }
 }

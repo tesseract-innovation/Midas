@@ -11,10 +11,16 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.midasmoney.shared.ui.core.MidasPreview
-import com.midasmoney.shared.ui.core.Theme
+import com.midasmoney.shared.model.mock.Database
+import com.midasmoney.shared.ui.core.component.MidasDarkPreview
+import com.midasmoney.shared.ui.core.component.MidasLightPreview
+import com.midasmoney.shared.resource.R.string.recent_transactions
+import com.midasmoney.shared.resource.R.string.view_all
+import com.midasmoney.shared.resource.R.string.financial_goals
+import com.midasmoney.shared.resource.R.string.manage
 
 @Composable
 fun HomeContentImp() {
@@ -37,57 +43,29 @@ fun HomeContent(isDarkTheme: Boolean = isSystemInDarkTheme()) {
                     .verticalScroll(rememberScrollState())
             ) {
                 BalanceStatus(
-                    totalValue = "$14,250.00",
-                    incomeValue = "+$3,200",
-                    expenseValue = "-$1,850",
+                    balance = Database.balance,
                     isDarkTheme = isDarkTheme
                 )
                 TitleItem(
-                    textTitle = "Recent Transactions",
-                    textButton = "View All",
+                    textTitle = stringResource(recent_transactions),
+                    textButton = stringResource(view_all),
                     actionButton = {}
                 )
-                TransactionCard(
-                    transactionHistoryItem = Database.transactionHistoryList[0],
-                    isDarkTheme = isDarkTheme
-                )
-                TransactionCard(
-                    transactionHistoryItem = Database.transactionHistoryList[1],
-                    isDarkTheme = isDarkTheme
-                )
-                TransactionCard(
-                    transactionHistoryItem = Database.transactionHistoryList[2],
-                    isDarkTheme = isDarkTheme
-                )
-                TransactionCard(
-                    transactionHistoryItem = Database.transactionHistoryList[3],
-                    isDarkTheme = isDarkTheme
-                )
-                TransactionCard(
-                    transactionHistoryItem = Database.transactionHistoryList[4],
-                    isDarkTheme = isDarkTheme
-                )
+                for (i in 0 until 2) {
+                    TransactionCard(
+                        transactionHistoryItem = Database.transactionHistoryList[i],
+                    )
+                }
                 TitleItem(
-                    textTitle = "Financial Goals",
-                    textButton = "Manage",
+                    textTitle = stringResource(financial_goals),
+                    textButton = stringResource(manage),
                     actionButton = {}
                 )
-                GoalCard(
-                    goal = Database.goalList[0],
-                    isDarkTheme = isDarkTheme
-                )
-                GoalCard(
-                    goal = Database.goalList[1],
-                    isDarkTheme = isDarkTheme
-                )
-                GoalCard(
-                    goal = Database.goalList[2],
-                    isDarkTheme = isDarkTheme
-                )
-                GoalCard(
-                    goal = Database.goalList[3],
-                    isDarkTheme = isDarkTheme
-                )
+                for (i in 0 until 3) {
+                    GoalCard(
+                        goal = Database.goalList[i]
+                    )
+                }
             }
         }
     }
@@ -96,9 +74,7 @@ fun HomeContent(isDarkTheme: Boolean = isSystemInDarkTheme()) {
 @Preview(showBackground = true)
 @Composable
 fun HomeContentImpLightPreview() {
-    MidasPreview(
-        theme = Theme.LIGHT
-    ) {
+    MidasLightPreview {
         HomeContent()
     }
 }
@@ -106,9 +82,7 @@ fun HomeContentImpLightPreview() {
 @Preview(showBackground = true)
 @Composable
 fun HomeContentImpDarkPreview() {
-    MidasPreview(
-        theme = Theme.DARK
-    ) {
+    MidasDarkPreview {
         HomeContent(isDarkTheme = true)
     }
 }

@@ -71,5 +71,6 @@ dependencies {
     implementation(project(':screen:profile'))
 
     // shared
+    implementation(project(':shared:resource'))
     implementation(project(':shared:ui:core'))
 }

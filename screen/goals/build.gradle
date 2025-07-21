@@ -6,3 +6,9 @@ plugins {
 android {
     namespace 'com.midasmoney.screen.goals'
 }
+
+dependencies {
+    implementation(project(':shared:ui:core'))
+    implementation(project(':shared:model:data'))
+    implementation(project(':shared:model:mock'))
+}
