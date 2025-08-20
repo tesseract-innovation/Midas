@@ -36,4 +36,15 @@
         <item>180 days</item>
         <item>360 days</item>
     </string-array>
+
+    <!-- goals -->
+    <string name="monthly">Monthly</string>
+    <string name="target">Target</string>
+    <string name="add_money">Add Money</string>
+    <string name="of">of</string>
+    <string name="total_saved">Total Saved</string>
+    <string name="monthly_insights">Monthly Insights</string>
+    <string name="monthly_track">You\'re on track this month!</string>
+    <string name="monthly_target">Monthly Target</string>
+    <string name="monthly_save">Save This Month</string>
 </resources>
