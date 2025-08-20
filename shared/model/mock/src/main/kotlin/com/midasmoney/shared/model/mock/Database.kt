@@ -238,6 +238,8 @@ object Database {
             amount = 5000.0,
             progress = 2000.0,
             icon = IconModel(IconMapper.getIconType(Icons.Filled.Savings)!!),
+            targetDate = LocalDate.of(2025, 2, 1),
+            monthlyValue = 500.0,
             color = MidasColors.Green.primary.toArgb()
         ),
         Goal(
@@ -246,6 +248,8 @@ object Database {
             amount = 3000.0,
             progress = 750.0,
             icon = IconModel(IconMapper.getIconType(Icons.Filled.Flight)!!),
+            targetDate = LocalDate.of(2025, 3, 1),
+            monthlyValue = 640.0,
             color = MidasColors.Blue.primary.toArgb()
         ),
         Goal(
@@ -254,6 +258,8 @@ object Database {
             amount = 10000.0,
             progress = 4000.0,
             icon = IconModel(IconMapper.getIconType(Icons.Filled.DirectionsCar)!!),
+            targetDate = LocalDate.of(2025, 4, 1),
+            monthlyValue = 231.0,
             color = MidasColors.Yellow.primary.toArgb()
         ),
         Goal(
@@ -262,6 +268,8 @@ object Database {
             amount = 2000.0,
             progress = 1200.0,
             icon = IconModel(IconMapper.getIconType(Icons.Filled.Money)!!),
+            targetDate = LocalDate.of(2025, 5, 1),
+            monthlyValue = 123.0,
             color = MidasColors.Red.primary.toArgb()
         ),
         Goal(
@@ -270,6 +278,8 @@ object Database {
             amount = 15000.0,
             progress = 3000.0,
             icon = IconModel(IconMapper.getIconType(Icons.Filled.Home)!!),
+            targetDate = LocalDate.of(2025, 6, 1),
+            monthlyValue = 882.0,
             color = MidasColors.Orange.primary.toArgb()
         )
     )
