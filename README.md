@@ -42,7 +42,7 @@ Midas Money is a mobile app focused on personal financial management, with an in
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/userddssilva/Midas.git && cd Midas 
+   git clone https://github.com/tesseract-innovation/Midas/.git && cd Midas 
    ```
 
 2. **Install dependencies**:
