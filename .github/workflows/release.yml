@@ -31,8 +31,8 @@ jobs:
           mv *.apk Midas-${{ github.ref_name }}.apk
           ls -l
 
-      - name: Upload Release Asset
-        id: upload-release-asset
+      - name: Upload artifact
+        id: upload-artifact
         uses: actions/upload-artifact@v4
         with:
           name: Midas-${{ github.ref_name }}.apk
@@ -50,3 +50,14 @@ jobs:
             {commits}
 
             {range}
+
+      - name: Upload Release Apk
+        id: upload-release-pdk
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.MIDAS_RELEASE}}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          asset_path: ./app/build/outputs/apk/debug/
+          asset_name: Midas-${{ github.ref_name }}.apk
+          asset_content_type: application/apk

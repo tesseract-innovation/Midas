@@ -54,8 +54,8 @@ jobs:
             mv *.apk Midas-${{ env.GITHUB_SHA_7 }}.apk
             ls -l
         
-      - name: Upload Release Asset
-        id: upload-release-asset
+      - name: Upload artifact
+        id: upload-artifact
         uses: actions/upload-artifact@v4
         with:
           name: Midas-${{ env.GITHUB_SHA_7 }}.apk
