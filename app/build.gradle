@@ -1,38 +1,106 @@
+//file:noinspection GrDeprecatedAPIUsage
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
 }
 
+def _versionName = getGitVersion()
+def _commitHash = getGitCommitHash()
+
 android {
     namespace 'com.midasmoney.app'
+    //noinspection GradleDependency
     compileSdk 35
 
     defaultConfig {
         applicationId "com.midasmoney.app"
         minSdk 33
+        //noinspection OldTargetApi
         targetSdk 35
         versionCode 1
-        versionName "1.0"
-
+        versionName _versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    signingConfigs {
+        if (System.getenv("KEYSTORE_PATH") != null) {
+            release {
+                storeFile file(System.getenv("KEYSTORE_PATH"))
+                storePassword System.getenv("KEYSTORE_PASSWORD")
+                keyAlias System.getenv("KEY_ALIAS")
+                keyPassword System.getenv("KEY_PASSWORD")
+            }
         }
     }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            debuggable true
+        }
+
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            if (System.getenv("KEYSTORE_PATH") != null) {
+               signingConfig signingConfigs.release
+            }
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            if (variant.buildType.name == "debug") {
+                output.outputFileName = "Midas-${_versionName}-${_commitHash}-debug.apk"
+            } else {
+                output.outputFileName = "Midas-${_versionName}-release.apk"
+            }
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
+
     kotlinOptions {
         jvmTarget = '11'
     }
+
     buildFeatures {
         compose true
+    }
+}
+
+def getGitCommitHash() {
+    try {
+        def stdout = new ByteArrayOutputStream()
+        exec {
+            commandLine 'git', 'rev-parse', '--short', 'HEAD'
+            standardOutput = stdout
+        }
+        return stdout.toString().trim()
+    } catch (Exception e) {
+        e.printStackTrace()
+        return "unknown"
+    }
+}
+
+def getGitVersion() {
+    try {
+        def stdout = new ByteArrayOutputStream()
+        exec {
+            commandLine 'git', 'tag', '--sort=-v:refname'
+            standardOutput = stdout
+        }
+        def tags = stdout.toString().trim().split('\n')
+        def hasTag = tags.first().startsWith("v")
+        return hasTag ? tags.first() : "untagged"
+    } catch (Exception e) {
+        e.printStackTrace()
+        return "untagged"
     }
 }
 
