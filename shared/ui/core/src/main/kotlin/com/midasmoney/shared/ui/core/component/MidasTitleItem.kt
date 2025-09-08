@@ -1,4 +1,4 @@
-package com.midasmoney.screen.home
+package com.midasmoney.shared.ui.core.component
 
 import android.graphics.Color
 import androidx.compose.foundation.layout.Column
@@ -15,11 +15,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.midasmoney.shared.ui.core.component.MidasDarkPreview
-import com.midasmoney.shared.ui.core.component.MidasLightPreview
 
 @Composable
-fun TitleItem(textTitle: String, textButton: String, actionButton: () -> Unit) {
+fun MidasTitleItem(
+    textTitle: String,
+    textButton: String? = null,
+    actionButton: (() -> Unit)? = null
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -45,14 +47,18 @@ fun TitleItem(textTitle: String, textButton: String, actionButton: () -> Unit) {
                 .padding(end = 10.dp),
             horizontalAlignment = Alignment.End
         ) {
-            TextButton(
-                onClick = actionButton
-            ) {
-                Text(
-                    text = textButton,
-                    color = MaterialTheme.colorScheme.secondary,
-                    fontSize = 15.sp
-                )
+            textButton?.let { text ->
+                actionButton?.let { action ->
+                    TextButton(
+                        onClick = action
+                    ) {
+                        Text(
+                            text = text,
+                            color = MaterialTheme.colorScheme.secondary,
+                            fontSize = 15.sp
+                        )
+                    }
+                }
             }
         }
     }
@@ -62,7 +68,7 @@ fun TitleItem(textTitle: String, textButton: String, actionButton: () -> Unit) {
 @Composable
 fun TitleItemLightPreview() {
     MidasLightPreview {
-        TitleItem(
+        MidasTitleItem(
             textTitle = "Recent Transactions",
             textButton = "View All",
             actionButton = {}
@@ -74,7 +80,7 @@ fun TitleItemLightPreview() {
 @Composable
 fun TitleItemDarkPreview() {
     MidasDarkPreview {
-        TitleItem(
+        MidasTitleItem(
             textTitle = "Recent Transactions",
             textButton = "View All",
             actionButton = {}
