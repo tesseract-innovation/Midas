@@ -43,7 +43,7 @@ data class Category(
     val id: UUID = UUID.randomUUID()
 )
 
-data class TransactionHistoryItem(
+data class Transaction(
     val accountId: UUID,
     val type: TransactionType,
     val amount: BigDecimal,
@@ -56,5 +56,15 @@ data class TransactionHistoryItem(
     val paidFor: Instant,
     val category: Category,
     val status: TransactionStatus,
+    val id: UUID = UUID.randomUUID()
+)
+
+data class TransactionReport(
+    val accountId: UUID,
+    val type: TransactionType,
+    val amount: BigDecimal,
+    val percentage: Double,
+    val startDateTime: Instant,
+    val endDateTime: Instant,
     val id: UUID = UUID.randomUUID()
 )
