@@ -16,8 +16,8 @@ import com.midasmoney.shared.model.data.Transaction
 import com.midasmoney.shared.model.data.TransactionReport
 import com.midasmoney.shared.model.data.TransactionStatus
 import com.midasmoney.shared.model.data.TransactionType
-import com.midasmoney.shared.ui.core.icon.IconMapper
 import com.midasmoney.shared.ui.core.color.MidasColors
+import com.midasmoney.shared.ui.core.icon.IconMapper
 import java.math.BigDecimal
 import java.time.Instant
 import java.time.LocalDate
@@ -177,7 +177,7 @@ object Database {
             title = "Freelance Payment",
             description = "Payment for web development project",
             dateTime = Instant.parse("2025-07-09T09:00:00Z"),
-            dueDate =  Instant.parse("2025-07-09T09:00:00Z"),
+            dueDate = Instant.parse("2025-07-09T09:00:00Z"),
             date = LocalDate.of(2025, 7, 14),
             time = LocalTime.of(9, 0),
             paidFor = Instant.parse("2025-07-09T09:05:00Z"),
@@ -207,7 +207,7 @@ object Database {
             title = "Refund",
             description = "Refund for returned electronics",
             dateTime = Instant.parse("2025-07-07T16:45:00Z"),
-            dueDate =  Instant.parse("2025-07-07T16:45:00Z"),
+            dueDate = Instant.parse("2025-07-07T16:45:00Z"),
             date = LocalDate.of(2025, 7, 7),
             time = LocalTime.of(16, 45),
             paidFor = Instant.parse("2025-07-07T16:50:00Z"),
@@ -222,12 +222,335 @@ object Database {
             title = "Restaurant Dinner",
             description = "Dinner with friends at Italian restaurant",
             dateTime = Instant.parse("2025-07-06T19:30:00Z"),
-            dueDate =  Instant.parse("2025-07-06T19:30:00Z"),
+            dueDate = Instant.parse("2025-07-06T19:30:00Z"),
             date = LocalDate.of(2025, 7, 6),
             time = LocalTime.of(19, 30),
             paidFor = Instant.parse("2025-07-06T20:00:00Z"),
             category = commonCategories.find { it.name == "Dining Out" }!!,
             status = TransactionStatus.FAILED,
+            id = UUID.randomUUID()
+        ),
+
+        // 10 Examples for August 2025
+        Transaction(
+            accountId = UUID.randomUUID(),
+            type = TransactionType.EXPENSE,
+            amount = BigDecimal("45.50"),
+            title = "Grocery Shopping",
+            description = "Weekly groceries including fruits, vegetables, and dairy",
+            dateTime = Instant.parse("2025-08-02T14:20:00Z"),
+            dueDate = Instant.parse("2025-08-02T14:20:00Z"),
+            date = LocalDate.of(2025, 8, 2),
+            time = LocalTime.of(14, 20),
+            paidFor = Instant.parse("2025-08-02T15:00:00Z"),
+            category = commonCategories.find { it.name == "Groceries" }!!,
+            status = TransactionStatus.PENDING,
+            id = UUID.randomUUID()
+        ),
+
+        Transaction(
+            accountId = UUID.randomUUID(),
+            type = TransactionType.INCOME,
+            amount = BigDecimal("2500.00"),
+            title = "Monthly Salary",
+            description = "Regular paycheck from full-time job",
+            dateTime = Instant.parse("2025-08-05T09:00:00Z"),
+            dueDate = Instant.parse("2025-08-05T09:00:00Z"),
+            date = LocalDate.of(2025, 8, 5),
+            time = LocalTime.of(9, 0),
+            paidFor = Instant.parse("2025-08-05T09:00:00Z"),
+            category = commonCategories.find { it.name == "Salary" }!!,
+            status = TransactionStatus.ON_HOLD,
+            id = UUID.randomUUID()
+        ),
+
+        Transaction(
+            accountId = UUID.randomUUID(),
+            type = TransactionType.EXPENSE,
+            amount = BigDecimal("120.00"),
+            title = "Electricity Bill",
+            description = "Monthly utility bill for home electricity",
+            dateTime = Instant.parse("2025-08-10T10:15:00Z"),
+            dueDate = Instant.parse("2025-08-10T10:15:00Z"),
+            date = LocalDate.of(2025, 8, 10),
+            time = LocalTime.of(10, 15),
+            paidFor = Instant.parse("2025-08-10T11:00:00Z"),
+            category = commonCategories.find { it.name == "Utilities" }!!,
+            status = TransactionStatus.REJECTED,
+            id = UUID.randomUUID()
+        ),
+
+        Transaction(
+            accountId = UUID.randomUUID(),
+            type = TransactionType.EXPENSE,
+            amount = BigDecimal("800.00"),
+            title = "Rent Payment",
+            description = "Monthly rent for apartment",
+            dateTime = Instant.parse("2025-08-01T00:00:00Z"),
+            dueDate = Instant.parse("2025-08-01T00:00:00Z"),
+            date = LocalDate.of(2025, 8, 1),
+            time = LocalTime.of(0, 0),
+            paidFor = Instant.parse("2025-08-01T00:00:00Z"),
+            category = commonCategories.find { it.name == "Rent/Mortgage" }!!,
+            status = TransactionStatus.SCHEDULED,
+            id = UUID.randomUUID()
+        ),
+
+        Transaction(
+            accountId = UUID.randomUUID(),
+            type = TransactionType.EXPENSE,
+            amount = BigDecimal("25.00"),
+            title = "Bus Fare",
+            description = "Public transportation to work",
+            dateTime = Instant.parse("2025-08-15T07:45:00Z"),
+            dueDate = Instant.parse("2025-08-15T07:45:00Z"),
+            date = LocalDate.of(2025, 8, 15),
+            time = LocalTime.of(7, 45),
+            paidFor = Instant.parse("2025-08-15T07:45:00Z"),
+            category = commonCategories.find { it.name == "Transportation" }!!,
+            status = TransactionStatus.CANCELED,
+            id = UUID.randomUUID()
+        ),
+
+        Transaction(
+            accountId = UUID.randomUUID(),
+            type = TransactionType.EXPENSE,
+            amount = BigDecimal("60.75"),
+            title = "Lunch at Cafe",
+            description = "Casual lunch outing with colleague",
+            dateTime = Instant.parse("2025-08-12T12:30:00Z"),
+            dueDate = Instant.parse("2025-08-12T12:30:00Z"),
+            date = LocalDate.of(2025, 8, 12),
+            time = LocalTime.of(12, 30),
+            paidFor = Instant.parse("2025-08-12T13:00:00Z"),
+            category = commonCategories.find { it.name == "Dining Out" }!!,
+            status = TransactionStatus.FAILED,
+            id = UUID.randomUUID()
+        ),
+
+        Transaction(
+            accountId = UUID.randomUUID(),
+            type = TransactionType.EXPENSE,
+            amount = BigDecimal("35.00"),
+            title = "Movie Ticket",
+            description = "Evening movie at local cinema",
+            dateTime = Instant.parse("2025-08-20T20:00:00Z"),
+            dueDate = Instant.parse("2025-08-20T20:00:00Z"),
+            date = LocalDate.of(2025, 8, 20),
+            time = LocalTime.of(20, 0),
+            paidFor = Instant.parse("2025-08-20T20:00:00Z"),
+            category = commonCategories.find { it.name == "Entertainment" }!!,
+            status = TransactionStatus.APPROVED,
+            id = UUID.randomUUID()
+        ),
+
+        Transaction(
+            accountId = UUID.randomUUID(),
+            type = TransactionType.INCOME,
+            amount = BigDecimal("300.00"),
+            title = "Freelance Gig",
+            description = "Payment for graphic design project",
+            dateTime = Instant.parse("2025-08-18T16:00:00Z"),
+            dueDate = Instant.parse("2025-08-18T16:00:00Z"),
+            date = LocalDate.of(2025, 8, 18),
+            time = LocalTime.of(16, 0),
+            paidFor = Instant.parse("2025-08-18T16:00:00Z"),
+            category = commonCategories.find { it.name == "Freelance" }!!,
+            status = TransactionStatus.PENDING,
+            id = UUID.randomUUID()
+        ),
+
+        Transaction(
+            accountId = UUID.randomUUID(),
+            type = TransactionType.INCOME,
+            amount = BigDecimal("150.00"),
+            title = "Investment Dividend",
+            description = "Quarterly dividend from stock portfolio",
+            dateTime = Instant.parse("2025-08-25T11:30:00Z"),
+            dueDate = Instant.parse("2025-08-25T11:30:00Z"),
+            date = LocalDate.of(2025, 8, 25),
+            time = LocalTime.of(11, 30),
+            paidFor = Instant.parse("2025-08-25T11:30:00Z"),
+            category = commonCategories.find { it.name == "Investments" }!!,
+            status = TransactionStatus.APPROVED,
+            id = UUID.randomUUID()
+        ),
+
+        Transaction(
+            accountId = UUID.randomUUID(),
+            type = TransactionType.EXPENSE,
+            amount = BigDecimal("100.00"),
+            title = "Birthday Gift",
+            description = "Gift for friend's birthday party",
+            dateTime = Instant.parse("2025-08-28T18:00:00Z"),
+            dueDate = Instant.parse("2025-08-28T18:00:00Z"),
+            date = LocalDate.of(2025, 8, 28),
+            time = LocalTime.of(18, 0),
+            paidFor = Instant.parse("2025-08-28T18:00:00Z"),
+            category = commonCategories.find { it.name == "Entertainment" }!!, // Reusing Entertainment for gift-related
+            status = TransactionStatus.COMPLETED,
+            id = UUID.randomUUID()
+        ),
+
+        // 10 Examples for September 2025
+
+        Transaction(
+            accountId = UUID.randomUUID(),
+            type = TransactionType.EXPENSE,
+            amount = BigDecimal("52.30"),
+            title = "Supermarket Run",
+            description = "Monthly stock-up on essentials and snacks",
+            dateTime = Instant.parse("2025-09-03T15:10:00Z"),
+            dueDate = Instant.parse("2025-09-03T15:10:00Z"),
+            date = LocalDate.of(2025, 9, 3),
+            time = LocalTime.of(15, 10),
+            paidFor = Instant.parse("2025-09-03T16:00:00Z"),
+            category = commonCategories.find { it.name == "Groceries" }!!,
+            status = TransactionStatus.CANCELED,
+            id = UUID.randomUUID()
+        ),
+
+        Transaction(
+            accountId = UUID.randomUUID(),
+            type = TransactionType.INCOME,
+            amount = BigDecimal("2600.00"),
+            title = "Salary Deposit",
+            description = "Bi-weekly salary payment",
+            dateTime = Instant.parse("2025-09-05T08:30:00Z"),
+            dueDate = Instant.parse("2025-09-05T08:30:00Z"),
+            date = LocalDate.of(2025, 9, 5),
+            time = LocalTime.of(8, 30),
+            paidFor = Instant.parse("2025-09-05T08:30:00Z"),
+            category = commonCategories.find { it.name == "Salary" }!!,
+            status = TransactionStatus.PENDING,
+            id = UUID.randomUUID()
+        ),
+
+        Transaction(
+            accountId = UUID.randomUUID(),
+            type = TransactionType.EXPENSE,
+            amount = BigDecimal("95.00"),
+            title = "Internet Bill",
+            description = "Monthly internet service fee",
+            dateTime = Instant.parse("2025-09-08T09:45:00Z"),
+            dueDate = Instant.parse("2025-09-08T09:45:00Z"),
+            date = LocalDate.of(2025, 9, 8),
+            time = LocalTime.of(9, 45),
+            paidFor = Instant.parse("2025-09-08T10:00:00Z"),
+            category = commonCategories.find { it.name == "Utilities" }!!,
+            status = TransactionStatus.SCHEDULED,
+            id = UUID.randomUUID()
+        ),
+
+        Transaction(
+            accountId = UUID.randomUUID(),
+            type = TransactionType.EXPENSE,
+            amount = BigDecimal("850.00"),
+            title = "Mortgage Payment",
+            description = "Monthly mortgage installment",
+            dateTime = Instant.parse("2025-09-01T00:00:00Z"),
+            dueDate = Instant.parse("2025-09-01T00:00:00Z"),
+            date = LocalDate.of(2025, 9, 1),
+            time = LocalTime.of(0, 0),
+            paidFor = Instant.parse("2025-09-01T00:00:00Z"),
+            category = commonCategories.find { it.name == "Rent/Mortgage" }!!,
+            status = TransactionStatus.FAILED,
+            id = UUID.randomUUID()
+        ),
+
+        Transaction(
+            accountId = UUID.randomUUID(),
+            type = TransactionType.EXPENSE,
+            amount = BigDecimal("40.00"),
+            title = "Gas Station",
+            description = "Fuel for weekly commute",
+            dateTime = Instant.parse("2025-09-08T17:20:00Z"),
+            dueDate = Instant.parse("2025-09-08T17:20:00Z"),
+            date = LocalDate.of(2025, 9, 8),
+            time = LocalTime.of(17, 20),
+            paidFor = Instant.parse("2025-09-12T17:20:00Z"),
+            category = commonCategories.find { it.name == "Transportation" }!!,
+            status = TransactionStatus.COMPLETED,
+            id = UUID.randomUUID()
+        ),
+
+        Transaction(
+            accountId = UUID.randomUUID(),
+            type = TransactionType.EXPENSE,
+            amount = BigDecimal("80.00"),
+            title = "Dinner Date",
+            description = "Romantic dinner at sushi place",
+            dateTime = Instant.parse("2025-09-07T19:00:00Z"),
+            dueDate = Instant.parse("2025-09-07T19:00:00Z"),
+            date = LocalDate.of(2025, 9, 7),
+            time = LocalTime.of(19, 0),
+            paidFor = Instant.parse("2025-09-07T20:30:00Z"),
+            category = commonCategories.find { it.name == "Dining Out" }!!,
+            status = TransactionStatus.REJECTED,
+            id = UUID.randomUUID()
+        ),
+
+        Transaction(
+            accountId = UUID.randomUUID(),
+            type = TransactionType.EXPENSE,
+            amount = BigDecimal("50.00"),
+            title = "Streaming Subscription",
+            description = "Monthly fee for video streaming service",
+            dateTime = Instant.parse("2025-09-07T00:00:00Z"),
+            dueDate = Instant.parse("2025-09-07T00:00:00Z"),
+            date = LocalDate.of(2025, 9, 7),
+            time = LocalTime.of(0, 0),
+            paidFor = Instant.parse("2025-09-07T00:00:00Z"),
+            category = commonCategories.find { it.name == "Entertainment" }!!,
+            status = TransactionStatus.CANCELED,
+            id = UUID.randomUUID()
+        ),
+
+        Transaction(
+            accountId = UUID.randomUUID(),
+            type = TransactionType.INCOME,
+            amount = BigDecimal("450.00"),
+            title = "Freelance Writing",
+            description = "Payment for article submission",
+            dateTime = Instant.parse("2025-09-08T14:00:00Z"),
+            dueDate = Instant.parse("2025-09-08T14:00:00Z"),
+            date = LocalDate.of(2025, 9, 8),
+            time = LocalTime.of(14, 0),
+            paidFor = Instant.parse("2025-09-08T14:00:00Z"),
+            category = commonCategories.find { it.name == "Freelance" }!!,
+            status = TransactionStatus.REJECTED,
+            id = UUID.randomUUID()
+        ),
+
+        Transaction(
+            accountId = UUID.randomUUID(),
+            type = TransactionType.INCOME,
+            amount = BigDecimal("200.00"),
+            title = "Stock Gains",
+            description = "Profit from selling shares",
+            dateTime = Instant.parse("2025-09-03T10:00:00Z"),
+            dueDate = Instant.parse("2025-09-03T10:00:00Z"),
+            date = LocalDate.of(2025, 9, 3),
+            time = LocalTime.of(10, 0),
+            paidFor = Instant.parse("2025-09-03T10:00:00Z"),
+            category = commonCategories.find { it.name == "Investments" }!!,
+            status = TransactionStatus.APPROVED,
+            id = UUID.randomUUID()
+        ),
+
+        Transaction(
+            accountId = UUID.randomUUID(),
+            type = TransactionType.INCOME,
+            amount = BigDecimal("100.00"),
+            title = "Birthday Gift Received",
+            description = "Cash gift from family for birthday",
+            dateTime = Instant.parse("2025-09-05T12:00:00Z"),
+            dueDate = Instant.parse("2025-09-05T12:00:00Z"),
+            date = LocalDate.of(2025, 9, 5),
+            time = LocalTime.of(12, 0),
+            paidFor = Instant.parse("2025-09-05T12:00:00Z"),
+            category = commonCategories.find { it.name == "Gifts" }!!,
+            status = TransactionStatus.ON_HOLD,
             id = UUID.randomUUID()
         )
     )
