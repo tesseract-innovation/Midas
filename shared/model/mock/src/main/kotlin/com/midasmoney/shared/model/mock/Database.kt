@@ -12,7 +12,8 @@ import com.midasmoney.shared.model.data.Category
 import com.midasmoney.shared.model.data.Goal
 import com.midasmoney.shared.model.data.IconModel
 import com.midasmoney.shared.model.data.IconType
-import com.midasmoney.shared.model.data.TransactionHistoryItem
+import com.midasmoney.shared.model.data.Transaction
+import com.midasmoney.shared.model.data.TransactionReport
 import com.midasmoney.shared.model.data.TransactionStatus
 import com.midasmoney.shared.model.data.TransactionType
 import com.midasmoney.shared.ui.core.icon.IconMapper
@@ -108,8 +109,8 @@ object Database {
         )
     )
 
-    val transactionHistoryList = listOf(
-        TransactionHistoryItem(
+    val transactions = listOf(
+        Transaction(
             accountId = UUID.randomUUID(),
             type = TransactionType.EXPENSE,
             amount = BigDecimal("66.90"),
@@ -124,7 +125,7 @@ object Database {
             status = TransactionStatus.PENDING,
             id = UUID.randomUUID()
         ),
-        TransactionHistoryItem(
+        Transaction(
             accountId = UUID.randomUUID(),
             type = TransactionType.INCOME,
             amount = BigDecimal("23.99"),
@@ -139,7 +140,7 @@ object Database {
             status = TransactionStatus.PENDING,
             id = UUID.randomUUID()
         ),
-        TransactionHistoryItem(
+        Transaction(
             accountId = UUID.randomUUID(),
             type = TransactionType.INCOME,
             amount = BigDecimal("23.99"),
@@ -154,7 +155,7 @@ object Database {
             status = TransactionStatus.PENDING,
             id = UUID.randomUUID()
         ),
-        TransactionHistoryItem(
+        Transaction(
             accountId = UUID.randomUUID(),
             type = TransactionType.EXPENSE,
             amount = BigDecimal("45.99"),
@@ -169,7 +170,7 @@ object Database {
             status = TransactionStatus.PENDING,
             id = UUID.randomUUID()
         ),
-        TransactionHistoryItem(
+        Transaction(
             accountId = UUID.randomUUID(),
             type = TransactionType.INCOME,
             amount = BigDecimal("1500.00"),
@@ -184,7 +185,7 @@ object Database {
             status = TransactionStatus.SCHEDULED,
             id = UUID.randomUUID()
         ),
-        TransactionHistoryItem(
+        Transaction(
             accountId = UUID.randomUUID(),
             type = TransactionType.EXPENSE,
             amount = BigDecimal("120.50"),
@@ -199,7 +200,7 @@ object Database {
             status = TransactionStatus.COMPLETED,
             id = UUID.randomUUID()
         ),
-        TransactionHistoryItem(
+        Transaction(
             accountId = UUID.randomUUID(),
             type = TransactionType.INCOME,
             amount = BigDecimal("250.75"),
@@ -214,7 +215,7 @@ object Database {
             status = TransactionStatus.CANCELED,
             id = UUID.randomUUID()
         ),
-        TransactionHistoryItem(
+        Transaction(
             accountId = UUID.randomUUID(),
             type = TransactionType.EXPENSE,
             amount = BigDecimal("75.00"),
@@ -288,5 +289,23 @@ object Database {
         totalValue = 14250.00f,
         incomeValue = 3200.00f,
         expenseValue = 1850.00f,
+    )
+
+    val transactionReportIncome = TransactionReport(
+        accountId = UUID.fromString("123e4567-e89b-12d3-a456-426614174000"),
+        type = TransactionType.INCOME,
+        amount = BigDecimal("1504.75"),
+        percentage = 0.015,
+        startDateTime = Instant.parse("2025-09-03T10:00:00Z"),
+        endDateTime = Instant.parse("2025-09-03T10:01:00Z")
+    )
+
+    val transactionReportExpense = TransactionReport(
+        accountId = UUID.fromString("987fcdeb-51a2-4b7e-9f7b-8d7a12345678"),
+        type = TransactionType.EXPENSE,
+        amount = BigDecimal("500.00"),
+        percentage = 0.02,
+        startDateTime = Instant.parse("2025-09-02T14:30:00Z"),
+        endDateTime = Instant.parse("2025-09-02T14:31:00Z")
     )
 }

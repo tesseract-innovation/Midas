@@ -22,7 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.midasmoney.shared.model.data.TransactionHistoryItem
+import com.midasmoney.shared.model.data.Transaction
 import com.midasmoney.shared.model.mock.Database
 import com.midasmoney.shared.ui.core.component.MidasCard
 import com.midasmoney.shared.ui.core.component.MidasDarkPreview
@@ -36,7 +36,7 @@ import com.midasmoney.shared.ui.core.values.formatIconColorBackground
 
 @Composable
 fun TransactionCard(
-    transactionHistoryItem: TransactionHistoryItem
+    transaction: Transaction
 ) {
     Column(
         modifier = Modifier
@@ -63,13 +63,13 @@ fun TransactionCard(
                             .weight(0.2f)
                     ) {
                         Icon(
-                            contentDescription = transactionHistoryItem.formatIcon().name,
-                            imageVector = transactionHistoryItem.formatIcon(),
-                            tint = transactionHistoryItem.formatIconColor(),
+                            contentDescription = transaction.formatIcon().name,
+                            imageVector = transaction.formatIcon(),
+                            tint = transaction.formatIconColor(),
                             modifier = Modifier
                                 .size(40.dp)
                                 .clip(CircleShape)
-                                .background(color = transactionHistoryItem.formatIconColorBackground())
+                                .background(color = transaction.formatIconColorBackground())
                                 .padding(10.dp)
                         )
                     }
@@ -80,14 +80,14 @@ fun TransactionCard(
                     ) {
                         Row {
                             Text(
-                                text = transactionHistoryItem.title,
+                                text = transaction.title,
                                 color = MaterialTheme.colorScheme.onBackground,
                                 fontWeight = FontWeight.Bold
                             )
                         }
                         Row {
                             Text(
-                                text = transactionHistoryItem.category.name,
+                                text = transaction.category.name,
                                 fontSize = 15.sp,
                                 color = MaterialTheme.colorScheme.outline,
                                 fontWeight = FontWeight.W400,
@@ -104,7 +104,7 @@ fun TransactionCard(
                                     )
                             )
                             Text(
-                                text = transactionHistoryItem.formatDate(),
+                                text = transaction.formatDate(),
                                 fontSize = 15.sp,
                                 color = MaterialTheme.colorScheme.outline,
                                 fontWeight = FontWeight.W400,
@@ -120,12 +120,12 @@ fun TransactionCard(
                             .align(Alignment.CenterVertically)
                     ) {
                         Text(
-                            text = transactionHistoryItem.formatAmount(),
-                            color = transactionHistoryItem.formatAmountColor(),
+                            text = transaction.formatAmount(),
+                            color = transaction.formatAmountColor(),
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            text = transactionHistoryItem.status.toString()
+                            text = transaction.status.toString()
                                 .lowercase()
                                 .replaceFirstChar { it.uppercaseChar() },
                             color = MaterialTheme.colorScheme.outline,
@@ -145,7 +145,7 @@ fun TransactionCard(
 fun TransactionCardLightPreview() {
     MidasLightPreview {
         TransactionCard(
-            transactionHistoryItem = Database.transactionHistoryList.first(),
+            transaction = Database.transactions.first(),
         )
     }
 }
@@ -155,7 +155,7 @@ fun TransactionCardLightPreview() {
 fun TransactionCardDarkPreview() {
     MidasDarkPreview {
         TransactionCard(
-            transactionHistoryItem = Database.transactionHistoryList.first(),
+            transaction = Database.transactions.first(),
         )
     }
 }

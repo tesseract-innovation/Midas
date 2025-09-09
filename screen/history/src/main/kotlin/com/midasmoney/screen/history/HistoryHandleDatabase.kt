@@ -1,15 +1,15 @@
 package com.midasmoney.screen.history
 
-import com.midasmoney.shared.model.data.TransactionHistoryItem
+import com.midasmoney.shared.model.data.Transaction
 import com.midasmoney.shared.model.data.TransactionType
 import com.midasmoney.shared.model.mock.Database
 import java.time.LocalDate
 
 object HistoryHandleDatabase {
     private fun getTransactionsForAmount(
-        transactions: List<TransactionHistoryItem>,
+        transactions: List<Transaction>,
         amount: Int
-    ): Map<LocalDate, List<TransactionHistoryItem>> {
+    ): Map<LocalDate, List<Transaction>> {
         val endInclusive = if (amount < transactions.size) amount - 1 else transactions.size - 1
         return transactions
             .sortedByDescending { it.date }
@@ -21,9 +21,9 @@ object HistoryHandleDatabase {
         filter: String,
         amount: Int,
         type: TransactionType? = null
-    ): Map<LocalDate, List<TransactionHistoryItem>> {
-           val endInclusive = if (amount < Database.transactionHistoryList.size) amount - 1 else Database.transactionHistoryList.size - 1
-        val transactions = Database.transactionHistoryList
+    ): Map<LocalDate, List<Transaction>> {
+           val endInclusive = if (amount < Database.transactions.size) amount - 1 else Database.transactions.size - 1
+        val transactions = Database.transactions
             .sortedByDescending { it.date }
             .slice(IntRange(0, endInclusive))
             .filter { if (type != null) it.type == type else true }

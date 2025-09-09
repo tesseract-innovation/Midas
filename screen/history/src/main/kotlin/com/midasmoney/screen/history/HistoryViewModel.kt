@@ -2,7 +2,7 @@ package com.midasmoney.screen.history
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.midasmoney.shared.model.data.TransactionHistoryItem
+import com.midasmoney.shared.model.data.Transaction
 import com.midasmoney.shared.model.data.TransactionType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 
-data class GroupedTransactions(val date: String, val transactions: List<TransactionHistoryItem>)
+data class GroupedTransactions(val date: String, val transactions: List<Transaction>)
 
 class HistoryViewModel : ViewModel() {
 

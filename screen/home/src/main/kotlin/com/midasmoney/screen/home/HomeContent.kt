@@ -14,21 +14,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.midasmoney.shared.model.mock.Database
-import com.midasmoney.shared.ui.core.component.MidasDarkPreview
-import com.midasmoney.shared.ui.core.component.MidasLightPreview
-import com.midasmoney.shared.resource.R.string.recent_transactions
-import com.midasmoney.shared.resource.R.string.view_all
 import com.midasmoney.shared.resource.R.string.financial_goals
 import com.midasmoney.shared.resource.R.string.manage
+import com.midasmoney.shared.resource.R.string.recent_transactions
+import com.midasmoney.shared.resource.R.string.view_all
+import com.midasmoney.shared.ui.core.component.MidasDarkPreview
+import com.midasmoney.shared.ui.core.component.MidasLightPreview
+import com.midasmoney.shared.ui.core.component.MidasTitleItem
 
 @Composable
-fun HomeContentImp() {
-    HomeContent()
+fun HomeContentImp(navController: NavHostController) {
+    HomeContent(navController)
 }
 
 @Composable
-fun HomeContent(isDarkTheme: Boolean = isSystemInDarkTheme()) {
+fun HomeContent(navController: NavController, isDarkTheme: Boolean = isSystemInDarkTheme()) {
     Surface(
         modifier = Modifier
             .fillMaxSize()
@@ -46,20 +50,20 @@ fun HomeContent(isDarkTheme: Boolean = isSystemInDarkTheme()) {
                     balance = Database.balance,
                     isDarkTheme = isDarkTheme
                 )
-                TitleItem(
+                MidasTitleItem(
                     textTitle = stringResource(recent_transactions),
                     textButton = stringResource(view_all),
-                    actionButton = {}
+                    actionButton = { navController.navigate(HomeRoute.History.route) }
                 )
                 for (i in 0 until 2) {
                     TransactionCard(
-                        transactionHistoryItem = Database.transactionHistoryList[i],
+                        transaction = Database.transactions[i],
                     )
                 }
-                TitleItem(
+                MidasTitleItem(
                     textTitle = stringResource(financial_goals),
                     textButton = stringResource(manage),
-                    actionButton = {}
+                    actionButton = { navController.navigate(HomeRoute.Goals.route) }
                 )
                 for (i in 0 until 3) {
                     GoalCard(
@@ -74,15 +78,20 @@ fun HomeContent(isDarkTheme: Boolean = isSystemInDarkTheme()) {
 @Preview(showBackground = true)
 @Composable
 fun HomeContentImpLightPreview() {
+    val navController = rememberNavController()
     MidasLightPreview {
-        HomeContent()
+        HomeContent(navController)
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun HomeContentImpDarkPreview() {
+    val navController = rememberNavController()
     MidasDarkPreview {
-        HomeContent(isDarkTheme = true)
+        HomeContent(
+            navController = navController,
+            isDarkTheme = true
+        )
     }
 }
