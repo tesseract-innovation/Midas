@@ -15,13 +15,13 @@ data class GroupedTransactions(val date: String, val transactions: List<Transact
 
 class HistoryViewModel : ViewModel() {
 
-    private var _days = MutableStateFlow<Int>(3)
+    private var _days = MutableStateFlow(7)
     var daysState = _days.asStateFlow()
 
-    private var _selectedTabIndex = MutableStateFlow<Int>(0)
+    private var _selectedTabIndex = MutableStateFlow(0)
     var selectedTabIndex = _selectedTabIndex.asStateFlow()
 
-    private var _filterText = MutableStateFlow<String>("")
+    private var _filterText = MutableStateFlow("")
     var filterText = _filterText.asStateFlow()
 
     val combinedState: StateFlow<List<GroupedTransactions>> = combine(

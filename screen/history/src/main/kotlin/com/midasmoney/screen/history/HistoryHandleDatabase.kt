@@ -1,39 +1,47 @@
 package com.midasmoney.screen.history
 
+import android.util.Log
 import com.midasmoney.shared.model.data.Transaction
 import com.midasmoney.shared.model.data.TransactionType
 import com.midasmoney.shared.model.mock.Database
 import java.time.LocalDate
 
 object HistoryHandleDatabase {
-    private fun getTransactionsForAmount(
-        transactions: List<Transaction>,
-        amount: Int
-    ): Map<LocalDate, List<Transaction>> {
-        val endInclusive = if (amount < transactions.size) amount - 1 else transactions.size - 1
-        return transactions
-            .sortedByDescending { it.date }
-            .slice(IntRange(0, endInclusive))
-            .groupBy { it.date }
-    }
-
     fun getTransactionsGroupByDate(
         filter: String,
         amount: Int,
         type: TransactionType? = null
     ): Map<LocalDate, List<Transaction>> {
-           val endInclusive = if (amount < Database.transactions.size) amount - 1 else Database.transactions.size - 1
-        val transactions = Database.transactions
+        Log.d(
+            "HistoryHandleDatabase",
+            "getTransactionsGroupByDate - filter: $filter, amount: $amount, type: $type"
+        )
+        return Database.transactions
+            // sort by data
             .sortedByDescending { it.date }
-            .slice(IntRange(0, endInclusive))
-            .filter { if (type != null) it.type == type else true }
-            .filter {
-                if (filter.isNotEmpty()) it.title.lowercase().contains(filter)
-                        || it.category.name.lowercase().contains(filter)
-                        || it.description.lowercase().contains(filter)
-                        || it.amount.toString().lowercase().contains(filter)
-                        || it.status.toString().lowercase().contains(filter) else true
-            }
-        return getTransactionsForAmount(transactions, amount)
+            // filter by tab
+            .filterByType(type)
+            // filter by string
+            .filterBySearch(filter)
+            // group and filter by days
+            .groupAndFilterByDays(amount)
     }
+}
+
+fun List<Transaction>.filterBySearch(stringSearch: String): List<Transaction> {
+    return filter {
+        if (stringSearch.isNotEmpty()) it.title.lowercase().contains(stringSearch)
+                || it.category.name.lowercase().contains(stringSearch)
+                || it.description.lowercase().contains(stringSearch)
+                || it.amount.toString().lowercase().contains(stringSearch)
+                || it.status.toString().lowercase().contains(stringSearch) else true
+    }
+}
+
+fun List<Transaction>.filterByType(pType: TransactionType?): List<Transaction> {
+    return filter { if (pType != null) it.type == pType else true }
+}
+
+fun List<Transaction>.groupAndFilterByDays(amount: Int): Map<LocalDate, List<Transaction>> {
+    return groupBy { it.date }.filter { it.key >= LocalDate.now().minusDays(amount.toLong()) }
 }
