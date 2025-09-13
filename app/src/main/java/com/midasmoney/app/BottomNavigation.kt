@@ -29,7 +29,6 @@ fun BottomNavigationBar(
 ) {
     val items = listOf(
         Screen.Home to Pair(Screen.Home.route, Icons.Filled.Home),
-        Screen.Analytics to Pair(Screen.Analytics.route, Icons.Filled.Analytics),
         Screen.History to Pair(Screen.History.route, Icons.Filled.History),
         Screen.Goals to Pair(Screen.Goals.route, Icons.Filled.ArtTrack),
         Screen.Profile to Pair(Screen.Profile.route, Icons.Filled.Person)
