@@ -1,0 +1,13 @@
+plugins{
+    id 'midas.kotlin-android'
+    id 'midas.compose'
+}
+
+android{
+    namespace 'com.midasmoney.core.data.mock'
+}
+
+dependencies {
+    implementation(project(':core:data:model'))
+    implementation(project(':core:ui'))
+}

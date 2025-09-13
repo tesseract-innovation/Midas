@@ -26,8 +26,8 @@ import co.yml.charts.common.utils.DataUtils
 import co.yml.charts.ui.bubblechart.BubbleChart
 import co.yml.charts.ui.bubblechart.model.BubbleChartData
 import co.yml.charts.ui.linechart.model.GridLines
-import com.midasmoney.shared.ui.core.component.MidasDarkPreview
-import com.midasmoney.shared.ui.core.component.MidasLightPreview
+import com.midasmoney.core.ui.component.MidasDarkPreview
+import com.midasmoney.core.ui.component.MidasLightPreview
 
 @Composable
 fun AnalyticsBubbleChart(navController: NavHostController) {

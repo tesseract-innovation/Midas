@@ -19,14 +19,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.midasmoney.shared.resource.R.string.monthly_insights
-import com.midasmoney.shared.resource.R.string.monthly_save
-import com.midasmoney.shared.resource.R.string.monthly_target
-import com.midasmoney.shared.resource.R.string.monthly_track
-import com.midasmoney.shared.ui.core.color.MidasColors
-import com.midasmoney.shared.ui.core.component.MidasDarkPreview
-import com.midasmoney.shared.ui.core.component.MidasGradientCard
-import com.midasmoney.shared.ui.core.component.MidasLightPreview
+import com.midasmoney.core.resource.R.string.monthly_insights
+import com.midasmoney.core.resource.R.string.monthly_save
+import com.midasmoney.core.resource.R.string.monthly_target
+import com.midasmoney.core.resource.R.string.monthly_track
+import com.midasmoney.core.ui.color.MidasColors
+import com.midasmoney.core.ui.component.MidasDarkPreview
+import com.midasmoney.core.ui.component.MidasGradientCard
+import com.midasmoney.core.ui.component.MidasLightPreview
 
 @Composable
 fun MonthlyInsights(

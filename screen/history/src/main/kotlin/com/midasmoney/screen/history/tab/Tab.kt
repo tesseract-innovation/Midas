@@ -10,8 +10,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.midasmoney.screen.history.HistoryViewModel
 import com.midasmoney.screen.history.TimeTitle
 import com.midasmoney.screen.history.TransactionCard
-import com.midasmoney.shared.ui.core.component.MidasDarkPreview
-import com.midasmoney.shared.ui.core.component.MidasLightPreview
+import com.midasmoney.core.ui.component.MidasDarkPreview
+import com.midasmoney.core.ui.component.MidasLightPreview
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable

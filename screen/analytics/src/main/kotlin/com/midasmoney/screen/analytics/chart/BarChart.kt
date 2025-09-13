@@ -34,8 +34,8 @@ import co.yml.charts.ui.barchart.models.GroupBarChartData
 import co.yml.charts.ui.barchart.models.GroupSeparatorConfig
 import co.yml.charts.ui.barchart.models.SelectionHighlightData
 import co.yml.charts.ui.linechart.getMaxElementInYAxis
-import com.midasmoney.shared.ui.core.component.MidasDarkPreview
-import com.midasmoney.shared.ui.core.component.MidasLightPreview
+import com.midasmoney.core.ui.component.MidasDarkPreview
+import com.midasmoney.core.ui.component.MidasLightPreview
 
 @Composable
 fun AnalyticsBarchart(

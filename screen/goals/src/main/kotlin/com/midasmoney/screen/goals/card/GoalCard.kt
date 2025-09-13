@@ -30,19 +30,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.midasmoney.shared.model.data.Goal
-import com.midasmoney.shared.model.mock.Database
-import com.midasmoney.shared.resource.R.string.add_money
-import com.midasmoney.shared.resource.R.string.monthly
-import com.midasmoney.shared.resource.R.string.of
-import com.midasmoney.shared.resource.R.string.target
-import com.midasmoney.shared.ui.core.color.ColorConverter
-import com.midasmoney.shared.ui.core.color.MidasColors
-import com.midasmoney.shared.ui.core.component.MidasCard
-import com.midasmoney.shared.ui.core.component.MidasDarkPreview
-import com.midasmoney.shared.ui.core.component.MidasLightPreview
-import com.midasmoney.shared.ui.core.icon.IconMapper
-import com.midasmoney.shared.ui.core.values.toCurrency
+import com.midasmoney.core.data.model.Goal
+import com.midasmoney.core.data.mock.Database
+import com.midasmoney.core.resource.R.string.add_money
+import com.midasmoney.core.resource.R.string.monthly
+import com.midasmoney.core.resource.R.string.of
+import com.midasmoney.core.resource.R.string.target
+import com.midasmoney.core.ui.color.ColorConverter
+import com.midasmoney.core.ui.color.MidasColors
+import com.midasmoney.core.ui.component.MidasCard
+import com.midasmoney.core.ui.component.MidasDarkPreview
+import com.midasmoney.core.ui.component.MidasLightPreview
+import com.midasmoney.core.ui.icon.IconMapper
+import com.midasmoney.core.ui.values.toCurrency
 import java.time.format.DateTimeFormatter
 
 @Composable
