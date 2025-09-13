@@ -14,7 +14,6 @@ import com.midasmoney.screen.profile.ProfileNavGraph
 
 sealed class Screen(val route: String) {
     data object Home : Screen("Home")
-    data object Analytics : Screen("Analytics")
     data object History : Screen("History")
     data object Goals : Screen("Goals")
     data object Profile : Screen("Profile")
@@ -31,12 +30,6 @@ fun SetupNavGraph(
     ) {
         composable(Screen.Home.route) {
             HomeNavGraph(
-                rememberNavController(),
-                shouldShowBottomBar
-            )
-        }
-        composable(Screen.Analytics.route) {
-            AnalyticsNavGraph(
                 rememberNavController(),
                 shouldShowBottomBar
             )

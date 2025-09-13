@@ -67,7 +67,6 @@ fun BottomNavigationManagerView(
                 Log.d("BottomNavigationManagerView", "Current route: $route")
                 shouldShowBottomBar.value = when (route) {
                     Screen.Home.route -> true
-                    Screen.Analytics.route -> true
                     Screen.History.route -> true
                     Screen.Goals.route -> true
                     Screen.Profile.route -> true
