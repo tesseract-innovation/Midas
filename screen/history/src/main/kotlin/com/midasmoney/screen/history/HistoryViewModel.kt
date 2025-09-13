@@ -2,8 +2,8 @@ package com.midasmoney.screen.history
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.midasmoney.shared.model.data.Transaction
-import com.midasmoney.shared.model.data.TransactionType
+import com.midasmoney.core.data.model.Transaction
+import com.midasmoney.core.data.model.TransactionType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

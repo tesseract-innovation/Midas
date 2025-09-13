@@ -17,9 +17,9 @@ import com.midasmoney.screen.goals.card.BalanceGoalStatusCard
 import com.midasmoney.screen.goals.card.CompletedGoalCard
 import com.midasmoney.screen.goals.card.GoalCard
 import com.midasmoney.screen.goals.card.MonthlyInsights
-import com.midasmoney.shared.model.mock.Database
-import com.midasmoney.shared.ui.core.component.MidasDarkPreview
-import com.midasmoney.shared.ui.core.component.MidasLightPreview
+import com.midasmoney.core.data.mock.Database
+import com.midasmoney.core.ui.component.MidasDarkPreview
+import com.midasmoney.core.ui.component.MidasLightPreview
 
 @Composable
 fun GoalsContentImp() {

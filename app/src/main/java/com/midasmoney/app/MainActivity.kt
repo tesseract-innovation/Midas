@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.midasmoney.shared.ui.core.color.MidasTheme
+import com.midasmoney.core.ui.color.MidasTheme
 import kotlinx.coroutines.flow.collectLatest
 
 class MainActivity : AppCompatActivity() {

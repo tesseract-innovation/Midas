@@ -23,14 +23,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.midasmoney.shared.model.data.Balance
-import com.midasmoney.shared.model.mock.Database
-import com.midasmoney.shared.resource.R.string.total_saved
-import com.midasmoney.shared.ui.core.color.MidasColors
-import com.midasmoney.shared.ui.core.component.MidasDarkPreview
-import com.midasmoney.shared.ui.core.component.MidasGradientCard
-import com.midasmoney.shared.ui.core.component.MidasLightPreview
-import com.midasmoney.shared.ui.core.values.toCurrency
+import com.midasmoney.core.data.mock.Database
+import com.midasmoney.core.data.model.Balance
+import com.midasmoney.core.ui.color.MidasColors
+import com.midasmoney.core.ui.component.MidasDarkPreview
+import com.midasmoney.core.ui.component.MidasGradientCard
+import com.midasmoney.core.ui.values.toCurrency
+import com.midasmoney.core.resource.R.string.total_saved
 
 @Composable
 fun BalanceGoalStatusCard(
@@ -122,6 +121,11 @@ fun BalanceGoalStatusCardLightPreview() {
             balance = Database.balance,
         )
     }
+}
+
+@Composable
+fun MidasLightPreview(content: @Composable () -> Unit) {
+    TODO("Not yet implemented")
 }
 
 @Preview(showBackground = true, backgroundColor = android.graphics.Color.BLACK.toLong())
