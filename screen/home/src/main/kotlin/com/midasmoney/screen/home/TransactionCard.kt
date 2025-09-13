@@ -20,17 +20,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.midasmoney.shared.model.data.Transaction
-import com.midasmoney.shared.model.mock.Database
-import com.midasmoney.shared.ui.core.component.MidasCard
-import com.midasmoney.shared.ui.core.component.MidasDarkPreview
-import com.midasmoney.shared.ui.core.component.MidasLightPreview
-import com.midasmoney.shared.ui.core.values.formatAmount
-import com.midasmoney.shared.ui.core.values.formatAmountColor
-import com.midasmoney.shared.ui.core.values.formatDate
-import com.midasmoney.shared.ui.core.values.formatIcon
-import com.midasmoney.shared.ui.core.values.formatIconColor
-import com.midasmoney.shared.ui.core.values.formatIconColorBackground
+import com.midasmoney.core.data.model.Transaction
+import com.midasmoney.core.data.mock.Database
+import com.midasmoney.core.ui.component.MidasCard
+import com.midasmoney.core.ui.component.MidasDarkPreview
+import com.midasmoney.core.ui.component.MidasLightPreview
+import com.midasmoney.core.ui.values.formatAmount
+import com.midasmoney.core.ui.values.formatAmountColor
+import com.midasmoney.core.ui.values.formatDate
+import com.midasmoney.core.ui.values.formatIcon
+import com.midasmoney.core.ui.values.formatIconColor
+import com.midasmoney.core.ui.values.formatIconColorBackground
 
 @Composable
 fun TransactionCard(

@@ -51,12 +51,12 @@ import co.yml.charts.ui.linechart.model.ShadowUnderLine
 import co.yml.charts.ui.piechart.charts.PieChart
 import co.yml.charts.ui.piechart.models.PieChartConfig
 import co.yml.charts.ui.piechart.models.PieChartData
-import com.midasmoney.shared.model.data.TransactionType
-import com.midasmoney.shared.model.mock.Database
-import com.midasmoney.shared.ui.core.color.MidasColors
-import com.midasmoney.shared.ui.core.component.MidasDarkPreview
-import com.midasmoney.shared.ui.core.component.MidasLightPreview
-import com.midasmoney.shared.ui.core.component.MidasTitleItem
+import com.midasmoney.core.data.model.TransactionType
+import com.midasmoney.core.data.mock.Database
+import com.midasmoney.core.ui.color.MidasColors
+import com.midasmoney.core.ui.component.MidasDarkPreview
+import com.midasmoney.core.ui.component.MidasLightPreview
+import com.midasmoney.core.ui.component.MidasTitleItem
 
 @Composable
 fun AnalyticsContentImp(navController: NavController) {

@@ -17,14 +17,14 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.midasmoney.shared.model.mock.Database
-import com.midasmoney.shared.resource.R.string.financial_goals
-import com.midasmoney.shared.resource.R.string.manage
-import com.midasmoney.shared.resource.R.string.recent_transactions
-import com.midasmoney.shared.resource.R.string.view_all
-import com.midasmoney.shared.ui.core.component.MidasDarkPreview
-import com.midasmoney.shared.ui.core.component.MidasLightPreview
-import com.midasmoney.shared.ui.core.component.MidasTitleItem
+import com.midasmoney.core.data.mock.Database
+import com.midasmoney.core.resource.R.string.financial_goals
+import com.midasmoney.core.resource.R.string.manage
+import com.midasmoney.core.resource.R.string.recent_transactions
+import com.midasmoney.core.resource.R.string.view_all
+import com.midasmoney.core.ui.component.MidasDarkPreview
+import com.midasmoney.core.ui.component.MidasLightPreview
+import com.midasmoney.core.ui.component.MidasTitleItem
 
 @Composable
 fun HomeContentImp(navController: NavHostController) {

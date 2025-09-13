@@ -26,12 +26,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.midasmoney.screen.history.HistoryViewModel
-import com.midasmoney.shared.resource.R.string.all
-import com.midasmoney.shared.resource.R.string.expense
-import com.midasmoney.shared.resource.R.string.income
-import com.midasmoney.shared.ui.core.color.MidasColors
-import com.midasmoney.shared.ui.core.component.MidasDarkPreview
-import com.midasmoney.shared.ui.core.component.MidasLightPreview
+import com.midasmoney.core.resource.R.string.all
+import com.midasmoney.core.resource.R.string.expense
+import com.midasmoney.core.resource.R.string.income
+import com.midasmoney.core.ui.color.MidasColors
+import com.midasmoney.core.ui.component.MidasDarkPreview
+import com.midasmoney.core.ui.component.MidasLightPreview
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable

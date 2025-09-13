@@ -19,12 +19,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.midasmoney.shared.model.data.TransactionReport
-import com.midasmoney.shared.model.data.TransactionType
-import com.midasmoney.shared.model.mock.Database
-import com.midasmoney.shared.ui.core.component.MidasDarkPreview
-import com.midasmoney.shared.ui.core.component.MidasLightPreview
-import com.midasmoney.shared.ui.core.values.toCurrency
+import com.midasmoney.core.data.model.TransactionReport
+import com.midasmoney.core.data.model.TransactionType
+import com.midasmoney.core.data.mock.Database
+import com.midasmoney.core.ui.component.MidasDarkPreview
+import com.midasmoney.core.ui.component.MidasLightPreview
+import com.midasmoney.core.ui.values.toCurrency
 
 @Composable
 fun TransactionCard(

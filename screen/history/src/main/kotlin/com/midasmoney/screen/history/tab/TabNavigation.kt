@@ -39,11 +39,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.midasmoney.screen.history.HistoryViewModel
 import com.midasmoney.screen.history.TimeSelector
-import com.midasmoney.shared.resource.R.string.all
-import com.midasmoney.shared.resource.R.string.expense
-import com.midasmoney.shared.resource.R.string.income
-import com.midasmoney.shared.ui.core.component.MidasDarkPreview
-import com.midasmoney.shared.ui.core.component.MidasLightPreview
+import com.midasmoney.core.resource.R.string.all
+import com.midasmoney.core.resource.R.string.expense
+import com.midasmoney.core.resource.R.string.income
+import com.midasmoney.core.ui.component.MidasDarkPreview
+import com.midasmoney.core.ui.component.MidasLightPreview
 
 sealed class Component(val route: String) {
     data object Filter : Component("filter")
