@@ -1,5 +1,6 @@
 package com.midasmoney.screen.profile
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.navigation.NavHostController
@@ -11,14 +12,18 @@ sealed class ProfileRoute(val route: String) {
 }
 
 @Composable
-fun ProfileNavGraph(navController: NavHostController, shouldShowBottomBar: MutableState<Boolean>) {
+fun ProfileNavGraph(
+    navController: NavHostController,
+    shouldShowBottomBar: MutableState<Boolean>,
+    paddingValues: PaddingValues
+) {
     NavHost(
         navController = navController,
         startDestination = ProfileRoute.Main.route
     ) {
         composable(route = ProfileRoute.Main.route) {
             shouldShowBottomBar.value = true
-            ProfileContentImp()
+            ProfileContentImp(paddingValues)
         }
     }
 

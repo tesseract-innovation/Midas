@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -57,16 +58,20 @@ import com.midasmoney.core.ui.component.MidasLightPreview
 import com.midasmoney.core.ui.component.MidasTitleItem
 
 @Composable
-fun HomeContentImp(navController: NavHostController) {
-    HomeContent(navController)
+fun HomeContentImp(navController: NavHostController, paddingValues: PaddingValues) {
+    HomeContent(navController, paddingValues)
 }
 
 @Composable
-fun HomeContent(navController: NavController, isDarkTheme: Boolean = isSystemInDarkTheme()) {
+fun HomeContent(
+    navController: NavController,
+    paddingValues: PaddingValues,
+    isDarkTheme: Boolean = isSystemInDarkTheme()
+) {
     Surface(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 30.dp, bottom = 100.dp)
+            .padding(paddingValues)
     ) {
         Box(
             modifier = Modifier.fillMaxSize(),
@@ -123,10 +128,10 @@ fun HomeContent(navController: NavController, isDarkTheme: Boolean = isSystemInD
                         goal = Database.goalList[i]
                     )
                 }
-                Row (
+                Row(
                     modifier = Modifier
                         .padding(top = 13.dp)
-                ){
+                ) {
                     MidasTitleItem("Expenses")
                 }
                 Row(
@@ -222,7 +227,7 @@ private fun SingleLineChartWithGridLines(
 ) {
     val steps = 10
     val xAxisData = AxisData.Builder()
-        .axisLabelColor(if(isDarkTheme) Color.White else Color.Black)
+        .axisLabelColor(if (isDarkTheme) Color.White else Color.Black)
         .axisStepSize(50.dp)
         .topPadding(105.dp)
         .steps(pointsData.size - 1)
@@ -230,7 +235,7 @@ private fun SingleLineChartWithGridLines(
         .labelAndAxisLinePadding(15.dp)
         .build()
     val yAxisData = AxisData.Builder()
-        .axisLabelColor(if(isDarkTheme) Color.White else Color.Black)
+        .axisLabelColor(if (isDarkTheme) Color.White else Color.Black)
         .steps(steps)
         .labelAndAxisLinePadding(20.dp)
         .labelData { i ->
@@ -274,24 +279,23 @@ private fun SingleLineChartWithGridLines(
 }
 
 
-
 @Preview(showBackground = true)
 @Composable
 fun HomeContentImpLightPreview() {
     val navController = rememberNavController()
-    MidasLightPreview {
-        HomeContent(navController)
-    }
+//    MidasLightPreview {
+//        HomeContent(navController)
+//    }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun HomeContentImpDarkPreview() {
     val navController = rememberNavController()
-    MidasDarkPreview {
-        HomeContent(
-            navController = navController,
-            isDarkTheme = true
-        )
-    }
+//    MidasDarkPreview {
+//        HomeContent(
+//            navController = navController,
+//            isDarkTheme = true
+//        )
+//    }
 }

@@ -1,5 +1,6 @@
 package com.midasmoney.screen.goals
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.navigation.NavHostController
@@ -11,14 +12,18 @@ sealed class GoalsRoute(val route: String) {
 }
 
 @Composable
-fun GoalsNavGraph(navController: NavHostController, shouldShowBottomBar: MutableState<Boolean>) {
+fun GoalsNavGraph(
+    navController: NavHostController,
+    shouldShowBottomBar: MutableState<Boolean>,
+    paddingValues: PaddingValues
+) {
     NavHost(
         navController = navController,
         startDestination = GoalsRoute.Main.route
     ) {
         composable(route = GoalsRoute.Main.route) {
             shouldShowBottomBar.value = true
-            GoalsContentImp()
+            GoalsContentImp(paddingValues)
         }
     }
 }
