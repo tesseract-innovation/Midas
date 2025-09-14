@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -19,19 +20,18 @@ import com.midasmoney.core.ui.component.MidasDarkPreview
 import com.midasmoney.core.ui.component.MidasLightPreview
 
 @Composable
-fun HistoryContentImp() {
-    HistoryContent()
+fun HistoryContentImp(paddingValues: PaddingValues) {
+    HistoryContent(paddingValues)
 }
 
 @SuppressLint("ViewModelConstructorInComposable")
 @Composable
-fun HistoryContent(
-) {
+fun HistoryContent(paddingValues: PaddingValues) {
     val viewModel = HistoryViewModel()
     Surface(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 30.dp, bottom = 100.dp)
+            .padding(paddingValues)
     ) {
         Box(
             modifier = Modifier.fillMaxSize()
@@ -51,7 +51,8 @@ fun HistoryContent(
 @Composable
 fun HomeContentImpLightPreview() {
     MidasLightPreview {
-        HistoryContent()
+        val paddingValues = PaddingValues()
+        HistoryContent(paddingValues)
     }
 }
 
@@ -59,6 +60,7 @@ fun HomeContentImpLightPreview() {
 @Composable
 fun HomeContentImpDarkPreview() {
     MidasDarkPreview {
-        HistoryContent()
+        val paddingValues = PaddingValues()
+        HistoryContent(paddingValues)
     }
 }

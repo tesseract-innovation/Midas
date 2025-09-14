@@ -1,5 +1,6 @@
 package com.midasmoney.screen.home
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.navigation.NavHostController
@@ -16,22 +17,26 @@ sealed class HomeRoute(val route: String) {
 }
 
 @Composable
-fun HomeNavGraph(navController: NavHostController, shouldShowBottomBar: MutableState<Boolean>) {
+fun HomeNavGraph(
+    navController: NavHostController,
+    shouldShowBottomBar: MutableState<Boolean>,
+    paddingValues: PaddingValues
+) {
     NavHost(
         navController = navController,
         startDestination = HomeRoute.Main.route
     ) {
         composable(route = HomeRoute.Main.route) {
             shouldShowBottomBar.value = true
-            HomeContentImp(navController)
+            HomeContentImp(navController, paddingValues)
         }
         composable(route = HomeRoute.History.route) {
             shouldShowBottomBar.value = true
-            HistoryNavGraph(rememberNavController(), shouldShowBottomBar)
+            HistoryNavGraph(rememberNavController(), shouldShowBottomBar, paddingValues)
         }
         composable(route = HomeRoute.Goals.route) {
             shouldShowBottomBar.value = true
-            GoalsNavGraph(rememberNavController(), shouldShowBottomBar)
+            GoalsNavGraph(rememberNavController(), shouldShowBottomBar, paddingValues)
         }
     }
 }

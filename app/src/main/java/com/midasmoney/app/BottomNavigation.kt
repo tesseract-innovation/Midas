@@ -1,12 +1,14 @@
 package com.midasmoney.app
 
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Analytics
-import androidx.compose.material.icons.filled.ArtTrack
+import androidx.compose.material.icons.filled.Adjust
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.outlined.Adjust
+import androidx.compose.material.icons.outlined.History
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -14,11 +16,9 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 
@@ -28,31 +28,45 @@ fun BottomNavigationBar(
     currentRoute: String?
 ) {
     val items = listOf(
-        Screen.Home to Pair(Screen.Home.route, Icons.Filled.Home),
-        Screen.History to Pair(Screen.History.route, Icons.Filled.History),
-        Screen.Goals to Pair(Screen.Goals.route, Icons.Filled.ArtTrack),
-        Screen.Profile to Pair(Screen.Profile.route, Icons.Filled.Person)
+        Screen.Home to Triple(Screen.Home.route, Icons.Outlined.Home, Icons.Filled.Home),
+        Screen.History to Triple(
+            Screen.History.route,
+            Icons.Outlined.History,
+            Icons.Filled.History
+        ),
+        Screen.Goals to Triple(Screen.Goals.route, Icons.Outlined.Adjust, Icons.Filled.Adjust),
+        Screen.Profile to Triple(Screen.Profile.route, Icons.Outlined.Person, Icons.Filled.Person)
     )
     NavigationBar {
         items.forEach { (screen, item) ->
             NavigationBarItem(
-                icon = { MidasNavigationBarItemIcon(item) },
+                icon = { MidasNavigationBarItemIcon(currentRoute, screen, item) },
                 label = { Text(item.first) },
                 selected = currentRoute == screen.route,
                 onClick = onClickNavigationBarItem(currentRoute, screen, navController),
                 colors = midasNavigationBarItemColors(),
-                modifier = Modifier.size(90.dp)
             )
         }
     }
 }
 
 @Composable
-private fun MidasNavigationBarItemIcon(item: Pair<String, ImageVector>) {
-    Icon(
-        painter = rememberVectorPainter(item.second),
-        contentDescription = item.first
-    )
+private fun MidasNavigationBarItemIcon(
+    currentRoute: String?,
+    screen: Screen,
+    item: Triple<String, ImageVector, ImageVector>
+) {
+    if (currentRoute == screen.route) {
+        Icon(
+            painter = rememberVectorPainter(item.third),
+            contentDescription = item.first
+        )
+    } else {
+        Icon(
+            painter = rememberVectorPainter(item.second),
+            contentDescription = item.first
+        )
+    }
 }
 
 @Composable

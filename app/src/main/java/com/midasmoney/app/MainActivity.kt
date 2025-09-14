@@ -48,10 +48,12 @@ fun Midas() {
                 BottomNavigationBar(navController, currentRoute)
             }
         }
-    ) {
+    ) { paddingValues ->
+        Log.d("MainActivity", "Padding values: $paddingValues")
         SetupNavGraph(
             navController = navController,
-            shouldShowBottomBar = shouldShowBottomBar
+            shouldShowBottomBar = shouldShowBottomBar,
+            paddingValues
         )
     }
 }

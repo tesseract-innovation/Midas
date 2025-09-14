@@ -72,7 +72,7 @@ fun AnalyticsContent(
     Surface(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 33.dp, bottom = 100.dp)
+            .padding(top = 30.dp, bottom = 80.dp)
     ) {
         Box(
             contentAlignment = Alignment.TopEnd,

@@ -1,5 +1,6 @@
 package com.midasmoney.screen.history
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.navigation.NavHostController
@@ -11,14 +12,18 @@ sealed class HistoryRoute(val route: String) {
 }
 
 @Composable
-fun HistoryNavGraph(navController: NavHostController, shouldShowBottomBar: MutableState<Boolean>) {
+fun HistoryNavGraph(
+    navController: NavHostController,
+    shouldShowBottomBar: MutableState<Boolean>,
+    paddingValues: PaddingValues
+) {
     NavHost(
         navController = navController,
         startDestination = HistoryRoute.Main.route
     ) {
         composable(route = HistoryRoute.Main.route) {
             shouldShowBottomBar.value = true
-            HistoryContentImp()
+            HistoryContentImp(paddingValues)
         }
     }
 }

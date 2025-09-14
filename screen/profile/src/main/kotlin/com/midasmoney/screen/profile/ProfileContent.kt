@@ -1,7 +1,9 @@
 package com.midasmoney.screen.profile
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -11,15 +13,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-fun ProfileContentImp() {
+fun ProfileContentImp(paddingValues: PaddingValues) {
     val profileViewModel = ProfileViewModel()
-    ProfileContent(profileViewModel.text.value.toString())
+    ProfileContent(paddingValues, profileViewModel.text.value.toString())
 }
 
 @Composable
-fun ProfileContent(text: String) {
+fun ProfileContent(paddingValues: PaddingValues, text: String) {
     Surface(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingValues)
     ) {
         Box(
             modifier = Modifier.fillMaxSize(),
@@ -35,7 +39,8 @@ fun ProfileContent(text: String) {
 
 @Preview(showBackground = true)
 @Composable
-fun ProfileContentImpPreview(){
+fun ProfileContentImpPreview() {
     val profileViewModel = ProfileViewModel()
-    ProfileContent(profileViewModel.text.value.toString())
+    val paddingValues = PaddingValues()
+    ProfileContent(paddingValues, profileViewModel.text.value.toString())
 }
