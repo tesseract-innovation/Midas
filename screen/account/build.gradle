@@ -3,12 +3,10 @@ plugins {
 }
 
 android {
-    namespace 'com.midasmoney.screen.analytics'
+    namespace 'com.midasmoney.screen.account'
 }
 
 dependencies {
-    implementation libs.ycharts
-
     implementation(project(':core:ui'))
     implementation(project(':core:data:model'))
     implementation(project(':core:data:mock'))
