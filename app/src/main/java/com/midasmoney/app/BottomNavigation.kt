@@ -5,10 +5,12 @@ import androidx.compose.material.icons.filled.Adjust
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Wallet
 import androidx.compose.material.icons.outlined.Adjust
 import androidx.compose.material.icons.outlined.History
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.Wallet
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -35,6 +37,7 @@ fun BottomNavigationBar(
             Icons.Filled.History
         ),
         Screen.Goals to Triple(Screen.Goals.route, Icons.Outlined.Adjust, Icons.Filled.Adjust),
+        Screen.Account to Triple(Screen.Account.route, Icons.Outlined.Wallet, Icons.Filled.Wallet),
         Screen.Profile to Triple(Screen.Profile.route, Icons.Outlined.Person, Icons.Filled.Person)
     )
     NavigationBar {

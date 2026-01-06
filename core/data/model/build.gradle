@@ -1,7 +1,0 @@
-plugins{
-    id 'midas.library'
-}
-
-android{
-    namespace 'com.midasmoney.core.data.model'
-}

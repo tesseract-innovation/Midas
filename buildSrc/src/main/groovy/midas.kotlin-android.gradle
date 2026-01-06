@@ -1,5 +1,6 @@
 plugins {
     id "com.android.application"
+    id "com.google.dagger.hilt.android"
     id "org.jetbrains.kotlin.android"
     id "org.jetbrains.kotlin.plugin.parcelize"
     id "org.jetbrains.kotlin.plugin.serialization"
@@ -32,6 +33,7 @@ dependencies {
     implementation libs.androidx.navigation.fragment.ktx
     implementation libs.androidx.navigation.ui.ktx
     implementation libs.kotlinx.serialization.json
+    implementation libs.hilt.android.gradle.plugin
     testImplementation libs.junit
     androidTestImplementation libs.androidx.junit
     androidTestImplementation libs.androidx.espresso.core

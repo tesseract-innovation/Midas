@@ -1,0 +1,11 @@
+plugins{
+    id 'midas.library'
+}
+
+android{
+    namespace 'com.midasmoney.core.domain.usercase'
+}
+
+dependencies {
+    implementation(project(':core:util'))
+}

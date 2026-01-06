@@ -7,5 +7,8 @@ android {
 }
 
 dependencies {
-    implementation(project(':core:data:model'))
+    implementation(project(':core:data:mock'))
+    implementation(project(':core:domain:model'))
+    implementation(project(':core:util'))
+    implementation(project(':core:resource'))
 }

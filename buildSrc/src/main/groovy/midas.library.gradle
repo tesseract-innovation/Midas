@@ -3,6 +3,8 @@ plugins {
     id "org.jetbrains.kotlin.android"
     id "org.jetbrains.kotlin.plugin.parcelize"
     id "org.jetbrains.kotlin.plugin.serialization"
+    id "org.jetbrains.kotlin.kapt"
+    id "com.google.dagger.hilt.android"
     id "midas.compose"
 }
 
@@ -24,16 +26,38 @@ android {
 }
 
 dependencies {
+    implementation libs.material
     implementation libs.androidx.core.ktx
     implementation libs.androidx.appcompat
-    implementation libs.material
     implementation libs.androidx.constraintlayout
     implementation libs.androidx.lifecycle.livedata.ktx
-    implementation libs.androidx.lifecycle.viewmodel.ktx
     implementation libs.androidx.navigation.fragment.ktx
     implementation libs.androidx.navigation.ui.ktx
-    implementation libs.kotlinx.serialization.json
+
+    // ViewModel
+    implementation libs.androidx.lifecycle.viewmodel.ktx
+    implementation libs.androidx.lifecycle.viewmodel.compose
+    implementation libs.androidx.lifecycle.runtime.compose
+
+    // Test
     testImplementation libs.junit
     androidTestImplementation libs.androidx.junit
     androidTestImplementation libs.androidx.espresso.core
+
+    // Serialization
+    // TODO: create a gradle to handle this
+    implementation libs.kotlinx.serialization.json
+    implementation(libs.kotlinx.datetime)
+
+    // Dependency injection
+    // TODO: create a gradle to handle this
+    implementation libs.hilt.android
+    kapt libs.hilt.compiler
+    implementation libs.androidx.hilt.navigation.compose
+
+    // Room database
+    // TODO: create a gradle to handle this
+    implementation libs.androidx.room.runtime
+    implementation libs.androidx.room.ktx
+    kapt libs.androidx.room.compiler
 }

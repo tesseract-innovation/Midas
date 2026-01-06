@@ -17,9 +17,11 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.midasmoney.core.ui.color.MidasTheme
+import com.midasmoney.core.ui.theme.MidasTheme
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +55,7 @@ fun Midas() {
         SetupNavGraph(
             navController = navController,
             shouldShowBottomBar = shouldShowBottomBar,
-            paddingValues
+            paddingValues = paddingValues
         )
     }
 }
@@ -67,14 +69,14 @@ fun BottomNavigationManagerView(
         navController.currentBackStackEntryFlow.collectLatest { backStackEntry ->
             backStackEntry.destination.route?.let { route ->
                 Log.d("BottomNavigationManagerView", "Current route: $route")
-                shouldShowBottomBar.value = when (route) {
-                    Screen.Home.route -> true
-                    Screen.History.route -> true
-                    Screen.Goals.route -> true
-                    Screen.Profile.route -> true
-                    else -> false
-                }
-                Log.d("BottomNavigationManagerView", "ShouldShowBottomBar: $shouldShowBottomBar")
+                shouldShowBottomBar.value = route in listOf(
+                    Screen.Home.route,
+                    Screen.History.route,
+                    Screen.Goals.route,
+                    Screen.Account.route,
+                    Screen.Profile.route
+                )
+                Log.d("BottomNavigationManagerView", "ShouldShowBottomBar: ${shouldShowBottomBar.value}")
             }
         }
     }

@@ -1,0 +1,13 @@
+plugins{
+    id 'midas.library'
+}
+
+android{
+    namespace 'com.midasmoney.core.data.local'
+}
+
+dependencies {
+    implementation(project(':core:util'))
+    implementation(project(':core:domain:model'))
+    implementation(project(':core:domain:repository'))
+}
