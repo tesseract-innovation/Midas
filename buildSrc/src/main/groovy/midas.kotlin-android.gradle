@@ -1,11 +1,13 @@
 plugins {
-    id 'com.android.library'
-    id 'org.jetbrains.kotlin.android'
-    id 'kotlin-android'
+    id "com.android.application"
+    id "com.google.dagger.hilt.android"
+    id "org.jetbrains.kotlin.android"
+    id "org.jetbrains.kotlin.plugin.parcelize"
+    id "org.jetbrains.kotlin.plugin.serialization"
 }
 
 android {
-    compileSdk 35
+    compileSdk 36
 
     defaultConfig {
         minSdk 33
@@ -30,6 +32,8 @@ dependencies {
     implementation libs.androidx.lifecycle.viewmodel.ktx
     implementation libs.androidx.navigation.fragment.ktx
     implementation libs.androidx.navigation.ui.ktx
+    implementation libs.kotlinx.serialization.json
+    implementation libs.hilt.android.gradle.plugin
     testImplementation libs.junit
     androidTestImplementation libs.androidx.junit
     androidTestImplementation libs.androidx.espresso.core

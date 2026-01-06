@@ -1,7 +1,0 @@
-plugins{
-    id 'midas.kotlin-android'
-}
-
-android{
-    namespace 'com.midasmoney.core.data.model'
-}

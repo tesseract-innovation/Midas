@@ -1,8 +1,10 @@
 //file:noinspection GrDeprecatedAPIUsage
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.android.hilt)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.kapt)
 }
 
 def _versionName = getGitVersion()
@@ -131,14 +133,20 @@ dependencies {
     debugImplementation libs.androidx.ui.tooling
     androidTestImplementation(platform(libs.androidx.compose.bom))
 
+    // dependency injection
+    implementation libs.hilt.android
+    kapt libs.hilt.compiler
+
     // screen
-    implementation(project(':screen:analytics'))
-    implementation(project(':screen:goals'))
-    implementation(project(':screen:history'))
-    implementation(project(':screen:home'))
-    implementation(project(':screen:profile'))
+    implementation(project(':feature:analytics'))
+    implementation(project(':feature:goals'))
+    implementation(project(':feature:history'))
+    implementation(project(':feature:home'))
+    implementation(project(':feature:profile'))
+    implementation(project(':feature:account'))
 
     // shared
     implementation(project(':core:resource'))
     implementation(project(':core:ui'))
+    implementation(project(':core:util'))
 }

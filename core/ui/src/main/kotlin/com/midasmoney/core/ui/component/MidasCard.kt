@@ -2,6 +2,7 @@ package com.midasmoney.core.ui.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -10,45 +11,43 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.midasmoney.core.ui.preview.CustomPreview
+import com.midasmoney.core.ui.theme.MidasTheme
 
 @Composable
 fun MidasCard(
     modifier: Modifier,
-    compose: @Composable () -> Unit
+    content: @Composable () -> Unit
 ) {
     Card(
         shape = RoundedCornerShape(16.dp),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.35f)),
+        border = BorderStroke(1.dp, getBorderColor()),
         modifier = Modifier
 
     ) {
         Column(
-            modifier = modifier.background(color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f))
+            modifier = modifier.background(color = MaterialTheme.colorScheme.surface)
         ) {
-            compose()
+            content()
         }
     }
 }
 
-@Preview
 @Composable
-fun MidasCardLightPreview() {
-    MidasLightPreview {
-        MidasCard(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(80.dp),
-            {}
-        )
+private fun getBorderColor(): Color {
+    return if (isSystemInDarkTheme()){
+        MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
+    } else {
+        MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
     }
 }
 
-@Preview
+@CustomPreview
 @Composable
-fun MidasCardDarkPreview() {
-    MidasDarkPreview {
+fun MidasCardPreview() {
+    MidasTheme {
         MidasCard(
             modifier = Modifier
                 .fillMaxWidth()

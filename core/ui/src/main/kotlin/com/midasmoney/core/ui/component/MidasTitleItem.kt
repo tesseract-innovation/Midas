@@ -15,6 +15,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.midasmoney.core.ui.preview.MidasDarkPreview
+import com.midasmoney.core.ui.preview.MidasLightPreview
 
 @Composable
 fun MidasTitleItem(

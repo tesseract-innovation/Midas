@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.midasmoney.screen.account.AccountNavGraph
 import com.midasmoney.screen.goals.GoalsNavGraph
 import com.midasmoney.screen.history.HistoryNavGraph
 import com.midasmoney.screen.home.HomeNavGraph
@@ -16,6 +17,7 @@ sealed class Screen(val route: String) {
     data object Home : Screen("Home")
     data object History : Screen("History")
     data object Goals : Screen("Goals")
+    data object Account : Screen("Account")
     data object Profile : Screen("Profile")
 }
 
@@ -45,6 +47,13 @@ fun SetupNavGraph(
         }
         composable(Screen.Goals.route) {
             GoalsNavGraph(
+                rememberNavController(),
+                shouldShowBottomBar,
+                paddingValues
+            )
+        }
+        composable(Screen.Account.route) {
+            AccountNavGraph(
                 rememberNavController(),
                 shouldShowBottomBar,
                 paddingValues
