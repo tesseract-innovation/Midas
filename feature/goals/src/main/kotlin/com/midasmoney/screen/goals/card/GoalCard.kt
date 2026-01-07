@@ -27,7 +27,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.midasmoney.core.data.mock.Database
@@ -40,9 +39,9 @@ import com.midasmoney.core.resource.R.string.monthly
 import com.midasmoney.core.resource.R.string.of
 import com.midasmoney.core.resource.R.string.target
 import com.midasmoney.core.ui.component.MidasCard
-import com.midasmoney.core.ui.preview.MidasDarkPreview
-import com.midasmoney.core.ui.preview.MidasLightPreview
+import com.midasmoney.core.ui.preview.CustomPreview
 import com.midasmoney.core.ui.theme.MidasColors
+import com.midasmoney.core.ui.theme.MidasTheme
 import kotlinx.datetime.format
 import kotlinx.datetime.format.MonthNames
 import kotlinx.datetime.format.char
@@ -85,7 +84,7 @@ fun GoalCard(
                     ) {
                         Column(
                             modifier = Modifier
-                                .weight(0.2f)
+                                .padding(end = 12.dp)
                         ) {
                             Icon(
                                 imageVector = icon,
@@ -101,7 +100,6 @@ fun GoalCard(
                         Column(
                             horizontalAlignment = Alignment.Start,
                             modifier = Modifier
-                                .weight(0.6f)
                         ) {
                             Row {
                                 Text(
@@ -121,7 +119,7 @@ fun GoalCard(
                                     ),
 
                                     fontSize = 15.sp,
-                                    color = if (isDarkTheme) MidasColors.Gray else MidasColors.Gray,
+                                    color = MidasColors.Gray,
                                     fontWeight = FontWeight.W400
                                 )
                             }
@@ -162,7 +160,7 @@ fun GoalCard(
                         Text(
                             text = "${goal.progress.toCurrency()} ${stringResource(of)} ${goal.amount.toCurrency()}",
                             fontSize = 15.sp,
-                            color = if (isDarkTheme) MidasColors.Gray else MidasColors.Gray,
+                            color = MidasColors.Gray,
                             fontWeight = FontWeight.W400
                         )
                         Column(
@@ -201,7 +199,7 @@ fun GoalCard(
                         Text(
                             text = "${stringResource(monthly)}: ${goal.monthlyValue.toCurrency()}",
                             fontSize = 15.sp,
-                            color = if (isDarkTheme) MidasColors.Gray else MidasColors.Gray,
+                            color = MidasColors.Gray,
                             fontWeight = FontWeight.W400
                         )
                         Column(
@@ -228,21 +226,12 @@ fun GoalCard(
     }
 }
 
-@Preview(showBackground = true, backgroundColor = android.graphics.Color.WHITE.toLong())
+@CustomPreview
 @Composable
-fun GoalsCardLightPreview() {
-    MidasLightPreview {
-        GoalCard(Database.goalList[0])
-    }
-}
-
-@Preview(showBackground = true, backgroundColor = android.graphics.Color.BLACK.toLong())
-@Composable
-fun GoalsCardDarkPreview() {
-    MidasDarkPreview {
+fun GoalsCardPreview() {
+    MidasTheme {
         GoalCard(
-            goal = Database.goalList[0],
-            isDarkTheme = true
+            goal = Database.goalList.first(),
         )
     }
 }
