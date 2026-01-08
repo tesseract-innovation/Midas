@@ -20,13 +20,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.midasmoney.core.ui.theme.MidasColors
 import com.midasmoney.core.ui.component.MidasCard
-import com.midasmoney.core.ui.preview.MidasDarkPreview
-import com.midasmoney.core.ui.preview.MidasLightPreview
+import com.midasmoney.core.ui.preview.CustomPreview
+import com.midasmoney.core.ui.theme.MidasColors
+import com.midasmoney.core.ui.theme.MidasTheme
 
 @Composable
 fun CompletedGoalCard(
@@ -46,7 +45,7 @@ fun CompletedGoalCard(
             ) {
                 Column(
                     modifier = Modifier
-                        .weight(0.2f)
+                        .padding(end = 12.dp)
                 ) {
                     Row {
                         Icon(
@@ -63,7 +62,6 @@ fun CompletedGoalCard(
                 }
                 Column(
                     modifier = Modifier
-                        .weight(0.7f)
                 ) {
                     Row {
                         Text(
@@ -105,18 +103,10 @@ fun CompletedGoalCard(
     }
 }
 
-@Preview(showBackground = true, backgroundColor = android.graphics.Color.WHITE.toLong())
+@CustomPreview
 @Composable
-fun CompletedGoalCardLightPreview() {
-    MidasLightPreview {
-        CompletedGoalCard()
-    }
-}
-
-@Preview(showBackground = true, backgroundColor = android.graphics.Color.BLACK.toLong())
-@Composable
-fun CompletedGoalCardDarkPreview() {
-    MidasDarkPreview {
+fun CompletedGoalCardPreview() {
+    MidasTheme {
         CompletedGoalCard()
     }
 }

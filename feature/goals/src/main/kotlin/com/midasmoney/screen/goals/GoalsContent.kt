@@ -12,10 +12,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.midasmoney.core.data.mock.Database
-import com.midasmoney.core.ui.preview.MidasDarkPreview
-import com.midasmoney.core.ui.preview.MidasLightPreview
+import com.midasmoney.core.ui.preview.CustomPreview
+import com.midasmoney.core.ui.theme.MidasTheme
 import com.midasmoney.screen.goals.card.BalanceGoalStatusCard
 import com.midasmoney.screen.goals.card.CompletedGoalCard
 import com.midasmoney.screen.goals.card.GoalCard
@@ -70,19 +69,10 @@ fun GoalsContent(
     }
 }
 
-@Preview(showBackground = true)
+@CustomPreview
 @Composable
-fun GoalsContentLightPreview() {
-    MidasLightPreview {
-        val paddingValues = PaddingValues()
-        GoalsContent(paddingValues)
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GoalsContentDarkPreview() {
-    MidasDarkPreview {
+fun GoalsContentPreview() {
+    MidasTheme {
         val paddingValues = PaddingValues()
         GoalsContent(
             paddingValues,
