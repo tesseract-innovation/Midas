@@ -5,7 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Balance(
-    var totalValue: Double,
+    var initialBalance: Double,
+    var currentBalance: Double,
     var income: Double,
     var expense: Double,
     val id: UUID = UUID.randomUUID()

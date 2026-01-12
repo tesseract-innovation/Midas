@@ -25,7 +25,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -35,6 +34,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.midasmoney.core.data.mock.Database
@@ -42,6 +42,7 @@ import com.midasmoney.core.domain.model.Account
 import com.midasmoney.core.domain.model.Transaction
 import com.midasmoney.core.domain.model.converter.ColorConverter
 import com.midasmoney.core.domain.model.converter.IconConverter
+import com.midasmoney.core.domain.model.extension.toCurrency
 import com.midasmoney.core.resource.R
 import com.midasmoney.core.resource.R.string.description_add_account
 import com.midasmoney.core.ui.component.TransactionCard
@@ -60,10 +61,9 @@ fun AccountDetails(
     viewModel: AccountDetailViewModel = hiltViewModel()
 ) {
     val account = args.account
-    val transactions = viewModel.transactions.collectAsState()
-    val totalBalance = viewModel.totalBalance.collectAsState()
+    val transactions = viewModel.transactions.collectAsStateWithLifecycle()
+    val totalBalance = viewModel.totalBalance.collectAsStateWithLifecycle()
     viewModel.loadTransactions(account.id.toString())
-    viewModel.updateTotalBalance(account)
     AccountDetailsImp(
         account = account,
         totalBalance = totalBalance,
@@ -211,10 +211,8 @@ fun AccountDetailHeader(
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onBackground
             )
-            account.balance.totalValue = totalBalance.value ?: 0.0
-            val balance = account.balance.totalValue
             Text(
-                text = stringResource(R.string.balance_value, balance),
+                text = stringResource(R.string.balance) + ": ${totalBalance.value?.toCurrency()}",
                 style = MaterialTheme.typography.titleMedium,
                 color = MidasColors.Gray // Or adapt based on theme
             )
@@ -240,8 +238,7 @@ fun AccountDetailsDarkPreview() {
             )
         )
         val transactions = remember { mutableStateOf(mockAccount.transactions) }
-        val totalBalance = remember { mutableStateOf<Double?>(null) }
-        totalBalance.value = mockAccount.balance.totalValue
+        val totalBalance = remember { mutableStateOf<Double?>(mockAccount.balance.currentBalance) }
         AccountDetailsImp(
             account = args.account,
             totalBalance = totalBalance,

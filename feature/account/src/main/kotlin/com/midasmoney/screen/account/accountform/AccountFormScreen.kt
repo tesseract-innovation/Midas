@@ -34,6 +34,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -84,7 +85,7 @@ fun AccountFormScreen(
     var name by remember { mutableStateOf("") }
     var selectedIcon by remember { mutableStateOf<IconType?>(IconType.CREDIT_CARD) }
     var selectedColor by remember { mutableStateOf<Color?>(defaultColor) }
-    var initialBalance by remember { mutableStateOf("0.00") }
+    var initialBalance by remember { mutableDoubleStateOf(0.0) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var showIconPicker by remember { mutableStateOf(false) }
     var showColorPicker by remember { mutableStateOf(false) }
@@ -107,7 +108,7 @@ fun AccountFormScreen(
             name = it.name
             selectedIcon = it.icon.iconType
             selectedColor = ColorConverter.aRgbToColor(it.color)
-            initialBalance = it.balance.totalValue.toString()
+            initialBalance = it.balance.currentBalance
         }
     }
 
@@ -160,7 +161,7 @@ fun AccountFormScreen(
                                 name = name,
                                 icon = selectedIcon?.let { IconModel(it) },
                                 color = selectedColor?.toArgb(),
-                                initialBalance = initialBalance.toDoubleOrNull() ?: 0.0
+                                initialBalance = initialBalance
                             )
 
                             val validationError = viewModel.validateForm(formData)
@@ -177,9 +178,10 @@ fun AccountFormScreen(
                                 icon = IconModel(selectedIcon!!),
                                 color = selectedColor!!.toArgb(),
                                 balance = Balance(
-                                    totalValue = initialBalance.toDoubleOrNull() ?: 0.0,
-                                    income = 0.0,
-                                    expense = 0.0
+                                    initialBalance = initialBalance,
+                                    currentBalance = initialBalance,
+                                    income = if(initialBalance > 0 ) initialBalance else 0.0,
+                                    expense = if(initialBalance < 0) initialBalance else 0.0
                                 ),
                                 transactions = emptyList()
                             )
@@ -248,9 +250,9 @@ fun AccountFormScreen(
 
                 // Initial Balance
                 OutlinedTextField(
-                    value = initialBalance,
+                    value = initialBalance.toString(),
                     onValueChange = {
-                        initialBalance = it
+                        initialBalance = it.toDoubleOrNull() ?: 0.0
                         errorMessage = null
                     },
                     label = { Text(stringResource(R.string.label_initial_balance)) },

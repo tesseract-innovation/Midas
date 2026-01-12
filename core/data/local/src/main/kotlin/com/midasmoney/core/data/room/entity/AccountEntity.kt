@@ -11,6 +11,7 @@ data class AccountEntity(
     val name: String,
     val icon: String,
     val color: Int,
+    val initialBalance: Double,
     val balance: Double,
     val income: Double,
     val expense: Double

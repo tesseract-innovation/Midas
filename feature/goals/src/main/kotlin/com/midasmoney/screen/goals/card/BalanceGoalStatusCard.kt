@@ -61,7 +61,7 @@ fun BalanceGoalStatusCard(
                         .padding(bottom = 20.dp)
                 ) {
                     Text(
-                        text = balance.totalValue.toCurrency(),
+                        text = balance.currentBalance.toCurrency(),
                         fontSize = 28.sp,
                         color = Color.White,
                         fontWeight = FontWeight.Bold

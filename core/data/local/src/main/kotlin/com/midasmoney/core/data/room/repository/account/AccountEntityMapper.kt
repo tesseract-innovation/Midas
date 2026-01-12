@@ -18,7 +18,8 @@ object AccountEntityMapper : IAccountEntityMapper<AccountEntity> {
                 color = color,
                 balance = Balance(
                     id = UUID.randomUUID(),
-                    totalValue = balance,
+                    initialBalance = initialBalance,
+                    currentBalance = balance,
                     income = income,
                     expense = expense
                 ),
@@ -34,7 +35,8 @@ object AccountEntityMapper : IAccountEntityMapper<AccountEntity> {
                 name = name,
                 icon = icon.iconType.name,
                 color = color,
-                balance = balance.totalValue,
+                initialBalance = balance.initialBalance,
+                balance = balance.currentBalance,
                 income = balance.income,
                 expense = balance.expense
             )

@@ -118,6 +118,7 @@ fun AccountContent(
                         modifier = Modifier
                             .fillMaxSize()
                             .verticalScroll(rememberScrollState())
+                            .padding(bottom = 60.dp)
                     ) {
                         MidasTitleItem(stringResource(accounts))
 
@@ -315,7 +316,7 @@ private fun AccountGeneralInfo(
             }
             Row {
                 Text(
-                    text = account.balance.totalValue.toCurrency(),
+                    text = account.balance.currentBalance.toCurrency(),
                     fontSize = 15.sp,
                     color = if (isDarkTheme) MidasColors.Gray else MidasColors.Gray,
                     fontWeight = FontWeight.W400
