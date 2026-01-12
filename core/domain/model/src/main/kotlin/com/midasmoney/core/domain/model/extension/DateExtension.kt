@@ -2,16 +2,19 @@ package com.midasmoney.core.domain.model.extension
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TimePickerState
+import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toKotlinLocalTime
+import kotlinx.datetime.toLocalDateTime
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.Locale
+import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
-import kotlinx.datetime.LocalTime as KtLocalTime
 import kotlinx.datetime.LocalDate as KtLocalDate
+import kotlinx.datetime.LocalTime as KtLocalTime
 
 fun KtLocalTime.formatTime(): String {
     return String.format(
@@ -34,7 +37,7 @@ fun TimePickerState.formatTime(): String {
 
 fun String.toKtLocalTime(): KtLocalTime {
     val localTime =
-        LocalTime.parse(this, DateTimeFormatter.ofPattern("HH:mm"))
+        LocalTime.parse(this, DateTimeFormatter.ofPattern("HH:mm[:ss.SSSSSS]"))
     return localTime.toKotlinLocalTime()
 }
 
@@ -51,4 +54,14 @@ fun Long.toLocalDate(): LocalDate {
 
 fun String.toLocalDate(): KtLocalDate {
     return KtLocalDate.parse(this, KtLocalDate.Formats.ISO)
+}
+
+@OptIn(ExperimentalTime::class)
+fun Clock.System.getCurrentLocalDate(): KtLocalDate {
+    return this.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+}
+
+@OptIn(ExperimentalTime::class)
+fun Clock.System.getCurrentTime(): KtLocalTime {
+    return this.now().toLocalDateTime(TimeZone.currentSystemDefault()).time
 }

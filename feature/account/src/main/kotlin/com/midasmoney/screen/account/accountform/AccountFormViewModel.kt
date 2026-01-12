@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.midasmoney.core.domain.model.Account
 import com.midasmoney.core.domain.model.IconModel
 import com.midasmoney.domain.repository.IAccountRepository
+import com.midasmoney.domain.repository.ITransactionRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,7 +32,8 @@ data class AccountFormData(
 @Suppress("unused")
 @HiltViewModel
 class AccountFormViewModel @Inject constructor(
-    private val repository: IAccountRepository
+    private val accountRepository: IAccountRepository,
+    private val transactionRepository: ITransactionRepository
 ) : ViewModel() {
     private val _formState = MutableStateFlow<AccountFormState>(AccountFormState.Idle)
     val formState: StateFlow<AccountFormState> = _formState.asStateFlow()
@@ -46,7 +48,7 @@ class AccountFormViewModel @Inject constructor(
     fun createAccount(account: Account) {
         viewModelScope.launch((Dispatchers.IO)) {
             _formState.value = AccountFormState.Loading
-            repository.insert(account)
+            accountRepository.insert(account)
                 .onSuccess {
                     Log.d(TAG, "Account created successfully")
                     _formState.value = AccountFormState.Success
@@ -63,7 +65,7 @@ class AccountFormViewModel @Inject constructor(
     fun updateAccount(account: Account) {
         viewModelScope.launch {
             _formState.value = AccountFormState.Loading
-            repository.update(account)
+            accountRepository.update(account)
                 .onSuccess {
                     Log.d(TAG, "Account updated successfully")
                     _formState.value = AccountFormState.Success
@@ -88,7 +90,7 @@ class AccountFormViewModel @Inject constructor(
     }
 
     suspend fun getAccountById(accountId: String): Account? {
-        return repository.getById(accountId)
+        return accountRepository.getById(accountId)
     }
 
     fun validateForm(formData: AccountFormData): String? {

@@ -1,11 +1,11 @@
 package com.midasmoney.screen.account.transactionform
 
+import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -32,14 +32,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableDoubleStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -49,17 +44,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.midasmoney.core.data.mock.Database
-import com.midasmoney.core.domain.model.Account
-import com.midasmoney.core.domain.model.IconModel
-import com.midasmoney.core.domain.model.IconType
 import com.midasmoney.core.domain.model.Transaction
 import com.midasmoney.core.domain.model.TransactionStatus
 import com.midasmoney.core.domain.model.TransactionType
-import com.midasmoney.core.domain.model.converter.ColorConverter
-import com.midasmoney.core.domain.model.extension.formatDate
 import com.midasmoney.core.domain.model.extension.formatTime
 import com.midasmoney.core.domain.model.extension.toKtLocalTime
-import com.midasmoney.core.domain.model.extension.toLocalDate
 import com.midasmoney.core.resource.R
 import com.midasmoney.core.ui.component.ColorPickerGrid
 import com.midasmoney.core.ui.component.IconPickerGrid
@@ -71,35 +60,40 @@ import com.midasmoney.core.ui.component.midasTimePicker
 import com.midasmoney.core.ui.preview.CustomPreview
 import com.midasmoney.core.ui.theme.MidasColors
 import com.midasmoney.core.ui.theme.MidasTheme
-import com.midasmoney.core.util.UUID
 import com.midasmoney.screen.account.AccountRoute
 import com.midasmoney.screen.account.component.DeleteDialog
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toJavaLocalDate
-import kotlinx.datetime.toLocalDateTime
-import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
 @Composable
 fun TransactionFormScreen(
     args: AccountRoute.TransactionForm,
     navController: NavHostController,
-    paddingValues: PaddingValues,
     viewModel: TransactionFormViewModel = hiltViewModel()
 ) {
+    viewModel.initArgs(account = args.account, transaction = args.transaction)
+
     val uiState by viewModel.formState.collectAsStateWithLifecycle()
-    val account = args.account
-    val transaction = args.transaction
-    val isEditMode = transaction != null
+    val formData by viewModel.formData.collectAsStateWithLifecycle()
+    val transaction by viewModel.transaction.collectAsStateWithLifecycle()
+    val isEditMode by viewModel.isEditMode.collectAsStateWithLifecycle()
+
     TransactionFormScreenImp(
         uiState = uiState,
-        paddingValues = paddingValues,
+        formData = formData,
         navController = navController,
         isEditMode = isEditMode,
-        account = account,
         transaction = transaction,
-        viewModel = viewModel
+        onSaveTransaction = {
+            viewModel.saveTransaction()
+            navController.popBackStack()
+        },
+        onDeleteTransaction = { transaction ->
+            viewModel.deleteTransaction(transaction)
+        },
+        onEditMode = { transaction ->
+            viewModel.updateFormData()
+        }
     )
 }
 
@@ -107,57 +101,17 @@ fun TransactionFormScreen(
 @Composable
 fun TransactionFormScreenImp(
     uiState: TransactionFormState,
-    paddingValues: PaddingValues,
+    formData: TransactionFormData,
     navController: NavHostController,
     isEditMode: Boolean,
-    account: Account?,
     transaction: Transaction?,
-    viewModel: TransactionFormViewModel
+    onSaveTransaction: () -> Unit,
+    onDeleteTransaction: (transaction: Transaction?) -> Unit,
+    onEditMode: (transition: Transaction?) -> Unit
 ) {
-    val defaultColor = MaterialTheme.colorScheme.secondaryContainer
-
-    var title by remember { mutableStateOf("") }
-    var description by remember { mutableStateOf("") }
-    var icon by remember { mutableStateOf<IconType?>(IconType.CREDIT_CARD) }
-    var color by remember { mutableStateOf<Color?>(defaultColor) }
-    var amount by remember { mutableDoubleStateOf(0.00) }
-
-    var selectedType by remember { mutableStateOf<TransactionType?>(null) }
-    var selectedStatus by remember { mutableStateOf<TransactionStatus?>(null) }
-    var selectedDate by remember {
-        mutableStateOf(
-            Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
-        )
-    }
-    var selectedTime by remember {
-        mutableStateOf(
-            Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).time
-        )
-    }
-
-    var showTypePicker by remember { mutableStateOf(false) }
-    var showStatusPicker by remember { mutableStateOf(false) }
-    var showDatePicker by remember { mutableStateOf(false) }
-    var showTimePicker by remember { mutableStateOf(false) }
-    var showIconPicker by remember { mutableStateOf(false) }
-    var showColorPicker by remember { mutableStateOf(false) }
-    var showDeleteDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(isEditMode) {
-        transaction.let { tr ->
-            title = tr?.title ?: ""
-            description = tr?.description ?: ""
-            icon = tr?.icon?.iconType ?: IconType.CREDIT_CARD
-            color = Color(tr?.color ?: ColorConverter.colorToArgb(defaultColor))
-            amount = tr?.amount ?: 0.0
-            selectedType = tr?.type
-            selectedStatus = tr?.status
-            selectedDate = tr?.date?.toLocalDate() ?: Clock.System.now()
-                .toLocalDateTime(TimeZone.currentSystemDefault()).date
-            selectedTime = tr?.time?.toKtLocalTime() ?: Clock.System.now()
-                .toLocalDateTime(TimeZone.currentSystemDefault()).time
-
-        }
+        onEditMode(transaction)
     }
 
     LaunchedEffect(uiState) {
@@ -168,73 +122,23 @@ fun TransactionFormScreenImp(
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text(stringResource(if (isEditMode) R.string.edit_transaction else R.string.new_transaction)) },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back))
-                    }
-                },
-                actions = {
-                    if (showDeleteDialog) {
-                        DeleteDialog(
-                            titleItem = transaction?.title ?: "",
-                            onConfirm = {
-                                transaction?.let { viewModel.deleteTransaction(it) }
-                                showDeleteDialog = false
-                            },
-                            onDismiss = {
-                                showDeleteDialog = false
-                            })
-                    }
-                    if (isEditMode) {
-                        IconButton(
-                            enabled = uiState !is TransactionFormState.Loading,
-                            onClick = {
-                                showDeleteDialog = true
-                            }
-                        ) {
-                            Icon(Icons.Default.Delete, stringResource(R.string.delete))
-                        }
-                    }
-                    IconButton(
-                        enabled = uiState !is TransactionFormState.Loading,
-                        onClick = {
-                            val newTransaction = Transaction(
-                                id = transaction?.id ?: UUID.randomUUID(),
-                                accountId = account?.id ?: UUID.randomUUID(),
-                                icon = IconModel(icon ?: IconType.CREDIT_CARD),
-                                color = ColorConverter.colorToArgb(color ?: defaultColor),
-                                title = title,
-                                description = description,
-                                amount = amount,
-                                type = selectedType ?: TransactionType.TRANSFER,
-                                status = selectedStatus ?: TransactionStatus.PENDING,
-                                date = selectedDate.toJavaLocalDate().formatDate(),
-                                time = selectedTime.formatTime(),
-                                createAt = Clock.System.now(),
-                            )
-                            if (isEditMode) {
-                                viewModel.updateTransaction(newTransaction)
-                                navController.popBackStack()
-                            } else {
-                                viewModel.createTransaction(newTransaction)
-                                navController.popBackStack()
-                            }
-                        }
-                    ) {
-                        Icon(Icons.Default.Check, stringResource(R.string.save))
-                    }
-                }
+            TransactionFormTopBar(
+                uiState = uiState,
+                formData = formData,
+                navController = navController,
+                isEditMode = isEditMode,
+                transaction = transaction,
+                onSaveTransaction = onSaveTransaction,
+                onDeleteTransaction = onDeleteTransaction
             )
         }
-    ) { pad ->
+    ) { padding ->
         Column(
             Modifier
-                .padding(pad)
-                .padding(paddingValues)
-                .verticalScroll(rememberScrollState())
-                .padding(16.dp),
+                .padding(padding)
+                .padding(horizontal = 16.dp)
+                .padding(bottom = 16.dp)
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             // Error
@@ -251,16 +155,16 @@ fun TransactionFormScreenImp(
 
             // Title
             OutlinedTextField(
-                value = title,
-                onValueChange = { title = it },
+                value = formData.title.value,
+                onValueChange = { formData.title.value = it },
                 label = { Text("Title") },
                 modifier = Modifier.fillMaxWidth()
             )
 
             // Value
             OutlinedTextField(
-                value = amount.toString(),
-                onValueChange = { amount = it.toDouble() },
+                value = formData.amount.value.toString(),
+                onValueChange = { formData.amount.value = it.toDouble() },
                 label = { Text("Value") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 modifier = Modifier.fillMaxWidth()
@@ -268,8 +172,8 @@ fun TransactionFormScreenImp(
 
             // Description
             OutlinedTextField(
-                value = description,
-                onValueChange = { description = it },
+                value = formData.description.value,
+                onValueChange = { formData.description.value = it },
                 label = { Text("Description") },
                 modifier = Modifier.fillMaxWidth()
             )
@@ -277,16 +181,23 @@ fun TransactionFormScreenImp(
             // Icon
             PickerCard(
                 label = "Icon",
-                onClick = { showIconPicker = !showIconPicker },
-                content = { icon?.let { MidasIcon(iconType = it, color = color) } }
+                onClick = { formData.showIconPicker.value = !formData.showIconPicker.value },
+                content = {
+                    formData.icon.value.let {
+                        MidasIcon(
+                            iconType = it,
+                            color = formData.color.value
+                        )
+                    }
+                }
             )
-            if (showIconPicker) {
+            if (formData.showIconPicker.value) {
                 IconPickerGrid(
-                    selectedIcon = icon,
-                    selectedColor = color,
+                    selectedIcon = formData.icon.value,
+                    selectedColor = formData.color.value,
                     onIconSelected = {
-                        icon = it
-                        showIconPicker = false
+                        formData.icon.value = it!!
+                        formData.showIconPicker.value = false
                     }
                 )
             }
@@ -294,15 +205,15 @@ fun TransactionFormScreenImp(
             // Color
             PickerCard(
                 label = "Color",
-                onClick = { showColorPicker = !showColorPicker },
-                content = { color?.let { SelectedColorCircle(it) } }
+                onClick = { formData.showColorPicker.value = !formData.showColorPicker.value },
+                content = { formData.color.value.let { SelectedColorCircle(it) } }
             )
-            if (showColorPicker) {
+            if (formData.showColorPicker.value) {
                 ColorPickerGrid(
-                    selectedColor = color,
+                    selectedColor = formData.color.value,
                     onColorSelected = {
-                        color = it
-                        showColorPicker = false
+                        formData.color.value = it
+                        formData.showColorPicker.value = false
                     }
                 )
             }
@@ -310,18 +221,18 @@ fun TransactionFormScreenImp(
             // Type
             PickerCard(
                 label = "Type",
-                onClick = { showTypePicker = !showTypePicker },
+                onClick = { formData.showTypePicker.value = !formData.showTypePicker.value },
                 content = {
-                    val selectedText = selectedType?.displayName ?: "Select a type"
+                    val selectedText = formData.type.value?.displayName ?: "Select a type"
                     Text(selectedText)
                 }
             )
-            if (showTypePicker) {
+            if (formData.showTypePicker.value) {
                 TransactionTypePicker(
-                    selected = selectedType,
-                    onSelected = {
-                        selectedType = it
-                        showTypePicker = false
+                    selected = formData.type.value,
+                    onSelected = { type ->
+                        formData.type.value = type
+                        formData.showTypePicker.value = false
                     }
                 )
             }
@@ -329,18 +240,18 @@ fun TransactionFormScreenImp(
             // Status
             PickerCard(
                 label = "Status",
-                onClick = { showStatusPicker = !showStatusPicker },
+                onClick = { formData.showStatusPicker.value = !formData.showStatusPicker.value },
                 content = {
-                    val selectedText = selectedStatus?.displayName ?: "Select a status"
+                    val selectedText = formData.status.value?.displayName ?: "Select a status"
                     Text(selectedText)
                 }
             )
-            if (showStatusPicker) {
+            if (formData.showStatusPicker.value) {
                 TransactionStatusPicker(
-                    selected = selectedStatus,
+                    selected = formData.status.value,
                     onSelected = {
-                        selectedStatus = it
-                        showStatusPicker = false
+                        formData.status.value = it
+                        formData.showStatusPicker.value = false
                     }
                 )
             }
@@ -348,31 +259,31 @@ fun TransactionFormScreenImp(
             // Data
             PickerCard(
                 label = "Date",
-                onClick = { showDatePicker = !showDatePicker },
+                onClick = { formData.showDatePicker.value = !formData.showDatePicker.value },
                 content = {
-                    val selectedText = selectedDate.toString()
+                    val selectedText = formData.date.value.toString()
                     Text(selectedText)
                 }
             )
-            if (showDatePicker) {
+            if (formData.showDatePicker.value) {
                 val currentDate = midasDatePicker()
                 if (currentDate.isNotEmpty()) {
-                    selectedDate = LocalDate.parse(currentDate)
-                    showDatePicker = false
+                    formData.date.value = LocalDate.parse(currentDate)
+                    formData.showDatePicker.value = false
                 }
             }
 
             // Hora
             PickerCard(
                 label = "Time",
-                onClick = { showTimePicker = !showTimePicker },
-                content = { Text(selectedTime.formatTime()) }
+                onClick = { formData.showTimePicker.value = !formData.showTimePicker.value },
+                content = { Text(formData.time.value.formatTime()) }
             )
-            if (showTimePicker) {
+            if (formData.showTimePicker.value) {
                 val currentTime = midasTimePicker()
                 if (currentTime.isNotEmpty()) {
-                    selectedTime = currentTime.toKtLocalTime()
-                    showTimePicker = false
+                    formData.time.value = currentTime.toKtLocalTime()
+                    formData.showTimePicker.value = false
                 }
             }
 
@@ -387,6 +298,60 @@ fun TransactionFormScreenImp(
             }
         }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalTime::class)
+@Composable
+fun TransactionFormTopBar(
+    uiState: TransactionFormState,
+    formData: TransactionFormData,
+    navController: NavHostController,
+    isEditMode: Boolean,
+    transaction: Transaction?,
+    onSaveTransaction: () -> Unit,
+    onDeleteTransaction: (transaction: Transaction?) -> Unit,
+) {
+    TopAppBar(
+        title = {
+            Text(stringResource(if (isEditMode) R.string.edit_transaction else R.string.new_transaction))
+        },
+        navigationIcon = {
+            IconButton(onClick = { navController.popBackStack() }) {
+                Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.back))
+            }
+        },
+        actions = {
+            if (formData.showDeleteDialog.value) {
+                DeleteDialog(
+                    titleItem = formData.title.value,
+                    onConfirm = {
+                        onDeleteTransaction(transaction)
+                        formData.showDeleteDialog.value = false
+                    },
+                    onDismiss = {
+                        formData.showDeleteDialog.value = false
+                    })
+            }
+            if (isEditMode) {
+                IconButton(
+                    enabled = uiState !is TransactionFormState.Loading,
+                    onClick = {
+                        formData.showDeleteDialog.value = true
+                    }
+                ) {
+                    Icon(Icons.Default.Delete, stringResource(R.string.delete))
+                }
+            }
+            IconButton(
+                enabled = uiState !is TransactionFormState.Loading,
+                onClick = {
+                    onSaveTransaction()
+                }
+            ) {
+                Icon(Icons.Default.Check, stringResource(R.string.save))
+            }
+        }
+    )
 }
 
 @Composable
@@ -439,7 +404,10 @@ fun TransactionTypePicker(
                             else MaterialTheme.colorScheme.outline,
                             shape = RoundedCornerShape(12.dp)
                         )
-                        .clickable { onSelected(types[index]) }
+                        .clickable {
+                            Log.d("TransactionTypePicker", "Selected: ${types[index].name}")
+                            onSelected(types[index]) 
+                        }
                         .padding(12.dp),
                     contentAlignment = Alignment.Center
                 ) {
@@ -494,12 +462,13 @@ fun TransactionFormPreview() {
     MidasTheme {
         TransactionFormScreenImp(
             uiState = TransactionFormState.Idle,
+            formData = TransactionFormData(),
             navController = rememberNavController(),
-            paddingValues = PaddingValues(),
-            isEditMode = false,
-            account = Database.accounts.first(),
+            isEditMode = true,
             transaction = Database.transactions.first(),
-            viewModel = hiltViewModel()
+            onSaveTransaction = {},
+            onDeleteTransaction = {},
+            onEditMode = {}
         )
     }
 }

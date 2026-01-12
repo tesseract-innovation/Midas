@@ -29,7 +29,8 @@ sealed class AccountRoute(val route: String) {
     data class AccountForm(val account: Account? = null) : AccountRoute("Account_form")
 
     @Serializable
-    data class TransactionForm(val account: Account? = null, val transaction: Transaction? = null) : AccountRoute("Transaction_form")
+    data class TransactionForm(val account: Account? = null, val transaction: Transaction? = null) :
+        AccountRoute("Transaction_form")
 }
 
 @Composable
@@ -54,7 +55,7 @@ fun AccountNavGraph(
             typeMap = mapOf(typeOf<Account>() to serializableNavType<Account>())
         ) {
             val args = it.toRoute<AccountRoute.AccountDetails>()
-            // shouldShowBottomBar.value = false
+            shouldShowBottomBar.value = false
             AccountDetails(
                 args = args,
                 navController = navController,
@@ -66,7 +67,7 @@ fun AccountNavGraph(
             typeMap = mapOf(typeOf<Account?>() to serializableNavType<Account?>(isNullableAllowed = true))
         ) {
             val args = it.toRoute<AccountRoute.AccountForm>()
-            // shouldShowBottomBar.value = false
+            shouldShowBottomBar.value = false
             AccountFormScreen(
                 args = args,
                 navController = navController,
@@ -75,15 +76,16 @@ fun AccountNavGraph(
         }
 
         composable<AccountRoute.TransactionForm>(
-            typeMap = mapOf(typeOf<Account?>() to serializableNavType<Account?>(isNullableAllowed = true),
-                typeOf<Transaction?>() to serializableNavType<Transaction?>(isNullableAllowed = true))
+            typeMap = mapOf(
+                typeOf<Account?>() to serializableNavType<Account?>(isNullableAllowed = true),
+                typeOf<Transaction?>() to serializableNavType<Transaction?>(isNullableAllowed = true)
+            )
         ) {
             val args = it.toRoute<AccountRoute.TransactionForm>()
-            // shouldShowBottomBar.value = false
+            shouldShowBottomBar.value = false
             TransactionFormScreen(
                 args = args,
-                navController = navController,
-                paddingValues = paddingValues,
+                navController = navController
             )
         }
     }

@@ -499,7 +499,8 @@ object Database {
     )
 
     val balance = Balance(
-        totalValue = 14250.00,
+        initialBalance = 4231.23,
+        currentBalance = 14250.00,
         income = 3200.00,
         expense = 1850.00
     )
@@ -528,7 +529,8 @@ object Database {
             icon = IconModel(IconConverter.getIconType(Icons.Filled.AccountBalance)!!),
             color = 0xFFFF9800.toInt(),
             balance = Balance(
-                totalValue = 2500.75,
+                initialBalance = 234.23,
+                currentBalance = 2500.75,
                 income = 3000.00,
                 expense = 499.25
             ),
@@ -566,7 +568,8 @@ object Database {
             icon = IconModel(IconConverter.getIconType(Icons.Filled.Savings)!!),
             color = 0xFFE91E63.toInt(),
             balance = Balance(
-                totalValue = 10000.00,
+                initialBalance = 234.23,
+                currentBalance = 10000.00,
                 income = 500.00,
                 expense = 0.00
             ),
@@ -604,7 +607,8 @@ object Database {
             icon = IconModel(IconConverter.getIconType(Icons.Filled.CreditCard)!!),
             color = 0xFF00BCD4.toInt(),
             balance = Balance(
-                totalValue = -300.50,
+                initialBalance = 32352.81,
+                currentBalance = -300.50,
                 income = 0.00,
                 expense = 300.50
             ),
@@ -642,7 +646,8 @@ object Database {
             icon = IconModel(IconConverter.getIconType(Icons.Filled.CreditCard)!!),
             color = 0xFFCDDC39.toInt(),
             balance = Balance(
-                totalValue = -300.50,
+                initialBalance = 634553.22,
+                currentBalance = -300.50,
                 income = 0.00,
                 expense = 300.50
             ),
@@ -680,7 +685,8 @@ object Database {
             icon = IconModel(IconConverter.getIconType(Icons.Filled.CreditCard)!!),
             color = 0xFFFF5722.toInt(),
             balance = Balance(
-                totalValue = -300.50,
+                initialBalance = 532453.2,
+                currentBalance = -300.50,
                 income = 0.00,
                 expense = 300.50
             ),
