@@ -90,6 +90,8 @@ feature/                      # One Gradle module per screen domain
 
 4. **Navigation**: Root `NavHost` in `NavigationGraph.kt` delegates to per-feature `*NavGraph` composables. Bottom nav visibility is toggled via a `MutableState<Boolean>` passed down from `MainActivity`.
 
+5. **Compose**: Always generate with preview  
+
 ### Custom Gradle Convention Plugins (`buildSrc/`)
 
 - **`midas.library`**: Applied to all feature/core library modules. Includes Kotlin, Hilt (kapt), Room (kapt), Compose, serialization, kotlinx.datetime, and standard test deps. `compileSdk 36`.
