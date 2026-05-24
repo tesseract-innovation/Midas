@@ -66,10 +66,40 @@
     <string name="add_money">Add Money</string>
     <string name="of">of</string>
     <string name="total_saved">Total Saved</string>
+    <string name="goals_complete_percent">%1$d%% Complete</string>
+    <string name="goals_active_count">%1$d Active Goals</string>
     <string name="monthly_insights">Monthly Insights</string>
     <string name="monthly_track">You\'re on track this month!</string>
     <string name="monthly_target">Monthly Target</string>
     <string name="monthly_save">Save This Month</string>
+
+    <!-- goals form -->
+    <string name="title_new_goal">New Goal</string>
+    <string name="title_edit_goal">Edit Goal</string>
+    <string name="label_goal_title">Title</string>
+    <string name="label_goal_description">Description</string>
+    <string name="label_goal_amount">Target Amount</string>
+    <string name="label_goal_monthly_value">Monthly Contribution</string>
+    <string name="label_goal_target_date">Target Date</string>
+    <string name="placeholder_goal_title">e.g., Emergency Fund</string>
+    <string name="placeholder_goal_description">e.g., Save for emergencies</string>
+    <string name="placeholder_goal_amount">0.00</string>
+    <string name="placeholder_goal_monthly_value">0.00</string>
+    <string name="no_goals">No goals yet. Tap + to create one!</string>
+    <string name="error_load_goals">Error loading goals</string>
+    <string name="description_add_goal">Add Goal</string>
+    <string name="description_edit_goal">Edit Goal</string>
+    <string name="description_delete_goal">Delete Goal</string>
+    <string name="description_dialog_delete_goal">"Are you sure you want to delete %1$s? This action cannot be undone."</string>
+    <string name="contribute_to_goal">Contribute to Goal</string>
+    <string name="label_contribute_amount">Amount to Add</string>
+    <string name="placeholder_contribute_amount">0.00</string>
+    <string name="goal_completed">Completed</string>
+    <string name="goal_active">Active Goals</string>
+    <string name="goal_recently_completed">Recently Completed</string>
+    <string name="progress">Progress</string>
+    <string name="contribution_history">Contribution History</string>
+    <string name="no_contributions">No contributions yet. Tap "Add Money" to start!</string>
 
     <!-- account -->
     <string name="accounts">Accounts</string>

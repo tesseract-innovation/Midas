@@ -3,7 +3,6 @@ package com.midasmoney.screen.goals.card
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,15 +11,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,7 +28,6 @@ import com.midasmoney.core.domain.model.Goal
 import com.midasmoney.core.domain.model.converter.ColorConverter
 import com.midasmoney.core.domain.model.converter.IconConverter
 import com.midasmoney.core.domain.model.extension.toCurrency
-import com.midasmoney.core.resource.R.string.add_money
 import com.midasmoney.core.resource.R.string.monthly
 import com.midasmoney.core.resource.R.string.of
 import com.midasmoney.core.resource.R.string.target
@@ -50,7 +43,10 @@ import kotlinx.datetime.format.char
 @Composable
 fun GoalCard(
     goal: Goal,
-    isDarkTheme: Boolean = isSystemInDarkTheme()
+    isDarkTheme: Boolean = isSystemInDarkTheme(),
+    onCardClick: () -> Unit = {},
+    onMenuClick: () -> Unit = {},
+    onAddMoneyClick: () -> Unit = {},
 ) {
     val icon = goal.icon.let {
         IconConverter.getImageVector(it)
@@ -66,6 +62,7 @@ fun GoalCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(180.dp)
+                .clickable { onCardClick() }
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -99,7 +96,6 @@ fun GoalCard(
                         }
                         Column(
                             horizontalAlignment = Alignment.Start,
-                            modifier = Modifier
                         ) {
                             Row {
                                 Text(
@@ -122,33 +118,6 @@ fun GoalCard(
                                     color = MidasColors.Gray,
                                     fontWeight = FontWeight.W400
                                 )
-                            }
-                        }
-                        Column(
-                            horizontalAlignment = Alignment.End,
-                            modifier = Modifier
-                                .weight(0.3f)
-                        ) {
-                            Column(
-                                horizontalAlignment = Alignment.End,
-                                modifier = Modifier
-                            ) {
-                                Row(
-                                    horizontalArrangement = Arrangement.Center,
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    modifier = Modifier
-                                        .clip(RoundedCornerShape(21.dp))
-                                        .size(42.dp)
-                                        .clickable(onClick = {
-
-                                        })
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.MoreVert,
-                                        contentDescription = Icons.Default.MoreVert.name,
-                                        modifier = Modifier
-                                    )
-                                }
                             }
                         }
                     }
@@ -202,23 +171,6 @@ fun GoalCard(
                             color = MidasColors.Gray,
                             fontWeight = FontWeight.W400
                         )
-                        Column(
-                            horizontalAlignment = Alignment.End,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                        ) {
-                            TextButton(
-                                onClick = {},
-                                colors = ButtonDefaults.textButtonColors()
-                                    .copy(containerColor = color.copy(alpha = 0.2f))
-                            ) {
-                                Text(
-                                    text = stringResource(add_money),
-                                    fontWeight = FontWeight.Bold,
-                                    color = color
-                                )
-                            }
-                        }
                     }
                 }
             }
