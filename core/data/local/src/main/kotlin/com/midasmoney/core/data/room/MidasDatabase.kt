@@ -7,29 +7,39 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.midasmoney.core.data.room.converter.UUIDConverter
+import com.midasmoney.core.data.room.converter.LocalDateConverter
 import com.midasmoney.core.data.room.dao.AccountDao
+import com.midasmoney.core.data.room.dao.GoalContributionDao
+import com.midasmoney.core.data.room.dao.GoalDao
 import com.midasmoney.core.data.room.dao.TransactionDao
 import com.midasmoney.core.data.room.entity.AccountEntity
+import com.midasmoney.core.data.room.entity.GoalContributionEntity
+import com.midasmoney.core.data.room.entity.GoalEntity
 import com.midasmoney.core.data.room.entity.TransactionEntity
 import com.midasmoney.core.data.room.converter.InstantConverter
 
 @Database(
     entities = [
         AccountEntity::class,
-        TransactionEntity::class
+        TransactionEntity::class,
+        GoalEntity::class,
+        GoalContributionEntity::class,
     ],
-    version = 1,
+    version = 3,
     exportSchema = false
 )
 @TypeConverters(
     value = [
         UUIDConverter::class,
-        InstantConverter::class
+        InstantConverter::class,
+        LocalDateConverter::class,
     ]
 )
 abstract class MidasDatabase : RoomDatabase() {
     abstract fun accountDao(): AccountDao
     abstract fun transactionDao(): TransactionDao
+    abstract fun goalDao(): GoalDao
+    abstract fun goalContributionDao(): GoalContributionDao
 
     companion object {
         @Volatile
