@@ -1,6 +1,5 @@
 package com.midasmoney.screen.goals.card
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,27 +15,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.midasmoney.core.resource.R.string.monthly_insights
 import com.midasmoney.core.resource.R.string.monthly_save
 import com.midasmoney.core.resource.R.string.monthly_target
 import com.midasmoney.core.resource.R.string.monthly_track
-import com.midasmoney.core.ui.theme.MidasColors
-import com.midasmoney.core.ui.preview.MidasDarkPreview
 import com.midasmoney.core.ui.component.MidasGradientCard
-import com.midasmoney.core.ui.preview.MidasLightPreview
+import com.midasmoney.core.ui.preview.CustomPreview
+import com.midasmoney.core.ui.theme.MidasColors
+import com.midasmoney.core.ui.theme.MidasTheme
 
 @Composable
-fun MonthlyInsights(
-    isDarkTheme: Boolean = isSystemInDarkTheme()
+fun GoalCardMonthlyInsights(
 ) {
     MidasGradientCard(
         primaryColor = MidasColors.Orange.primary,
         secondaryColor = MidasColors.Pink.primary,
         height = 163.dp,
-        isDarkTheme = isDarkTheme
     ) {
         Column {
             Row(
@@ -121,20 +117,10 @@ fun MonthlyInsights(
     }
 }
 
-@Preview(showBackground = true, backgroundColor = android.graphics.Color.WHITE.toLong())
+@CustomPreview
 @Composable
-fun MonthlyInsightsLightPreview() {
-    MidasLightPreview {
-        MonthlyInsights()
-    }
-}
-
-@Preview(showBackground = true, backgroundColor = android.graphics.Color.BLACK.toLong())
-@Composable
-fun MonthlyInsightsDarkPreview() {
-    MidasDarkPreview {
-        MonthlyInsights(
-            isDarkTheme = true
-        )
+fun GoalCardMonthlyInsightsPreview() {
+    MidasTheme {
+        GoalCardMonthlyInsights()
     }
 }

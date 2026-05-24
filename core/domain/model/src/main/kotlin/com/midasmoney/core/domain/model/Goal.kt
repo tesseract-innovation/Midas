@@ -2,7 +2,9 @@ package com.midasmoney.core.domain.model
 
 import com.midasmoney.core.util.UUID
 import kotlinx.datetime.LocalDate
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Goal(
     val title: String,
     val description: String,

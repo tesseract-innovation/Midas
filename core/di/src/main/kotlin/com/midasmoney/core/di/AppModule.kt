@@ -3,10 +3,16 @@ package com.midasmoney.core.di
 import android.content.Context
 import com.midasmoney.core.data.room.MidasDatabase
 import com.midasmoney.core.data.room.dao.AccountDao
+import com.midasmoney.core.data.room.dao.GoalContributionDao
+import com.midasmoney.core.data.room.dao.GoalDao
 import com.midasmoney.core.data.room.dao.TransactionDao
 import com.midasmoney.core.data.room.repository.account.AccountRepository
+import com.midasmoney.core.data.room.repository.goal.GoalRepository
+import com.midasmoney.core.data.room.repository.goalcontribution.GoalContributionRepository
 import com.midasmoney.core.data.room.repository.transaction.TransactionRepository
 import com.midasmoney.domain.repository.IAccountRepository
+import com.midasmoney.domain.repository.IGoalContributionRepository
+import com.midasmoney.domain.repository.IGoalRepository
 import com.midasmoney.domain.repository.ITransactionRepository
 import dagger.Module
 import dagger.Provides
@@ -56,5 +62,37 @@ object AppModule {
         transactionDao: TransactionDao
     ): ITransactionRepository {
         return TransactionRepository(transactionDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGoalDao(
+        db: MidasDatabase
+    ): GoalDao {
+        return db.goalDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideGoalRepository(
+        goalDao: GoalDao
+    ): IGoalRepository {
+        return GoalRepository(goalDao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideGoalContributionDao(
+        db: MidasDatabase
+    ): GoalContributionDao {
+        return db.goalContributionDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideGoalContributionRepository(
+        contributionDao: GoalContributionDao
+    ): IGoalContributionRepository {
+        return GoalContributionRepository(contributionDao)
     }
 }
