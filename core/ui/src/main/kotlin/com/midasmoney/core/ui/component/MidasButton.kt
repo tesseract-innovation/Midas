@@ -23,14 +23,16 @@ fun MidasButton(
 ) {
     Button(
         onClick = onClick,
-        modifier = modifier
-            .fillMaxWidth()
-            .height(52.dp),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(52.dp),
         shape = RoundedCornerShape(14.dp),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = containerColor,
-            contentColor = contentColor,
-        ),
+        colors =
+            ButtonDefaults.buttonColors(
+                containerColor = containerColor,
+                contentColor = contentColor,
+            ),
     ) {
         if (icon != null) {
             Icon(
@@ -59,14 +61,16 @@ fun MidasOutlinedButton(
 ) {
     OutlinedButton(
         onClick = onClick,
-        modifier = modifier
-            .fillMaxWidth()
-            .height(52.dp),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(52.dp),
         shape = RoundedCornerShape(14.dp),
         border = BorderStroke(1.dp, borderColor.copy(alpha = 0.4f)),
-        colors = ButtonDefaults.outlinedButtonColors(
-            contentColor = contentColor,
-        ),
+        colors =
+            ButtonDefaults.outlinedButtonColors(
+                contentColor = contentColor,
+            ),
     ) {
         if (icon != null) {
             Icon(

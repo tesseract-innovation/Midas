@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun MidasSectionLabel(
     text: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Text(
         text = text.uppercase(),
@@ -18,6 +18,6 @@ fun MidasSectionLabel(
         fontWeight = FontWeight.Bold,
         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
         letterSpacing = 1.2.sp,
-        modifier = modifier
+        modifier = modifier,
     )
 }

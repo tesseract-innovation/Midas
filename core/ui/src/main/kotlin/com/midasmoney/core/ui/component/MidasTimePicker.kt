@@ -37,27 +37,29 @@ fun midasTimePicker(): String {
                 TextButton(
                     onClick = {
                         showTimePicker = false
-                    }
+                    },
                 ) {
                     Text(stringResource(R.string.ok))
                 }
             },
             dismissButton = {
                 TextButton(
-                    onClick = { showTimePicker = false }
+                    onClick = { showTimePicker = false },
                 ) {
                     Text(stringResource(R.string.cancel))
                 }
-            }
+            },
         ) {
             Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp), // ou .fillMaxSize() se quiser vertical tb
-                contentAlignment = Alignment.Center
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp),
+                // ou .fillMaxSize() se quiser vertical tb
+                contentAlignment = Alignment.Center,
             ) {
                 TimePicker(
-                    state = timePickerState
+                    state = timePickerState,
                 )
             }
         }

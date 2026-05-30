@@ -11,13 +11,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SelectedColorCircle(
-    selectedColor: Color
-) {
+fun SelectedColorCircle(selectedColor: Color) {
     Box(
-        modifier = Modifier
-            .size(32.dp)
-            .clip(CircleShape)
-            .background(selectedColor)
+        modifier =
+            Modifier
+                .size(32.dp)
+                .clip(CircleShape)
+                .background(selectedColor),
     )
 }

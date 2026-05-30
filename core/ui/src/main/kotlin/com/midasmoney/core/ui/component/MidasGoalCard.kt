@@ -31,52 +31,59 @@ import com.midasmoney.core.ui.preview.MidasDarkPreview
 import com.midasmoney.core.ui.preview.MidasLightPreview
 
 @Composable
-fun GoalCard(
-    goal: Goal,
-) {
-    val icon = goal.icon.let {
-        IconConverter.getImageVector(it)
-    }
-    val color = goal.color.let {
-        ColorConverter.aRgbToColor(it)
-    }
+fun GoalCard(goal: Goal) {
+    val icon =
+        goal.icon.let {
+            IconConverter.getImageVector(it)
+        }
+    val color =
+        goal.color.let {
+            ColorConverter.aRgbToColor(it)
+        }
     Column(
-        modifier = Modifier
-            .padding(top = 10.dp, start = 20.dp, end = 20.dp)
+        modifier =
+            Modifier
+                .padding(top = 10.dp, start = 20.dp, end = 20.dp),
     ) {
         MidasCard(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(100.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(100.dp),
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxSize()
+                modifier =
+                    Modifier
+                        .fillMaxSize(),
             ) {
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 15.dp, end = 18.dp),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(start = 15.dp, end = 18.dp),
                 ) {
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically
+                        modifier =
+                            Modifier
+                                .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Column(
-                            modifier = Modifier
-                                .padding(end = 12.dp)
+                            modifier =
+                                Modifier
+                                    .padding(end = 12.dp),
                         ) {
                             Icon(
                                 imageVector = icon,
                                 contentDescription = goal.description,
                                 tint = color,
-                                modifier = Modifier
-                                    .size(40.dp)
-                                    .clip(CircleShape)
-                                    .background(color.copy(alpha = 0.3f))
-                                    .padding(10.dp)
+                                modifier =
+                                    Modifier
+                                        .size(40.dp)
+                                        .clip(CircleShape)
+                                        .background(color.copy(alpha = 0.3f))
+                                        .padding(10.dp),
                             )
                         }
                         Column(
@@ -86,7 +93,7 @@ fun GoalCard(
                                 Text(
                                     text = goal.title,
                                     color = MaterialTheme.colorScheme.onBackground,
-                                    fontWeight = FontWeight.Bold
+                                    fontWeight = FontWeight.Bold,
                                 )
                             }
                             Row {
@@ -94,33 +101,36 @@ fun GoalCard(
                                     text = "${goal.progress.toCurrency()} / ${goal.amount.toCurrency()}",
                                     fontSize = 15.sp,
                                     color = MaterialTheme.colorScheme.outline,
-                                    fontWeight = FontWeight.W400
+                                    fontWeight = FontWeight.W400,
                                 )
                             }
                         }
                         Column(
                             horizontalAlignment = Alignment.End,
-                            modifier = Modifier
-                                .weight(0.3f)
+                            modifier =
+                                Modifier
+                                    .weight(0.3f),
                         ) {
                             Text(
                                 text = "${(goal.progress / goal.amount) * 100}%",
-                                fontWeight = FontWeight.Bold
+                                fontWeight = FontWeight.Bold,
                             )
                         }
                     }
                     Row(
-                        modifier = Modifier
-                            .padding(top = 10.dp)
+                        modifier =
+                            Modifier
+                                .padding(top = 10.dp),
                     ) {
                         LinearProgressIndicator(
                             progress = { (goal.progress / goal.amount).toFloat() },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(8.dp)
-                                .clip(CircleShape),
+                            modifier =
+                                Modifier
+                                    .fillMaxWidth()
+                                    .height(8.dp)
+                                    .clip(CircleShape),
                             color = color,
-                            trackColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)
+                            trackColor = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f),
                         )
                     }
                 }

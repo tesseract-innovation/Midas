@@ -45,10 +45,11 @@ fun MidasTextField(
             visualTransformation = visualTransformation,
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(14.dp),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = MidasColors.Green.primary,
-                focusedLabelColor = MidasColors.Green.primary,
-            ),
+            colors =
+                OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = MidasColors.Green.primary,
+                    focusedLabelColor = MidasColors.Green.primary,
+                ),
         )
         if (helperText != null) {
             Text(

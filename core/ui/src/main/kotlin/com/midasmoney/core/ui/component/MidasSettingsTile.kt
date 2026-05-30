@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.midasmoney.core.ui.preview.MidasDarkPreview
 import com.midasmoney.core.ui.preview.MidasLightPreview
@@ -28,21 +29,23 @@ fun MidasSettingsTile(
     subtitle: String? = null,
     iconTint: Color = MidasColors.Green.primary,
     onClick: () -> Unit = {},
-    trailing: @Composable (() -> Unit)? = null
+    trailing: @Composable (() -> Unit)? = null,
 ) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick)
-            .padding(horizontal = 16.dp, vertical = 14.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .clickable(onClick = onClick)
+                .padding(horizontal = 16.dp, vertical = 14.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         Box(
-            modifier = Modifier
-                .size(36.dp)
-                .clip(RoundedCornerShape(10.dp))
-                .background(iconTint.copy(alpha = 0.12f)),
+            modifier =
+                Modifier
+                    .size(36.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(iconTint.copy(alpha = 0.12f)),
             contentAlignment = Alignment.Center,
         ) {
             Icon(
@@ -82,22 +85,26 @@ fun MidasSettingsTile(
     }
 }
 
-@MidasLightPreview
+@Preview(showBackground = true)
 @Composable
 private fun MidasSettingsTileLightPreview() {
-    MidasSettingsTile(
-        icon = Icons.Default.ChevronRight,
-        title = "Title",
-        subtitle = "Subtitle"
-    )
+    MidasLightPreview {
+        MidasSettingsTile(
+            icon = Icons.Default.ChevronRight,
+            title = "Title",
+            subtitle = "Subtitle",
+        )
+    }
 }
 
-@MidasDarkPreview
+@Preview(showBackground = true)
 @Composable
 private fun MidasSettingsTileDarkPreview() {
-    MidasSettingsTile(
-        icon = Icons.Default.ChevronRight,
-        title = "Title",
-        subtitle = "Subtitle"
-    )
+    MidasDarkPreview {
+        MidasSettingsTile(
+            icon = Icons.Default.ChevronRight,
+            title = "Title",
+            subtitle = "Subtitle",
+        )
+    }
 }

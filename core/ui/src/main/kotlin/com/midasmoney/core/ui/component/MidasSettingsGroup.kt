@@ -13,12 +13,13 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun MidasSettingsGroup(
     title: String? = null,
-    content: @Composable ColumnScope.() -> Unit
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
     ) {
         if (title != null) {
             Text(
@@ -31,7 +32,7 @@ fun MidasSettingsGroup(
             )
         }
         MidasCard(
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         ) {
             Column {
                 content()
