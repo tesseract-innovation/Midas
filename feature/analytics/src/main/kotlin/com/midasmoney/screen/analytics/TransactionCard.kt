@@ -27,54 +27,57 @@ import com.midasmoney.core.ui.preview.MidasDarkPreview
 import com.midasmoney.core.ui.preview.MidasLightPreview
 
 @Composable
-fun TransactionCard(
-    transactionReport: TransactionReport,
-) {
+fun TransactionCard(transactionReport: TransactionReport) {
     Card(
         shape = RoundedCornerShape(16.dp),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline.copy(alpha = 0.35f)),
-        modifier = Modifier
-            .fillMaxSize()
+        modifier =
+            Modifier
+                .fillMaxSize(),
     ) {
         Row(
-            modifier = Modifier
-                .padding(top = 10.dp, start = 16.dp, end = 16.dp, bottom = 10.dp)
-                .fillMaxSize()
+            modifier =
+                Modifier
+                    .padding(top = 10.dp, start = 16.dp, end = 16.dp, bottom = 10.dp)
+                    .fillMaxSize(),
         ) {
             Column(
-                modifier = Modifier
-                    .weight(.85f)
+                modifier =
+                    Modifier
+                        .weight(.85f),
             ) {
                 Row {
                     Text(
-                        text = transactionReport.type.name.lowercase()
-                            .replaceFirstChar { it.uppercase() }
+                        text =
+                            transactionReport.type.name.lowercase()
+                                .replaceFirstChar { it.uppercase() },
                     )
                 }
                 Row(
-                    Modifier.padding(top = 8.dp)
+                    Modifier.padding(top = 8.dp),
                 ) {
                     Text(
-                        text =  transactionReport.amount.toCurrency(),
+                        text = transactionReport.amount.toCurrency(),
                         fontWeight = FontWeight.Bold,
                     )
                 }
                 Row {
                     Text(
                         text = "+${transactionReport.percentage * 100}%",
-                        color = if (transactionReport.type == TransactionType.INCOME) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
+                        color = if (transactionReport.type == TransactionType.INCOME) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
                     )
                 }
             }
             Column(
                 horizontalAlignment = Alignment.End,
-                modifier = Modifier
-                    .weight(.15f)
+                modifier =
+                    Modifier
+                        .weight(.15f),
             ) {
                 Icon(
                     imageVector = if (transactionReport.type == TransactionType.INCOME) Icons.Outlined.ArrowDownward else Icons.Outlined.ArrowUpward,
                     tint = if (transactionReport.type == TransactionType.INCOME) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
-                    contentDescription = ""
+                    contentDescription = "",
                 )
             }
         }
@@ -86,7 +89,7 @@ fun TransactionCard(
 fun TransactionCardLightPreview() {
     MidasLightPreview {
         TransactionCard(
-            transactionReport = Database.transactionReportIncome
+            transactionReport = Database.transactionReportIncome,
         )
     }
 }

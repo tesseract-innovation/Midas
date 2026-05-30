@@ -24,29 +24,30 @@ import com.midasmoney.core.ui.preview.CustomPreview
 import com.midasmoney.core.ui.theme.MidasTheme
 
 @Composable
-fun TransactionOverviewCard(
-    transactionReport: TransactionReport,
-) {
+fun TransactionOverviewCard(transactionReport: TransactionReport) {
     MidasCard(
-        modifier = Modifier
+        modifier = Modifier,
     ) {
         Row(
-            modifier = Modifier
-                .padding(top = 10.dp, start = 16.dp, end = 16.dp, bottom = 10.dp)
-                .fillMaxSize()
+            modifier =
+                Modifier
+                    .padding(top = 10.dp, start = 16.dp, end = 16.dp, bottom = 10.dp)
+                    .fillMaxSize(),
         ) {
             Column(
-                modifier = Modifier
-                    .weight(.85f)
+                modifier =
+                    Modifier
+                        .weight(.85f),
             ) {
                 Row {
                     Text(
-                        text = transactionReport.type.name.lowercase()
-                            .replaceFirstChar { it.uppercase() }
+                        text =
+                            transactionReport.type.name.lowercase()
+                                .replaceFirstChar { it.uppercase() },
                     )
                 }
                 Row(
-                    Modifier.padding(top = 8.dp)
+                    Modifier.padding(top = 8.dp),
                 ) {
                     Text(
                         text = transactionReport.amount.toCurrency(),
@@ -56,19 +57,20 @@ fun TransactionOverviewCard(
                 Row {
                     Text(
                         text = "+${transactionReport.percentage * 100}%",
-                        color = if (transactionReport.type == TransactionType.INCOME) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
+                        color = if (transactionReport.type == TransactionType.INCOME) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
                     )
                 }
             }
             Column(
                 horizontalAlignment = Alignment.End,
-                modifier = Modifier
-                    .weight(.15f)
+                modifier =
+                    Modifier
+                        .weight(.15f),
             ) {
                 Icon(
                     imageVector = if (transactionReport.type == TransactionType.INCOME) Icons.Outlined.ArrowDownward else Icons.Outlined.ArrowUpward,
                     tint = if (transactionReport.type == TransactionType.INCOME) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
-                    contentDescription = ""
+                    contentDescription = "",
                 )
             }
         }
@@ -80,7 +82,7 @@ fun TransactionOverviewCard(
 private fun TransactionOverviewLightPreview() {
     MidasTheme {
         TransactionOverviewCard(
-            transactionReport = Database.transactionReportIncome
+            transactionReport = Database.transactionReportIncome,
         )
     }
 }

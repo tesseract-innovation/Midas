@@ -9,5 +9,5 @@ data class Balance(
     var currentBalance: Double,
     var income: Double,
     var expense: Double,
-    val id: UUID = UUID.randomUUID()
+    val id: UUID = UUID.randomUUID(),
 )

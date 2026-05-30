@@ -24,17 +24,19 @@ object DateTimeUtils {
 
     private fun formatToMoreThenOneWeek(localDate: LocalDate): String {
         val formatter = SimpleDateFormat("MMMM d, yyyy", Locale.getDefault())
-        val javaDate = java.util.Calendar.getInstance().apply {
-            set(localDate.year, localDate.month.number - 1, localDate.day)
-        }.time
+        val javaDate =
+            java.util.Calendar.getInstance().apply {
+                set(localDate.year, localDate.month.number - 1, localDate.day)
+            }.time
         return formatter.format(javaDate)
     }
 
     private fun formatToLessThenOneWeek(localDate: LocalDate): String {
         val formatterDay = SimpleDateFormat("EEEE", Locale.getDefault())
-        val javaDate = java.util.Calendar.getInstance().apply {
-            set(localDate.year, localDate.month.number - 1, localDate.day)
-        }.time
+        val javaDate =
+            java.util.Calendar.getInstance().apply {
+                set(localDate.year, localDate.month.number - 1, localDate.day)
+            }.time
         return formatterDay.format(javaDate)
     }
 }

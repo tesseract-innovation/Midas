@@ -25,5 +25,5 @@ enum class IconType {
 
 @Serializable
 data class IconModel(
-    val iconType: IconType
+    val iconType: IconType,
 )

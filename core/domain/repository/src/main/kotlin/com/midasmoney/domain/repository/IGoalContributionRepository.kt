@@ -5,5 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface IGoalContributionRepository : IRepository<GoalContribution> {
     fun getByGoalId(goalId: String): Flow<List<GoalContribution>>
+
     suspend fun deleteByGoalId(goalId: String): Result<Unit>
 }

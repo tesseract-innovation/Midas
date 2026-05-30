@@ -35,13 +35,13 @@ import com.midasmoney.core.ui.theme.MidasColors
 @Composable
 fun GoalCardBalanceStatus(
     summary: GoalsSummary,
-    isDarkTheme: Boolean = isSystemInDarkTheme()
+    isDarkTheme: Boolean = isSystemInDarkTheme(),
 ) {
     MidasGradientCard(
         primaryColor = MidasColors.Blue.primary,
         secondaryColor = MidasColors.Purple.primary,
         height = 140.dp,
-        isDarkTheme = isDarkTheme
+        isDarkTheme = isDarkTheme,
     ) {
         Row {
             TotalSavedInfo(summary)
@@ -53,36 +53,40 @@ fun GoalCardBalanceStatus(
 @Composable
 private fun CompletedGol(completionPercent: Int) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 25.dp, end = 25.dp),
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(top = 25.dp, end = 25.dp),
     ) {
         Row(
             verticalAlignment = Alignment.Top,
             horizontalArrangement = Arrangement.End,
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
         ) {
             Icon(
                 imageVector = Icons.Rounded.Adjust,
                 contentDescription = Icons.Rounded.Adjust.name,
                 tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                modifier = Modifier
-                    .size(53.dp)
-                    .alpha(0.8f),
+                modifier =
+                    Modifier
+                        .size(53.dp)
+                        .alpha(0.8f),
             )
         }
         Row(
             verticalAlignment = Alignment.Top,
             horizontalArrangement = Arrangement.End,
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(1f),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
         ) {
             Text(
                 text = stringResource(goals_complete_percent, completionPercent),
-                color = Color.White
+                color = Color.White,
             )
         }
     }
@@ -91,8 +95,9 @@ private fun CompletedGol(completionPercent: Int) {
 @Composable
 private fun TotalSavedInfo(summary: GoalsSummary) {
     Column(
-        modifier = Modifier
-            .padding(start = 28.dp, top = 25.dp)
+        modifier =
+            Modifier
+                .padding(start = 28.dp, top = 25.dp),
     ) {
         Row {
             Text(
@@ -103,14 +108,15 @@ private fun TotalSavedInfo(summary: GoalsSummary) {
             )
         }
         Row(
-            modifier = Modifier
-                .padding(bottom = 20.dp)
+            modifier =
+                Modifier
+                    .padding(bottom = 20.dp),
         ) {
             Text(
                 text = summary.totalSaved.toCurrency(),
                 fontSize = 28.sp,
                 color = Color.White,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
             )
         }
         Row {
@@ -118,7 +124,7 @@ private fun TotalSavedInfo(summary: GoalsSummary) {
                 Text(
                     text = stringResource(goals_active_count, summary.activeGoalsCount),
                     color = Color.White,
-                    fontWeight = FontWeight.W300
+                    fontWeight = FontWeight.W300,
                 )
             }
         }
@@ -130,11 +136,12 @@ private fun TotalSavedInfo(summary: GoalsSummary) {
 fun BalanceGoalStatusCardPreview() {
     MidasLightPreview {
         GoalCardBalanceStatus(
-            summary = GoalsSummary(
-                totalSaved = 12450.0,
-                completionPercent = 78,
-                activeGoalsCount = 4,
-            ),
+            summary =
+                GoalsSummary(
+                    totalSaved = 12450.0,
+                    completionPercent = 78,
+                    activeGoalsCount = 4,
+                ),
         )
     }
 }

@@ -64,7 +64,10 @@ import com.midasmoney.core.ui.theme.MidasColors
 import com.midasmoney.core.ui.theme.MidasTheme
 
 @Composable
-fun HomeContentImp(navController: NavHostController, paddingValues: PaddingValues) {
+fun HomeContentImp(
+    navController: NavHostController,
+    paddingValues: PaddingValues,
+) {
     HomeContent(navController, paddingValues)
 }
 
@@ -72,12 +75,13 @@ fun HomeContentImp(navController: NavHostController, paddingValues: PaddingValue
 fun HomeContent(
     navController: NavController,
     paddingValues: PaddingValues,
-    isDarkTheme: Boolean = isSystemInDarkTheme()
+    isDarkTheme: Boolean = isSystemInDarkTheme(),
 ) {
     Surface(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(paddingValues)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(paddingValues),
     ) {
         Box(
             modifier = Modifier.fillMaxSize(),
@@ -88,41 +92,42 @@ fun HomeContent(
                 item {
                     BalanceStatus(
                         balance = Database.balance,
-                        isDarkTheme = isDarkTheme
+                        isDarkTheme = isDarkTheme,
                     )
                 }
                 item {
-
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .padding(top = 16.dp, start = 19.dp, end = 19.dp)
+                        modifier =
+                            Modifier
+                                .padding(top = 16.dp, start = 19.dp, end = 19.dp),
                     ) {
                         Column(
-                            modifier = Modifier
-                                .weight(1f)
+                            modifier =
+                                Modifier
+                                    .weight(1f),
                         ) {
                             TransactionOverviewCard(
-                                transactionReport = Database.transactionReportIncome
+                                transactionReport = Database.transactionReportIncome,
                             )
                         }
                         Spacer(modifier = Modifier.weight(0.1f))
                         Column(
-                            modifier = Modifier
-                                .weight(1f)
+                            modifier =
+                                Modifier
+                                    .weight(1f),
                         ) {
                             TransactionOverviewCard(
-                                transactionReport = Database.transactionReportExpense
+                                transactionReport = Database.transactionReportExpense,
                             )
                         }
                     }
-
                 }
                 item {
                     MidasTitleItem(
                         textTitle = stringResource(recent_transactions),
                         textButton = stringResource(view_all),
-                        actionButton = { navController.navigate(HomeRoute.History.route) }
+                        actionButton = { navController.navigate(HomeRoute.History.route) },
                     )
                 }
                 item {
@@ -139,55 +144,58 @@ fun HomeContent(
                     MidasTitleItem(
                         textTitle = stringResource(financial_goals),
                         textButton = stringResource(manage),
-                        actionButton = { navController.navigate(HomeRoute.Goals.route) }
+                        actionButton = { navController.navigate(HomeRoute.Goals.route) },
                     )
                 }
                 item {
                     GoalCard(
-                        goal = Database.goalList[0]
+                        goal = Database.goalList[0],
                     )
                 }
                 item {
                     GoalCard(
-                        goal = Database.goalList[3]
+                        goal = Database.goalList[3],
                     )
                 }
                 item {
                     GoalCard(
-                        goal = Database.goalList[4]
+                        goal = Database.goalList[4],
                     )
                 }
                 item {
                     Row(
-                        modifier = Modifier
-                            .padding(top = 13.dp)
+                        modifier =
+                            Modifier
+                                .padding(top = 13.dp),
                     ) {
                         MidasTitleItem("Expenses")
                     }
                 }
                 item {
                     Row(
-                        modifier = Modifier
-                            .padding(start = 16.dp, end = 16.dp)
+                        modifier =
+                            Modifier
+                                .padding(start = 16.dp, end = 16.dp),
                     ) {
-
-
                         SimplePieChart(LocalContext.current, getPieChartData())
                     }
                 }
                 item {
                     Row(
-                        modifier = Modifier
-                            .padding(start = 16.dp, end = 16.dp)
+                        modifier =
+                            Modifier
+                                .padding(start = 16.dp, end = 16.dp),
                     ) {
-                        LegendCircleChart(getPieChartData()
+                        LegendCircleChart(
+                            getPieChartData(),
                         )
                     }
                 }
                 item {
                     Row(
-                        modifier = Modifier
-                            .padding(start = 16.dp, end = 16.dp)
+                        modifier =
+                            Modifier
+                                .padding(start = 16.dp, end = 16.dp),
                     ) {
                         val points = mutableListOf<Point>()
                         points.add(Point(x = 1f, y = 534f))
@@ -199,7 +207,7 @@ fun HomeContent(
                         points.add(Point(x = 7f, y = 123f))
                         SingleLineChartWithGridLines(
                             pointsData = points,
-                            isDarkTheme = isDarkTheme
+                            isDarkTheme = isDarkTheme,
                         )
                     }
                 }
@@ -228,19 +236,21 @@ private fun SimplePieChart(
             chartPadding = 30,
             backgroundColor = MaterialTheme.colorScheme.surface,
             showSliceLabels = true,
-            animationDuration = 1500
+            animationDuration = 1500,
         )
     Box(
-        modifier = Modifier
-            .wrapContentHeight()
-            .background(Color.Red)
+        modifier =
+            Modifier
+                .wrapContentHeight()
+                .background(Color.Red),
     ) {
         PieChart(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.Cyan),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .background(Color.Cyan),
             pieChartData,
-            pieChartConfig
+            pieChartConfig,
         ) { slice ->
             Toast.makeText(context, slice.label, Toast.LENGTH_SHORT).show()
         }
@@ -250,13 +260,14 @@ private fun SimplePieChart(
 @Composable
 private fun LegendCircleChart(
     pieChartData: PieChartData,
-    gridSize: Int = 3
-){
+    gridSize: Int = 3,
+)  {
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .heightIn(max = 500.dp),
-        contentAlignment = Alignment.Center
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .heightIn(max = 500.dp),
+        contentAlignment = Alignment.Center,
     ) {
 //        Spacer(modifier = Modifier.height(20.dp))
         Legends(legendsConfig = DataUtils.getLegendsConfigFromPieChartData(pieChartData, gridSize))
@@ -273,67 +284,74 @@ private fun LegendCircleChart(
 private fun SingleLineChartWithGridLines(
     pointsData: List<Point>,
     type: TransactionType = TransactionType.EXPENSE,
-    isDarkTheme: Boolean
+    isDarkTheme: Boolean,
 ) {
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp
-    val axisStepSize = if (screenWidth < 600) {
-        50.dp // Celulares
-    } else if (screenWidth < 840) {
-        100.dp // Tablets pequenos
-    } else {
-        150.dp // Telas grandes
-    }
+    val axisStepSize =
+        if (screenWidth < 600) {
+            50.dp // Celulares
+        } else if (screenWidth < 840) {
+            100.dp // Tablets pequenos
+        } else {
+            150.dp // Telas grandes
+        }
     val steps = 10
-    val xAxisData = AxisData.Builder()
-        .axisLabelColor(if (isDarkTheme) Color.White else Color.Black)
-        .axisStepSize(axisStepSize)
-        .topPadding(105.dp)
-        .steps(pointsData.size - 1)
-        .labelData { i -> pointsData[i].x.toInt().toString() }
-        .labelAndAxisLinePadding(15.dp)
-        .build()
-    val yAxisData = AxisData.Builder()
-        .axisLabelColor(if (isDarkTheme) Color.White else Color.Black)
-        .steps(steps)
-        .labelAndAxisLinePadding(20.dp)
-        .labelData { i ->
-            // Add yMin to get the negative axis values to the scale
-            val yMin = pointsData.minOf { it.y }
-            val yMax = pointsData.maxOf { it.y }
-            val yScale = (yMax - yMin) / steps
-            ((i * yScale) + yMin).formatToSinglePrecision()
-        }.build()
-    val data = LineChartData(
-        linePlotData = LinePlotData(
-            lines = listOf(
-                Line(
-                    dataPoints = pointsData,
-                    LineStyle(
-                        color = if (type == TransactionType.INCOME) MidasColors.Green.primary else MidasColors.Red.primary,
-                    ),
-                    IntersectionPoint(
-                        color = if (type == TransactionType.INCOME) MidasColors.Green.extraDark else MidasColors.Red.extraDark
-                    ),
-                    SelectionHighlightPoint(),
-                    ShadowUnderLine(
-                        color = if (type == TransactionType.INCOME) MidasColors.Green.light else MidasColors.Red.light
-                    ),
-                    SelectionHighlightPopUp()
-                )
-            )
-        ),
-        xAxisData = xAxisData,
-        yAxisData = yAxisData,
-        gridLines = GridLines(),
-        backgroundColor = MaterialTheme.colorScheme.surface
-    )
+    val xAxisData =
+        AxisData.Builder()
+            .axisLabelColor(if (isDarkTheme) Color.White else Color.Black)
+            .axisStepSize(axisStepSize)
+            .topPadding(105.dp)
+            .steps(pointsData.size - 1)
+            .labelData { i -> pointsData[i].x.toInt().toString() }
+            .labelAndAxisLinePadding(15.dp)
+            .build()
+    val yAxisData =
+        AxisData.Builder()
+            .axisLabelColor(if (isDarkTheme) Color.White else Color.Black)
+            .steps(steps)
+            .labelAndAxisLinePadding(20.dp)
+            .labelData { i ->
+                // Add yMin to get the negative axis values to the scale
+                val yMin = pointsData.minOf { it.y }
+                val yMax = pointsData.maxOf { it.y }
+                val yScale = (yMax - yMin) / steps
+                ((i * yScale) + yMin).formatToSinglePrecision()
+            }.build()
+    val data =
+        LineChartData(
+            linePlotData =
+                LinePlotData(
+                    lines =
+                        listOf(
+                            Line(
+                                dataPoints = pointsData,
+                                LineStyle(
+                                    color = if (type == TransactionType.INCOME) MidasColors.Green.primary else MidasColors.Red.primary,
+                                ),
+                                IntersectionPoint(
+                                    color = if (type == TransactionType.INCOME) MidasColors.Green.extraDark else MidasColors.Red.extraDark,
+                                ),
+                                SelectionHighlightPoint(),
+                                ShadowUnderLine(
+                                    color = if (type == TransactionType.INCOME) MidasColors.Green.light else MidasColors.Red.light,
+                                ),
+                                SelectionHighlightPopUp(),
+                            ),
+                        ),
+                ),
+            xAxisData = xAxisData,
+            yAxisData = yAxisData,
+            gridLines = GridLines(),
+            backgroundColor = MaterialTheme.colorScheme.surface,
+        )
 
     LineChart(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(300.dp),
-        lineChartData = data
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .height(300.dp),
+        lineChartData = data,
     )
 }
 
@@ -343,15 +361,15 @@ private fun getPieChartData(): PieChartData {
         PieChartData.Slice(
             "Entertainment",
             234f,
-            MidasColors.Orange.primary
-        )
+            MidasColors.Orange.primary,
+        ),
     )
     slices.add(
         PieChartData.Slice(
             "Dining Out",
             543f,
-            MidasColors.Green.primary
-        )
+            MidasColors.Green.primary,
+        ),
     )
     slices.add(PieChartData.Slice("Investments", 123f, MidasColors.Red.light))
     slices.add(PieChartData.Slice("Gifts", 345f, MidasColors.Green.light))
@@ -365,7 +383,7 @@ fun HomeContentImpLightPreview() {
     MidasTheme {
         HomeContent(
             navController = rememberNavController(),
-            paddingValues = PaddingValues()
+            paddingValues = PaddingValues(),
         )
     }
 }

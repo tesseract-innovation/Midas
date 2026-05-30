@@ -8,19 +8,19 @@ import kotlinx.coroutines.flow.Flow
 interface AccountDao : IDao<AccountEntity> {
     @Query("SELECT * FROM account")
     fun getAllAccounts(): Flow<List<AccountEntity>>
-    
+
     @Query("SELECT * FROM account WHERE id = :id")
     suspend fun getAccountById(id: String): AccountEntity?
-    
+
     @Query("SELECT * FROM account WHERE id = :id")
     fun getAccountByIdFlow(id: String): Flow<AccountEntity?>
-    
+
     @Query("DELETE FROM account WHERE id = :id")
     suspend fun deleteAccountById(id: String)
-    
+
     @Query("SELECT COUNT(*) FROM account")
     suspend fun getAccountCount(): Int
-    
+
     @Query("SELECT SUM(balance) FROM account")
     suspend fun getTotalBalance(): Double?
 }

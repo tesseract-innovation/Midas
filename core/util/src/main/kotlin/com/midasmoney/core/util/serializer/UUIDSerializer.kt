@@ -20,7 +20,10 @@ object UUIDSerializer : KSerializer<UUID> {
      * @param encoder The encoder used to serialize the UUID.
      * @param value The [UUID] instance to serialize.
      */
-    override fun serialize(encoder: Encoder, value: UUID) {
+    override fun serialize(
+        encoder: Encoder,
+        value: UUID,
+    ) {
         encoder.encodeString(value.value)
     }
 

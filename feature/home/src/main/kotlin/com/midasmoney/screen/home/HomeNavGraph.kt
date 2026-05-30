@@ -12,19 +12,21 @@ import com.midasmoney.screen.history.HistoryNavGraph
 
 sealed class HomeRoute(val route: String) {
     data object Main : HomeRoute("Home")
-    data object History: HomeRoute("History")
-    data object Goals: HomeRoute("Goals")
+
+    data object History : HomeRoute("History")
+
+    data object Goals : HomeRoute("Goals")
 }
 
 @Composable
 fun HomeNavGraph(
     navController: NavHostController,
     shouldShowBottomBar: MutableState<Boolean>,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
 ) {
     NavHost(
         navController = navController,
-        startDestination = HomeRoute.Main.route
+        startDestination = HomeRoute.Main.route,
     ) {
         composable(route = HomeRoute.Main.route) {
             shouldShowBottomBar.value = true

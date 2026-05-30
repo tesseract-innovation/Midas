@@ -15,7 +15,6 @@ import kotlin.time.ExperimentalTime
 data class GroupedTransactions(val date: String, val transactions: List<Transaction>)
 
 class HistoryViewModel : ViewModel() {
-
     private var _days = MutableStateFlow(7)
     var daysState = _days.asStateFlow()
 
@@ -26,20 +25,22 @@ class HistoryViewModel : ViewModel() {
     var filterText = _filterText.asStateFlow()
 
     @OptIn(ExperimentalTime::class)
-    val combinedState: StateFlow<List<GroupedTransactions>> = combine(
-        filterText,
-        daysState,
-        selectedTabIndex
-    ) { filter, days, tab ->
-        val allTransactions = HistoryHandleDatabase.getTransactionsGroupByDate(
-            filter,
-            days,
-            tab.getType()
-        )
-        allTransactions.map { (date, transactions) ->
-            GroupedTransactions(date.toString(), transactions)
-        }
-    }.stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+    val combinedState: StateFlow<List<GroupedTransactions>> =
+        combine(
+            filterText,
+            daysState,
+            selectedTabIndex,
+        ) { filter, days, tab ->
+            val allTransactions =
+                HistoryHandleDatabase.getTransactionsGroupByDate(
+                    filter,
+                    days,
+                    tab.getType(),
+                )
+            allTransactions.map { (date, transactions) ->
+                GroupedTransactions(date.toString(), transactions)
+            }
+        }.stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
     fun setSelectedTab(value: Int) {
         _selectedTabIndex.value = value

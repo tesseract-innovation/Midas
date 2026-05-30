@@ -39,7 +39,6 @@ import kotlinx.datetime.format
 import kotlinx.datetime.format.MonthNames
 import kotlinx.datetime.format.char
 
-
 @Composable
 fun GoalCard(
     goal: Goal,
@@ -48,50 +47,59 @@ fun GoalCard(
     onMenuClick: () -> Unit = {},
     onAddMoneyClick: () -> Unit = {},
 ) {
-    val icon = goal.icon.let {
-        IconConverter.getImageVector(it)
-    }
-    val color = goal.color.let {
-        ColorConverter.aRgbToColor(it)
-    }
+    val icon =
+        goal.icon.let {
+            IconConverter.getImageVector(it)
+        }
+    val color =
+        goal.color.let {
+            ColorConverter.aRgbToColor(it)
+        }
     Column(
-        modifier = Modifier
-            .padding(top = 10.dp, start = 20.dp, end = 20.dp)
+        modifier =
+            Modifier
+                .padding(top = 10.dp, start = 20.dp, end = 20.dp),
     ) {
         MidasCard(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(180.dp)
-                .clickable { onCardClick() }
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(180.dp)
+                    .clickable { onCardClick() },
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxSize()
+                modifier =
+                    Modifier
+                        .fillMaxSize(),
             ) {
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 15.dp, end = 18.dp, top = 12.dp, bottom = 12.dp),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(start = 15.dp, end = 18.dp, top = 12.dp, bottom = 12.dp),
                 ) {
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically
+                        modifier =
+                            Modifier
+                                .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Column(
-                            modifier = Modifier
-                                .padding(end = 12.dp)
+                            modifier =
+                                Modifier
+                                    .padding(end = 12.dp),
                         ) {
                             Icon(
                                 imageVector = icon,
                                 contentDescription = goal.description,
                                 tint = color,
-                                modifier = Modifier
-                                    .size(40.dp)
-                                    .clip(CircleShape)
-                                    .background(color.copy(alpha = 0.2f))
-                                    .padding(10.dp)
+                                modifier =
+                                    Modifier
+                                        .size(40.dp)
+                                        .clip(CircleShape)
+                                        .background(color.copy(alpha = 0.2f))
+                                        .padding(10.dp),
                             )
                         }
                         Column(
@@ -101,75 +109,80 @@ fun GoalCard(
                                 Text(
                                     text = goal.title,
                                     color = MaterialTheme.colorScheme.onBackground,
-                                    fontWeight = FontWeight.Bold
+                                    fontWeight = FontWeight.Bold,
                                 )
                             }
                             Row {
                                 Text(
-                                    text = "${stringResource(target)}: " + goal.targetDate.format(
-                                        kotlinx.datetime.LocalDate.Format {
-                                            monthName(MonthNames.ENGLISH_ABBREVIATED)
-                                            char(' ')
-                                            dayOfMonth()
-                                        }
-                                    ),
-
+                                    text =
+                                        "${stringResource(target)}: " +
+                                            goal.targetDate.format(
+                                                kotlinx.datetime.LocalDate.Format {
+                                                    monthName(MonthNames.ENGLISH_ABBREVIATED)
+                                                    char(' ')
+                                                    dayOfMonth()
+                                                },
+                                            ),
                                     fontSize = 15.sp,
                                     color = MidasColors.Gray,
-                                    fontWeight = FontWeight.W400
+                                    fontWeight = FontWeight.W400,
                                 )
                             }
                         }
                     }
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 10.dp)
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(top = 10.dp),
                     ) {
                         Text(
                             text = "${goal.progress.toCurrency()} ${stringResource(of)} ${goal.amount.toCurrency()}",
                             fontSize = 15.sp,
                             color = MidasColors.Gray,
-                            fontWeight = FontWeight.W400
+                            fontWeight = FontWeight.W400,
                         )
                         Column(
                             horizontalAlignment = Alignment.End,
-                            modifier = Modifier
-                                .fillMaxWidth()
-
+                            modifier =
+                                Modifier
+                                    .fillMaxWidth(),
                         ) {
                             Text(
                                 text = "${(goal.progress / goal.amount) * 100}%",
                                 fontWeight = FontWeight.Bold,
-                                color = color
+                                color = color,
                             )
                         }
                     }
                     Row(
-                        modifier = Modifier
-                            .padding(top = 10.dp)
+                        modifier =
+                            Modifier
+                                .padding(top = 10.dp),
                     ) {
                         LinearProgressIndicator(
                             progress = { (goal.progress / goal.amount).toFloat() },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(8.dp)
-                                .clip(CircleShape),
+                            modifier =
+                                Modifier
+                                    .fillMaxWidth()
+                                    .height(8.dp)
+                                    .clip(CircleShape),
                             color = color,
-                            trackColor = if (isDarkTheme) MidasColors.DarkGray else MidasColors.ExtraLightGray
+                            trackColor = if (isDarkTheme) MidasColors.DarkGray else MidasColors.ExtraLightGray,
                         )
                     }
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .padding(top = 10.dp)
-                            .fillMaxWidth()
+                        modifier =
+                            Modifier
+                                .padding(top = 10.dp)
+                                .fillMaxWidth(),
                     ) {
                         Text(
                             text = "${stringResource(monthly)}: ${goal.monthlyValue.toCurrency()}",
                             fontSize = 15.sp,
                             color = MidasColors.Gray,
-                            fontWeight = FontWeight.W400
+                            fontWeight = FontWeight.W400,
                         )
                     }
                 }

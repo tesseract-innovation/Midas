@@ -11,49 +11,50 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.midasmoney.core.resource.R
-import com.midasmoney.core.ui.theme.MidasColors
 import com.midasmoney.core.ui.preview.MidasDarkPreview
 import com.midasmoney.core.ui.preview.MidasLightPreview
+import com.midasmoney.core.ui.theme.MidasColors
 
 @Composable
 fun DeleteDialog(
     titleItem: String,
     onConfirm: () -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
             Text(
                 text = stringResource(R.string.title_dialog_delete, titleItem),
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
             )
         },
         text = {
             Text(
-                text = stringResource(R.string.description_dialog_delete_account, titleItem)
+                text = stringResource(R.string.description_dialog_delete_account, titleItem),
             )
         },
         confirmButton = {
             TextButton(
                 onClick = onConfirm,
-                colors = ButtonDefaults.textButtonColors(
-                    contentColor = MidasColors.Red.primary
-                )
+                colors =
+                    ButtonDefaults.textButtonColors(
+                        contentColor = MidasColors.Red.primary,
+                    ),
             ) {
                 Text(
-                    text = stringResource(R.string.delete)
+                    text = stringResource(R.string.delete),
                 )
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
                 Text(
-                    text = stringResource(R.string.cancel)
+                    text = stringResource(R.string.cancel),
                 )
             }
         },
-        containerColor = MaterialTheme.colorScheme.surfaceVariant
+        containerColor = MaterialTheme.colorScheme.surfaceVariant,
     )
 }
 
@@ -64,7 +65,7 @@ fun DeleteAccountDialogLightPreview() {
         DeleteDialog(
             titleItem = "Test Account",
             onConfirm = { },
-            onDismiss = { }
+            onDismiss = { },
         )
     }
 }
@@ -76,7 +77,7 @@ fun DeleteAccountDialogDarkPreview() {
         DeleteDialog(
             titleItem = "Transaction",
             onConfirm = { },
-            onDismiss = { }
+            onDismiss = { },
         )
     }
 }

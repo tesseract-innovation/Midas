@@ -6,13 +6,15 @@ import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
 @OptIn(ExperimentalTime::class)
-val customModule = SerializersModule {
-    contextual(Instant::class, InstantSerializer)
-}
+val customModule =
+    SerializersModule {
+        contextual(Instant::class, InstantSerializer)
+    }
 
 @Suppress("unused")
-val customJson = Json {
-    encodeDefaults = true
-    ignoreUnknownKeys = true
-    serializersModule = customModule
-}
+val customJson =
+    Json {
+        encodeDefaults = true
+        ignoreUnknownKeys = true
+        serializersModule = customModule
+    }

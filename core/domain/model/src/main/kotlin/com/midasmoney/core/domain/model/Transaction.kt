@@ -74,7 +74,8 @@ enum class TransactionType(val displayName: String) {
     /**
      * Represents payments made toward loans or credit card debt.
      */
-    LOAN_PAYMENT("Loan Payment");
+    LOAN_PAYMENT("Loan Payment"),
+    ;
 
     companion object {
         fun getByName(target: String): TransactionType {
@@ -131,7 +132,8 @@ enum class TransactionStatus(val displayName: String) {
     /**
      * Transaction is part of a batch processing group, typically for grouped transactions.
      */
-    BATCH_PROCESSING("Batch processing");
+    BATCH_PROCESSING("Batch processing"),
+    ;
 
     companion object {
         fun getByName(target: String): TransactionStatus {
@@ -154,7 +156,7 @@ data class Transaction(
     val date: String,
     val time: String,
     @Contextual val createAt: Instant,
-    val id: UUID = UUID.Companion.randomUUID()
+    val id: UUID = UUID.Companion.randomUUID(),
 )
 
 @OptIn(ExperimentalTime::class)
@@ -165,5 +167,5 @@ data class TransactionReport(
     val percentage: Double,
     @Contextual val startDateTime: Instant,
     @Contextual val endDateTime: Instant,
-    val id: UUID = UUID.Companion.randomUUID()
+    val id: UUID = UUID.Companion.randomUUID(),
 )

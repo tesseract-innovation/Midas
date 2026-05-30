@@ -10,8 +10,8 @@ import androidx.navigation.toRoute
 import com.midasmoney.core.domain.model.Account
 import com.midasmoney.core.domain.model.Transaction
 import com.midasmoney.core.util.serializer.serializableNavType
-import com.midasmoney.screen.account.accountform.AccountFormScreen
 import com.midasmoney.screen.account.accountdetail.AccountDetails
+import com.midasmoney.screen.account.accountform.AccountFormScreen
 import com.midasmoney.screen.account.transactionform.TransactionFormScreen
 import kotlinx.serialization.Serializable
 import kotlin.reflect.typeOf
@@ -37,34 +37,34 @@ sealed class AccountRoute(val route: String) {
 fun AccountNavGraph(
     navController: NavHostController,
     shouldShowBottomBar: MutableState<Boolean>,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
 ) {
     NavHost(
         navController = navController,
-        startDestination = AccountRoute.Main
+        startDestination = AccountRoute.Main,
     ) {
         composable<AccountRoute.Main> {
             shouldShowBottomBar.value = true
             AccountContentImp(
                 navController = navController,
-                paddingValues = paddingValues
+                paddingValues = paddingValues,
             )
         }
 
         composable<AccountRoute.AccountDetails>(
-            typeMap = mapOf(typeOf<Account>() to serializableNavType<Account>())
+            typeMap = mapOf(typeOf<Account>() to serializableNavType<Account>()),
         ) {
             val args = it.toRoute<AccountRoute.AccountDetails>()
             shouldShowBottomBar.value = false
             AccountDetails(
                 args = args,
                 navController = navController,
-                paddingValues = paddingValues
+                paddingValues = paddingValues,
             )
         }
 
         composable<AccountRoute.AccountForm>(
-            typeMap = mapOf(typeOf<Account?>() to serializableNavType<Account?>(isNullableAllowed = true))
+            typeMap = mapOf(typeOf<Account?>() to serializableNavType<Account?>(isNullableAllowed = true)),
         ) {
             val args = it.toRoute<AccountRoute.AccountForm>()
             shouldShowBottomBar.value = false
@@ -76,16 +76,17 @@ fun AccountNavGraph(
         }
 
         composable<AccountRoute.TransactionForm>(
-            typeMap = mapOf(
-                typeOf<Account?>() to serializableNavType<Account?>(isNullableAllowed = true),
-                typeOf<Transaction?>() to serializableNavType<Transaction?>(isNullableAllowed = true)
-            )
+            typeMap =
+                mapOf(
+                    typeOf<Account?>() to serializableNavType<Account?>(isNullableAllowed = true),
+                    typeOf<Transaction?>() to serializableNavType<Transaction?>(isNullableAllowed = true),
+                ),
         ) {
             val args = it.toRoute<AccountRoute.TransactionForm>()
             shouldShowBottomBar.value = false
             TransactionFormScreen(
                 args = args,
-                navController = navController
+                navController = navController,
             )
         }
     }

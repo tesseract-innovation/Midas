@@ -49,13 +49,13 @@ fun Midas() {
             if (shouldShowBottomBar.value) {
                 BottomNavigationBar(navController, currentRoute)
             }
-        }
+        },
     ) { paddingValues ->
         Log.d("MainActivity", "Padding values: $paddingValues")
         SetupNavGraph(
             navController = navController,
             shouldShowBottomBar = shouldShowBottomBar,
-            paddingValues = paddingValues
+            paddingValues = paddingValues,
         )
     }
 }
@@ -63,19 +63,20 @@ fun Midas() {
 @Composable
 fun BottomNavigationManagerView(
     shouldShowBottomBar: MutableState<Boolean>,
-    navController: NavHostController
+    navController: NavHostController,
 ) {
     LaunchedEffect(navController) {
         navController.currentBackStackEntryFlow.collectLatest { backStackEntry ->
             backStackEntry.destination.route?.let { route ->
                 Log.d("BottomNavigationManagerView", "Current route: $route")
-                shouldShowBottomBar.value = route in listOf(
-                    Screen.Home.route,
-                    Screen.History.route,
-                    Screen.Goals.route,
-                    Screen.Account.route,
-                    Screen.Profile.route
-                )
+                shouldShowBottomBar.value = route in
+                    listOf(
+                        Screen.Home.route,
+                        Screen.History.route,
+                        Screen.Goals.route,
+                        Screen.Account.route,
+                        Screen.Profile.route,
+                    )
                 Log.d("BottomNavigationManagerView", "ShouldShowBottomBar: ${shouldShowBottomBar.value}")
             }
         }

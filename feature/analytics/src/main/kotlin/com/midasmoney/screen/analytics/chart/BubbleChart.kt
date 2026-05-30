@@ -29,17 +29,18 @@ import com.midasmoney.core.ui.preview.MidasDarkPreview
 import com.midasmoney.core.ui.preview.MidasLightPreview
 
 @Composable
-fun AnalyticsBubbleChart(
-) {
+fun AnalyticsBubbleChart() {
     Surface(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 30.dp, bottom = 100.dp)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(top = 30.dp, bottom = 100.dp),
     ) {
         Box(
             contentAlignment = Alignment.TopCenter,
-            modifier = Modifier
-                .fillMaxSize()
+            modifier =
+                Modifier
+                    .fillMaxSize(),
         ) {
             LazyColumn(content = {
                 item {
@@ -47,14 +48,15 @@ fun AnalyticsBubbleChart(
                         modifier = Modifier.padding(12.dp),
                         text = "Gradient bubble chart",
                         style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
                     )
                     BubbleChartWithGrid(
-                        pointsData = DataUtils.getRandomPoints(
-                            200,
-                            start = 30,
-                            maxRange = 100
-                        )
+                        pointsData =
+                            DataUtils.getRandomPoints(
+                                200,
+                                start = 30,
+                                maxRange = 100,
+                            ),
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                 }
@@ -64,18 +66,18 @@ fun AnalyticsBubbleChart(
                         modifier = Modifier.padding(12.dp),
                         text = "Solid bubble chart",
                         style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
                     )
                     SolidBubbleChart(
-                        pointsData = DataUtils.getRandomPoints(
-                            200,
-                            start = 30,
-                            maxRange = 900
-                        )
+                        pointsData =
+                            DataUtils.getRandomPoints(
+                                200,
+                                start = 30,
+                                maxRange = 900,
+                            ),
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                 }
-
             })
         }
     }
@@ -89,40 +91,42 @@ fun AnalyticsBubbleChart(
 @Composable
 private fun BubbleChartWithGrid(pointsData: List<Point>) {
     val steps = 5
-    val xAxisData = AxisData.Builder()
-        .axisStepSize(30.dp)
-        .steps(pointsData.size - 1)
-        .labelData { i -> pointsData[i].x.toInt().toString() }
-        .labelAndAxisLinePadding(15.dp)
-        .build()
+    val xAxisData =
+        AxisData.Builder()
+            .axisStepSize(30.dp)
+            .steps(pointsData.size - 1)
+            .labelData { i -> pointsData[i].x.toInt().toString() }
+            .labelAndAxisLinePadding(15.dp)
+            .build()
 
-    val yAxisData = AxisData.Builder()
-        .steps(steps)
-        .labelAndAxisLinePadding(15.dp)
-        .labelData { i ->
-            // Add yMin to get the negative axis values to the scale
-            val yMin = pointsData.minOf { it.y }
-            val yMax = pointsData.maxOf { it.y }
-            val yScale = (yMax - yMin) / steps
-            ((i * yScale) + yMin).formatToSinglePrecision()
-        }.build()
+    val yAxisData =
+        AxisData.Builder()
+            .steps(steps)
+            .labelAndAxisLinePadding(15.dp)
+            .labelData { i ->
+                // Add yMin to get the negative axis values to the scale
+                val yMin = pointsData.minOf { it.y }
+                val yMax = pointsData.maxOf { it.y }
+                val yScale = (yMax - yMin) / steps
+                ((i * yScale) + yMin).formatToSinglePrecision()
+            }.build()
 
-    val data = BubbleChartData(
-        DataUtils.getBubbleChartDataWithGradientStyle(pointsData),
-        xAxisData = xAxisData,
-        yAxisData = yAxisData,
-        gridLines = GridLines()
-    )
+    val data =
+        BubbleChartData(
+            DataUtils.getBubbleChartDataWithGradientStyle(pointsData),
+            xAxisData = xAxisData,
+            yAxisData = yAxisData,
+            gridLines = GridLines(),
+        )
 
     BubbleChart(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(500.dp),
-        bubbleChartData = data
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .height(500.dp),
+        bubbleChartData = data,
     )
-
 }
-
 
 /**
  * Bubble chart with grid lines
@@ -132,40 +136,42 @@ private fun BubbleChartWithGrid(pointsData: List<Point>) {
 @Composable
 private fun SolidBubbleChart(pointsData: List<Point>) {
     val steps = 5
-    val xAxisData = AxisData.Builder()
-        .axisStepSize(30.dp)
-        .steps(pointsData.size - 1)
-        .labelData { i -> pointsData[i].x.toInt().toString() }
-        .labelAndAxisLinePadding(15.dp)
-        .build()
+    val xAxisData =
+        AxisData.Builder()
+            .axisStepSize(30.dp)
+            .steps(pointsData.size - 1)
+            .labelData { i -> pointsData[i].x.toInt().toString() }
+            .labelAndAxisLinePadding(15.dp)
+            .build()
 
-    val yAxisData = AxisData.Builder()
-        .steps(steps)
-        .labelAndAxisLinePadding(15.dp)
-        .labelData { i ->
-            // Add yMin to get the negative axis values to the scale
-            val yMin = pointsData.minOf { it.y }
-            val yMax = pointsData.maxOf { it.y }
-            val yScale = (yMax - yMin) / steps
-            ((i * yScale) + yMin).formatToSinglePrecision()
-        }.build()
+    val yAxisData =
+        AxisData.Builder()
+            .steps(steps)
+            .labelAndAxisLinePadding(15.dp)
+            .labelData { i ->
+                // Add yMin to get the negative axis values to the scale
+                val yMin = pointsData.minOf { it.y }
+                val yMax = pointsData.maxOf { it.y }
+                val yScale = (yMax - yMin) / steps
+                ((i * yScale) + yMin).formatToSinglePrecision()
+            }.build()
 
-    val data = BubbleChartData(
-        DataUtils.getBubbleChartDataWithSolidStyle(pointsData),
-        xAxisData = xAxisData,
-        yAxisData = yAxisData,
-        gridLines = GridLines()
-    )
+    val data =
+        BubbleChartData(
+            DataUtils.getBubbleChartDataWithSolidStyle(pointsData),
+            xAxisData = xAxisData,
+            yAxisData = yAxisData,
+            gridLines = GridLines(),
+        )
 
     BubbleChart(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(500.dp),
-        bubbleChartData = data
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .height(500.dp),
+        bubbleChartData = data,
     )
-
 }
-
 
 @Preview(showBackground = true, backgroundColor = Color.WHITE.toLong())
 @Composable

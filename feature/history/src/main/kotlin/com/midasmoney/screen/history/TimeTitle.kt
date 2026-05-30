@@ -15,19 +15,19 @@ import com.midasmoney.core.ui.preview.MidasDarkPreview
 import com.midasmoney.core.ui.preview.MidasLightPreview
 
 @Composable
-fun TimeTitle(
-    title: String
-) {
-    Row (
-        modifier = Modifier
-            .fillMaxWidth()
-    ){
+fun TimeTitle(title: String) {
+    Row(
+        modifier =
+            Modifier
+                .fillMaxWidth(),
+    ) {
         Text(
             text = title,
             color = MaterialTheme.colorScheme.outline,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .padding(start = 20.dp, top = 12.dp, bottom = 10.dp)
+            modifier =
+                Modifier
+                    .padding(start = 20.dp, top = 12.dp, bottom = 10.dp),
         )
     }
 }

@@ -17,7 +17,7 @@ object HistoryHandleDatabase {
     fun getTransactionsGroupByDate(
         filter: String,
         amount: Int,
-        type: TransactionType? = null
+        type: TransactionType? = null,
     ): Map<Instant, List<Transaction>> {
         Log.d(TAG, "getTransactionsGroupByDate - filter: $filter, amount: $amount, type: $type")
         return Database.transactions
@@ -34,10 +34,14 @@ object HistoryHandleDatabase {
 
 fun List<Transaction>.filterBySearch(stringSearch: String): List<Transaction> {
     return filter {
-        if (stringSearch.isNotEmpty()) it.title.lowercase().contains(stringSearch)
-                || it.description.lowercase().contains(stringSearch)
-                || it.amount.toString().lowercase().contains(stringSearch)
-                || it.status.toString().lowercase().contains(stringSearch) else true
+        if (stringSearch.isNotEmpty()) {
+            it.title.lowercase().contains(stringSearch) ||
+                it.description.lowercase().contains(stringSearch) ||
+                it.amount.toString().lowercase().contains(stringSearch) ||
+                it.status.toString().lowercase().contains(stringSearch)
+        } else {
+            true
+        }
     }
 }
 

@@ -6,7 +6,7 @@ import java.util.Locale
 /**
  * Extension function to format a Double as currency.
  * Uses the default locale for formatting.
- * 
+ *
  * Example:
  * ```
  * val amount = 1234.56

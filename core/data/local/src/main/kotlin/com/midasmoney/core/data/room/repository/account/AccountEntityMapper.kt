@@ -16,14 +16,15 @@ object AccountEntityMapper : IAccountEntityMapper<AccountEntity> {
                 name = name,
                 icon = IconModel(IconType.valueOf(icon)),
                 color = color,
-                balance = Balance(
-                    id = UUID.randomUUID(),
-                    initialBalance = initialBalance,
-                    currentBalance = balance,
-                    income = income,
-                    expense = expense
-                ),
-                transactions = emptyList()
+                balance =
+                    Balance(
+                        id = UUID.randomUUID(),
+                        initialBalance = initialBalance,
+                        currentBalance = balance,
+                        income = income,
+                        expense = expense,
+                    ),
+                transactions = emptyList(),
             )
         }
     }
@@ -38,7 +39,7 @@ object AccountEntityMapper : IAccountEntityMapper<AccountEntity> {
                 initialBalance = balance.initialBalance,
                 balance = balance.currentBalance,
                 income = balance.income,
-                expense = balance.expense
+                expense = balance.expense,
             )
         }
     }

@@ -30,39 +30,39 @@ sealed class GoalsRoute(val route: String) {
 fun GoalsNavGraph(
     navController: NavHostController,
     shouldShowBottomBar: MutableState<Boolean>,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
 ) {
     NavHost(
         navController = navController,
-        startDestination = GoalsRoute.Main
+        startDestination = GoalsRoute.Main,
     ) {
         composable<GoalsRoute.Main> {
             shouldShowBottomBar.value = true
             GoalsContentImp(
                 navController = navController,
-                paddingValues = paddingValues
+                paddingValues = paddingValues,
             )
         }
 
         composable<GoalsRoute.GoalForm>(
-            typeMap = mapOf(typeOf<Goal?>() to serializableNavType<Goal?>(isNullableAllowed = true))
+            typeMap = mapOf(typeOf<Goal?>() to serializableNavType<Goal?>(isNullableAllowed = true)),
         ) {
             val args = it.toRoute<GoalsRoute.GoalForm>()
             shouldShowBottomBar.value = false
             GoalFormScreen(
                 args = args,
-                navController = navController
+                navController = navController,
             )
         }
 
         composable<GoalsRoute.GoalDetail>(
-            typeMap = mapOf(typeOf<Goal>() to serializableNavType<Goal>())
+            typeMap = mapOf(typeOf<Goal>() to serializableNavType<Goal>()),
         ) {
             val args = it.toRoute<GoalsRoute.GoalDetail>()
             shouldShowBottomBar.value = false
             GoalDetailScreen(
                 args = args,
-                navController = navController
+                navController = navController,
             )
         }
     }

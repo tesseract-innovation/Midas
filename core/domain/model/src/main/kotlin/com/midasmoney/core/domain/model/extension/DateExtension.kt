@@ -21,7 +21,7 @@ fun KtLocalTime.formatTime(): String {
         Locale.getDefault(),
         "%02d:%02d",
         this.hour,
-        this.minute
+        this.minute,
     )
 }
 
@@ -31,7 +31,7 @@ fun TimePickerState.formatTime(): String {
         Locale.getDefault(),
         "%02d:%02d",
         this.hour,
-        this.minute
+        this.minute,
     )
 }
 

@@ -37,35 +37,36 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.midasmoney.screen.history.HistoryViewModel
-import com.midasmoney.screen.history.TimeSelector
 import com.midasmoney.core.resource.R.string.all
 import com.midasmoney.core.resource.R.string.expense
 import com.midasmoney.core.resource.R.string.income
 import com.midasmoney.core.ui.preview.MidasDarkPreview
 import com.midasmoney.core.ui.preview.MidasLightPreview
+import com.midasmoney.screen.history.HistoryViewModel
+import com.midasmoney.screen.history.TimeSelector
 
 sealed class Component(val route: String) {
     data object Filter : Component("filter")
+
     data object Search : Component("search")
 }
 
 data class TabItem(
     val title: String,
     val icon: ImageVector,
-    val content: @Composable () -> Unit
+    val content: @Composable () -> Unit,
 )
 
 @Composable
 fun FilterComponent(
     viewModel: HistoryViewModel,
     tabs: List<TabItem>,
-    navController: NavController
+    navController: NavController,
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
     ) {
         TabRow(viewModel, tabs)
         TimeSelector(viewModel)
@@ -76,32 +77,36 @@ fun FilterComponent(
             onValueChange = { },
             trailingIcon = {
                 IconButton(
-                    onClick = { navController.navigate(Component.Search.route) }
+                    onClick = { navController.navigate(Component.Search.route) },
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.Search,
-                        contentDescription = Icons.Outlined.Search.name
+                        contentDescription = Icons.Outlined.Search.name,
                     )
                 }
             },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 20.dp, end = 20.dp)
-                .clickable {
-                    navController.navigate(Component.Search.route)
-                }
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(start = 20.dp, end = 20.dp)
+                    .clickable {
+                        navController.navigate(Component.Search.route)
+                    },
         )
     }
 }
 
 @Composable
-fun SearchComponent(viewModel: HistoryViewModel, navController: NavController) {
+fun SearchComponent(
+    viewModel: HistoryViewModel,
+    navController: NavController,
+) {
     val focusRequester = remember { FocusRequester() }
     var text by remember { mutableStateOf("") }
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
     ) {
         OutlinedTextField(
             value = text,
@@ -119,18 +124,19 @@ fun SearchComponent(viewModel: HistoryViewModel, navController: NavController) {
                             }
                         }
                         viewModel.setFilterString(String())
-                    }
+                    },
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Outlined.ArrowBack,
-                        contentDescription = Icons.AutoMirrored.Outlined.ArrowBack.name
+                        contentDescription = Icons.AutoMirrored.Outlined.ArrowBack.name,
                     )
                 }
             },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 20.dp, end = 20.dp)
-                .focusRequester(focusRequester)
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(start = 20.dp, end = 20.dp)
+                    .focusRequester(focusRequester),
         )
         LaunchedEffect(Unit) {
             focusRequester.requestFocus()
@@ -141,16 +147,17 @@ fun SearchComponent(viewModel: HistoryViewModel, navController: NavController) {
 @Composable
 fun TabNavigation(viewModel: HistoryViewModel) {
     val selectedTab by viewModel.selectedTabIndex.collectAsState()
-    val tabs = listOf(
-        TabItem(stringResource(all), Icons.Default.AllInbox) { Tab(viewModel) },
-        TabItem(stringResource(income), Icons.Default.NorthEast) { Tab(viewModel) },
-        TabItem(stringResource(expense), Icons.Default.SouthWest) { Tab(viewModel) }
-    )
+    val tabs =
+        listOf(
+            TabItem(stringResource(all), Icons.Default.AllInbox) { Tab(viewModel) },
+            TabItem(stringResource(income), Icons.Default.NorthEast) { Tab(viewModel) },
+            TabItem(stringResource(expense), Icons.Default.SouthWest) { Tab(viewModel) },
+        )
     Column(modifier = Modifier.fillMaxSize()) {
         val navController = rememberNavController()
         NavHost(
             navController = navController,
-            startDestination = Component.Filter.route
+            startDestination = Component.Filter.route,
         ) {
             composable(Component.Filter.route) {
                 FilterComponent(viewModel, tabs, navController)

@@ -27,19 +27,21 @@ import androidx.navigation.compose.rememberNavController
 @Composable
 fun BottomNavigationBar(
     navController: NavHostController,
-    currentRoute: String?
+    currentRoute: String?,
 ) {
-    val items = listOf(
-        Screen.Home to Triple(Screen.Home.route, Icons.Outlined.Home, Icons.Filled.Home),
-        Screen.History to Triple(
-            Screen.History.route,
-            Icons.Outlined.History,
-            Icons.Filled.History
-        ),
-        Screen.Goals to Triple(Screen.Goals.route, Icons.Outlined.Adjust, Icons.Filled.Adjust),
-        Screen.Account to Triple(Screen.Account.route, Icons.Outlined.Wallet, Icons.Filled.Wallet),
-        Screen.Profile to Triple(Screen.Profile.route, Icons.Outlined.Person, Icons.Filled.Person)
-    )
+    val items =
+        listOf(
+            Screen.Home to Triple(Screen.Home.route, Icons.Outlined.Home, Icons.Filled.Home),
+            Screen.History to
+                Triple(
+                    Screen.History.route,
+                    Icons.Outlined.History,
+                    Icons.Filled.History,
+                ),
+            Screen.Goals to Triple(Screen.Goals.route, Icons.Outlined.Adjust, Icons.Filled.Adjust),
+            Screen.Account to Triple(Screen.Account.route, Icons.Outlined.Wallet, Icons.Filled.Wallet),
+            Screen.Profile to Triple(Screen.Profile.route, Icons.Outlined.Person, Icons.Filled.Person),
+        )
     NavigationBar {
         items.forEach { (screen, item) ->
             NavigationBarItem(
@@ -57,17 +59,17 @@ fun BottomNavigationBar(
 private fun MidasNavigationBarItemIcon(
     currentRoute: String?,
     screen: Screen,
-    item: Triple<String, ImageVector, ImageVector>
+    item: Triple<String, ImageVector, ImageVector>,
 ) {
     if (currentRoute == screen.route) {
         Icon(
             painter = rememberVectorPainter(item.third),
-            contentDescription = item.first
+            contentDescription = item.first,
         )
     } else {
         Icon(
             painter = rememberVectorPainter(item.second),
-            contentDescription = item.first
+            contentDescription = item.first,
         )
     }
 }
@@ -76,19 +78,19 @@ private fun MidasNavigationBarItemIcon(
 private fun onClickNavigationBarItem(
     currentRoute: String?,
     screen: Screen,
-    navController: NavHostController
-): () -> Unit = {
-    if (currentRoute != screen.route) {
-        navController.navigate(screen.route) {
-            launchSingleTop = true
-            restoreState = true
+    navController: NavHostController,
+): () -> Unit =
+    {
+        if (currentRoute != screen.route) {
+            navController.navigate(screen.route) {
+                launchSingleTop = true
+                restoreState = true
+            }
         }
     }
-}
 
 @Composable
-private fun midasNavigationBarItemColors(
-): NavigationBarItemColors {
+private fun midasNavigationBarItemColors(): NavigationBarItemColors {
     return NavigationBarItemColors(
         selectedIconColor = MaterialTheme.colorScheme.secondary,
         selectedTextColor = MaterialTheme.colorScheme.secondary,
@@ -96,7 +98,7 @@ private fun midasNavigationBarItemColors(
         unselectedIconColor = MaterialTheme.colorScheme.onBackground,
         unselectedTextColor = MaterialTheme.colorScheme.onBackground,
         disabledIconColor = MaterialTheme.colorScheme.onBackground,
-        disabledTextColor = MaterialTheme.colorScheme.onBackground
+        disabledTextColor = MaterialTheme.colorScheme.onBackground,
     )
 }
 

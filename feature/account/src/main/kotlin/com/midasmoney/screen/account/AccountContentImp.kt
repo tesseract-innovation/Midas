@@ -72,7 +72,7 @@ private const val TAG = "AccountContentImp"
 @Composable
 fun AccountContentImp(
     navController: NavController,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
 ) {
     val viewModel: AccountViewModel = hiltViewModel<AccountViewModel>()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -81,7 +81,7 @@ fun AccountContentImp(
         navController = navController,
         paddingValues = paddingValues,
         uiState = uiState,
-        viewModel = viewModel
+        viewModel = viewModel,
     )
 }
 
@@ -92,21 +92,23 @@ fun AccountContent(
     paddingValues: PaddingValues,
     uiState: AccountUiState,
     viewModel: AccountViewModel,
-    isDarkTheme: Boolean = isSystemInDarkTheme()
+    isDarkTheme: Boolean = isSystemInDarkTheme(),
 ) {
     Surface(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(paddingValues)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(paddingValues),
     ) {
         Box(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         ) {
             when (uiState) {
                 is AccountUiState.Loading -> {
                     Log.d(TAG, "UIState - Loading")
                     Box(
-                        modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center,
                     ) {
                         CircularProgressIndicator()
                     }
@@ -115,26 +117,28 @@ fun AccountContent(
                 is AccountUiState.Success -> {
                     Log.d(TAG, "UIState - Success")
                     Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .verticalScroll(rememberScrollState())
-                            .padding(bottom = 60.dp)
+                        modifier =
+                            Modifier
+                                .fillMaxSize()
+                                .verticalScroll(rememberScrollState())
+                                .padding(bottom = 60.dp),
                     ) {
                         MidasTitleItem(stringResource(accounts))
 
                         if (uiState.accounts.isEmpty()) {
                             Log.d(TAG, "UIState accounts is empty")
                             Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(32.dp),
-                                contentAlignment = Alignment.Center
+                                modifier =
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .padding(32.dp),
+                                contentAlignment = Alignment.Center,
                             ) {
                                 Log.d(TAG, "UIState render main box")
                                 Text(
                                     text = stringResource(no_accounts),
                                     style = MaterialTheme.typography.bodyLarge,
-                                    color = MidasColors.Gray
+                                    color = MidasColors.Gray,
                                 )
                             }
                         } else {
@@ -150,21 +154,22 @@ fun AccountContent(
                 is AccountUiState.Error -> {
                     Log.d(TAG, "UIState - Error")
                     Box(
-                        modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center,
                     ) {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                            verticalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
                             Text(
                                 text = stringResource(error_load_accounts),
                                 style = MaterialTheme.typography.titleMedium,
-                                color = MidasColors.Red.primary
+                                color = MidasColors.Red.primary,
                             )
                             Text(
                                 text = uiState.message,
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = MidasColors.Gray
+                                color = MidasColors.Gray,
                             )
                         }
                     }
@@ -177,15 +182,16 @@ fun AccountContent(
                     navController.navigate(AccountRoute.AccountForm())
                     Log.d(TAG, "Floating Action Button clicked!")
                 },
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(16.dp),
-                containerColor = MidasColors.Blue.primary
+                modifier =
+                    Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(16.dp),
+                containerColor = MidasColors.Blue.primary,
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = stringResource(description_add_account),
-                    tint = Color.White
+                    tint = Color.White,
                 )
             }
         }
@@ -197,16 +203,18 @@ fun AccountCard(
     account: Account,
     viewModel: AccountViewModel,
     navController: NavController,
-    isDarkTheme: Boolean = isSystemInDarkTheme()
+    isDarkTheme: Boolean = isSystemInDarkTheme(),
 ) {
     var showDeleteDialog by remember { mutableStateOf(false) }
 
-    val icon = account.icon.let {
-        IconConverter.getImageVector(it)
-    }
-    val color = account.color.let {
-        ColorConverter.aRgbToColor(it)
-    }
+    val icon =
+        account.icon.let {
+            IconConverter.getImageVector(it)
+        }
+    val color =
+        account.color.let {
+            ColorConverter.aRgbToColor(it)
+        }
 
     if (showDeleteDialog) {
         DeleteDialog(
@@ -217,27 +225,32 @@ fun AccountCard(
             },
             onDismiss = {
                 showDeleteDialog = false
-            })
+            },
+        )
     }
 
     Column(
-        modifier = Modifier.padding(top = 10.dp, start = 20.dp, end = 20.dp)
+        modifier = Modifier.padding(top = 10.dp, start = 20.dp, end = 20.dp),
     ) {
         MidasCard(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(150.dp)
-                .clickable {
-                    Log.d(TAG, "Account ${account.name} was clicked!")
-                    navController.navigate(AccountRoute.AccountDetails(account))
-                }) {
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(150.dp)
+                    .clickable {
+                        Log.d(TAG, "Account ${account.name} was clicked!")
+                        navController.navigate(AccountRoute.AccountDetails(account))
+                    },
+        ) {
             Row(
-                verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxSize()
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxSize(),
             ) {
                 Column(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(start = 15.dp, end = 15.dp),
+                    modifier =
+                        Modifier
+                            .weight(1f)
+                            .padding(start = 15.dp, end = 15.dp),
                 ) {
                     AccountGeneralInfo(account, icon, color, isDarkTheme)
                     AccountTransactionInfo(account, isDarkTheme)
@@ -246,19 +259,20 @@ fun AccountCard(
                 // Action buttons
                 Column(
                     modifier = Modifier.padding(end = 8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
                 ) {
                     // Edit button
                     IconButton(
                         onClick = {
                             navController.navigate(
-                                AccountRoute.AccountForm(account)
+                                AccountRoute.AccountForm(account),
                             )
-                        }) {
+                        },
+                    ) {
                         Icon(
                             imageVector = Icons.Default.Edit,
                             contentDescription = stringResource(description_edit_account),
-                            tint = MidasColors.Blue.primary
+                            tint = MidasColors.Blue.primary,
                         )
                     }
 
@@ -266,11 +280,12 @@ fun AccountCard(
                     IconButton(
                         onClick = {
                             showDeleteDialog = true
-                        }) {
+                        },
+                    ) {
                         Icon(
                             imageVector = Icons.Default.Delete,
                             contentDescription = stringResource(description_delete_account),
-                            tint = MidasColors.Red.primary
+                            tint = MidasColors.Red.primary,
                         )
                     }
                 }
@@ -284,7 +299,7 @@ private fun AccountGeneralInfo(
     account: Account,
     icon: ImageVector,
     color: Color,
-    isDarkTheme: Boolean
+    isDarkTheme: Boolean,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -297,21 +312,23 @@ private fun AccountGeneralInfo(
                 imageVector = icon,
                 contentDescription = icon.name,
                 tint = color,
-                modifier = Modifier
-                    .size(40.dp)
-                    .clip(CircleShape)
-                    .background(color.copy(alpha = 0.2f))
-                    .padding(10.dp)
+                modifier =
+                    Modifier
+                        .size(40.dp)
+                        .clip(CircleShape)
+                        .background(color.copy(alpha = 0.2f))
+                        .padding(10.dp),
             )
         }
         Column(
-            horizontalAlignment = Alignment.Start, modifier = Modifier.padding(12.dp)
+            horizontalAlignment = Alignment.Start,
+            modifier = Modifier.padding(12.dp),
         ) {
             Row {
                 Text(
                     text = account.name,
                     color = MaterialTheme.colorScheme.onBackground,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
                 )
             }
             Row {
@@ -319,7 +336,7 @@ private fun AccountGeneralInfo(
                     text = account.balance.currentBalance.toCurrency(),
                     fontSize = 15.sp,
                     color = if (isDarkTheme) MidasColors.Gray else MidasColors.Gray,
-                    fontWeight = FontWeight.W400
+                    fontWeight = FontWeight.W400,
                 )
             }
         }
@@ -329,23 +346,23 @@ private fun AccountGeneralInfo(
 @Composable
 private fun AccountTransactionInfo(
     account: Account,
-    isDarkTheme: Boolean
+    isDarkTheme: Boolean,
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     ) {
         Column {
             Text(
                 text = stringResource(income),
                 fontSize = 15.sp,
                 color = if (isDarkTheme) MidasColors.Gray else MidasColors.Gray,
-                fontWeight = FontWeight.W400
+                fontWeight = FontWeight.W400,
             )
             Text(
                 text = account.balance.income.toCurrency(),
                 fontWeight = FontWeight.Bold,
-                color = MidasColors.Green.primary
+                color = MidasColors.Green.primary,
             )
         }
 
@@ -354,12 +371,12 @@ private fun AccountTransactionInfo(
                 text = stringResource(expense),
                 fontSize = 15.sp,
                 color = if (isDarkTheme) MidasColors.Gray else MidasColors.Gray,
-                fontWeight = FontWeight.W400
+                fontWeight = FontWeight.W400,
             )
             Text(
                 text = account.balance.expense.toCurrency(),
                 fontWeight = FontWeight.Bold,
-                color = MidasColors.Red.primary
+                color = MidasColors.Red.primary,
             )
         }
     }
@@ -393,7 +410,7 @@ fun AccountContentDarkPreview() {
             paddingValues = paddingValues,
             uiState = AccountUiState.Success(Database.accounts),
             viewModel = viewModel,
-            isDarkTheme = true
+            isDarkTheme = true,
         )
     }
 }

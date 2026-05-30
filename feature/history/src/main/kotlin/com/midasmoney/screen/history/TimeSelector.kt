@@ -20,26 +20,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.midasmoney.core.resource.R.array.chip_days
 import com.midasmoney.core.ui.preview.MidasDarkPreview
 import com.midasmoney.core.ui.preview.MidasLightPreview
-import com.midasmoney.core.resource.R.array.chip_days
 
 @Composable
 fun TimeSelector(viewModel: HistoryViewModel) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier =
+            Modifier
+                .fillMaxWidth(),
     ) {
         var selectedChip by remember { mutableStateOf<String?>(viewModel.daysState.value.toDays()) }
         Row(
-            modifier = Modifier
-                .horizontalScroll(rememberScrollState())
-                .padding(start = 20.dp, top=6.dp, end = 20.dp)
+            modifier =
+                Modifier
+                    .horizontalScroll(rememberScrollState())
+                    .padding(start = 20.dp, top = 6.dp, end = 20.dp),
         ) {
             FlowRow(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
+                modifier =
+                    Modifier
+                        .fillMaxWidth(),
             ) {
                 val chips = stringArrayResource(chip_days)
                 chips.forEach { chipText ->
@@ -49,7 +52,7 @@ fun TimeSelector(viewModel: HistoryViewModel) {
                             selectedChip = chipText
                             viewModel.setDays(chipText.toDays())
                         },
-                        label = { Text(text = chipText) }
+                        label = { Text(text = chipText) },
                     )
                 }
             }

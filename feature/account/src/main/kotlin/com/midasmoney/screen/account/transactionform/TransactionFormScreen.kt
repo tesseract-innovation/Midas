@@ -69,7 +69,7 @@ import kotlin.time.ExperimentalTime
 fun TransactionFormScreen(
     args: AccountRoute.TransactionForm,
     navController: NavHostController,
-    viewModel: TransactionFormViewModel = hiltViewModel()
+    viewModel: TransactionFormViewModel = hiltViewModel(),
 ) {
     viewModel.initArgs(account = args.account, transaction = args.transaction)
 
@@ -93,7 +93,7 @@ fun TransactionFormScreen(
         },
         onEditMode = { transaction ->
             viewModel.updateFormData()
-        }
+        },
     )
 }
 
@@ -107,9 +107,8 @@ fun TransactionFormScreenImp(
     transaction: Transaction?,
     onSaveTransaction: () -> Unit,
     onDeleteTransaction: (transaction: Transaction?) -> Unit,
-    onEditMode: (transition: Transaction?) -> Unit
+    onEditMode: (transition: Transaction?) -> Unit,
 ) {
-
     LaunchedEffect(isEditMode) {
         onEditMode(transaction)
     }
@@ -129,9 +128,9 @@ fun TransactionFormScreenImp(
                 isEditMode = isEditMode,
                 transaction = transaction,
                 onSaveTransaction = onSaveTransaction,
-                onDeleteTransaction = onDeleteTransaction
+                onDeleteTransaction = onDeleteTransaction,
             )
-        }
+        },
     ) { padding ->
         Column(
             Modifier
@@ -139,12 +138,12 @@ fun TransactionFormScreenImp(
                 .padding(horizontal = 16.dp)
                 .padding(bottom = 16.dp)
                 .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             // Error
             if (uiState is TransactionFormState.Error) {
                 MidasCard(
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(16.dp),
                 ) {
                     Text(
                         uiState.message,
@@ -158,7 +157,7 @@ fun TransactionFormScreenImp(
                 value = formData.title.value,
                 onValueChange = { formData.title.value = it },
                 label = { Text("Title") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
 
             // Value
@@ -167,7 +166,7 @@ fun TransactionFormScreenImp(
                 onValueChange = { formData.amount.value = it.toDouble() },
                 label = { Text("Value") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
 
             // Description
@@ -175,7 +174,7 @@ fun TransactionFormScreenImp(
                 value = formData.description.value,
                 onValueChange = { formData.description.value = it },
                 label = { Text("Description") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
 
             // Icon
@@ -186,10 +185,10 @@ fun TransactionFormScreenImp(
                     formData.icon.value.let {
                         MidasIcon(
                             iconType = it,
-                            color = formData.color.value
+                            color = formData.color.value,
                         )
                     }
-                }
+                },
             )
             if (formData.showIconPicker.value) {
                 IconPickerGrid(
@@ -198,7 +197,7 @@ fun TransactionFormScreenImp(
                     onIconSelected = {
                         formData.icon.value = it!!
                         formData.showIconPicker.value = false
-                    }
+                    },
                 )
             }
 
@@ -206,7 +205,7 @@ fun TransactionFormScreenImp(
             PickerCard(
                 label = "Color",
                 onClick = { formData.showColorPicker.value = !formData.showColorPicker.value },
-                content = { formData.color.value.let { SelectedColorCircle(it) } }
+                content = { formData.color.value.let { SelectedColorCircle(it) } },
             )
             if (formData.showColorPicker.value) {
                 ColorPickerGrid(
@@ -214,7 +213,7 @@ fun TransactionFormScreenImp(
                     onColorSelected = {
                         formData.color.value = it
                         formData.showColorPicker.value = false
-                    }
+                    },
                 )
             }
 
@@ -225,7 +224,7 @@ fun TransactionFormScreenImp(
                 content = {
                     val selectedText = formData.type.value?.displayName ?: "Select a type"
                     Text(selectedText)
-                }
+                },
             )
             if (formData.showTypePicker.value) {
                 TransactionTypePicker(
@@ -233,7 +232,7 @@ fun TransactionFormScreenImp(
                     onSelected = { type ->
                         formData.type.value = type
                         formData.showTypePicker.value = false
-                    }
+                    },
                 )
             }
 
@@ -244,7 +243,7 @@ fun TransactionFormScreenImp(
                 content = {
                     val selectedText = formData.status.value?.displayName ?: "Select a status"
                     Text(selectedText)
-                }
+                },
             )
             if (formData.showStatusPicker.value) {
                 TransactionStatusPicker(
@@ -252,7 +251,7 @@ fun TransactionFormScreenImp(
                     onSelected = {
                         formData.status.value = it
                         formData.showStatusPicker.value = false
-                    }
+                    },
                 )
             }
 
@@ -263,7 +262,7 @@ fun TransactionFormScreenImp(
                 content = {
                     val selectedText = formData.date.value.toString()
                     Text(selectedText)
-                }
+                },
             )
             if (formData.showDatePicker.value) {
                 val currentDate = midasDatePicker()
@@ -277,7 +276,7 @@ fun TransactionFormScreenImp(
             PickerCard(
                 label = "Time",
                 onClick = { formData.showTimePicker.value = !formData.showTimePicker.value },
-                content = { Text(formData.time.value.formatTime()) }
+                content = { Text(formData.time.value.formatTime()) },
             )
             if (formData.showTimePicker.value) {
                 val currentTime = midasTimePicker()
@@ -291,7 +290,7 @@ fun TransactionFormScreenImp(
             if (uiState is TransactionFormState.Loading) {
                 Box(
                     Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center,
                 ) {
                     CircularProgressIndicator()
                 }
@@ -330,14 +329,15 @@ fun TransactionFormTopBar(
                     },
                     onDismiss = {
                         formData.showDeleteDialog.value = false
-                    })
+                    },
+                )
             }
             if (isEditMode) {
                 IconButton(
                     enabled = uiState !is TransactionFormState.Loading,
                     onClick = {
                         formData.showDeleteDialog.value = true
-                    }
+                    },
                 ) {
                     Icon(Icons.Default.Delete, stringResource(R.string.delete))
                 }
@@ -346,11 +346,11 @@ fun TransactionFormTopBar(
                 enabled = uiState !is TransactionFormState.Loading,
                 onClick = {
                     onSaveTransaction()
-                }
+                },
             ) {
                 Icon(Icons.Default.Check, stringResource(R.string.save))
             }
-        }
+        },
     )
 }
 
@@ -358,19 +358,20 @@ fun TransactionFormTopBar(
 fun PickerCard(
     label: String,
     onClick: () -> Unit,
-    content: @Composable () -> Unit = {}
+    content: @Composable () -> Unit = {},
 ) {
     MidasCard(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onClick() }
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .clickable { onClick() },
     ) {
         Row(
             Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(label, fontWeight = FontWeight.Bold)
             content()
@@ -381,35 +382,41 @@ fun PickerCard(
 @Composable
 fun TransactionTypePicker(
     selected: TransactionType?,
-    onSelected: (TransactionType) -> Unit
+    onSelected: (TransactionType) -> Unit,
 ) {
     val types = TransactionType.entries
     MidasCard(Modifier.fillMaxWidth()) {
         LazyVerticalGrid(
             columns = GridCells.Fixed(3),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp)
-                .padding(8.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+                    .padding(8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             items(types.size) { index ->
                 Box(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(12.dp))
-                        .border(
-                            width = if (types[index] == selected) 2.dp else 1.dp,
-                            color = if (types[index] == selected) MidasColors.Blue.primary
-                            else MaterialTheme.colorScheme.outline,
-                            shape = RoundedCornerShape(12.dp)
-                        )
-                        .clickable {
-                            Log.d("TransactionTypePicker", "Selected: ${types[index].name}")
-                            onSelected(types[index]) 
-                        }
-                        .padding(12.dp),
-                    contentAlignment = Alignment.Center
+                    modifier =
+                        Modifier
+                            .clip(RoundedCornerShape(12.dp))
+                            .border(
+                                width = if (types[index] == selected) 2.dp else 1.dp,
+                                color =
+                                    if (types[index] == selected) {
+                                        MidasColors.Blue.primary
+                                    } else {
+                                        MaterialTheme.colorScheme.outline
+                                    },
+                                shape = RoundedCornerShape(12.dp),
+                            )
+                            .clickable {
+                                Log.d("TransactionTypePicker", "Selected: ${types[index].name}")
+                                onSelected(types[index])
+                            }
+                            .padding(12.dp),
+                    contentAlignment = Alignment.Center,
                 ) {
                     Text(types[index].displayName)
                 }
@@ -421,33 +428,39 @@ fun TransactionTypePicker(
 @Composable
 fun TransactionStatusPicker(
     selected: TransactionStatus?,
-    onSelected: (TransactionStatus) -> Unit
+    onSelected: (TransactionStatus) -> Unit,
 ) {
     val statuses = TransactionStatus.entries
 
     MidasCard(Modifier.fillMaxWidth()) {
         LazyVerticalGrid(
             columns = GridCells.Fixed(3),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp)
-                .padding(8.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+                    .padding(8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             items(statuses.size) { index ->
                 Box(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(12.dp))
-                        .border(
-                            width = if (statuses[index] == selected) 2.dp else 1.dp,
-                            color = if (statuses[index] == selected) MidasColors.Blue.primary
-                            else MaterialTheme.colorScheme.outline,
-                            shape = RoundedCornerShape(12.dp)
-                        )
-                        .clickable { onSelected(statuses[index]) }
-                        .padding(12.dp),
-                    contentAlignment = Alignment.Center
+                    modifier =
+                        Modifier
+                            .clip(RoundedCornerShape(12.dp))
+                            .border(
+                                width = if (statuses[index] == selected) 2.dp else 1.dp,
+                                color =
+                                    if (statuses[index] == selected) {
+                                        MidasColors.Blue.primary
+                                    } else {
+                                        MaterialTheme.colorScheme.outline
+                                    },
+                                shape = RoundedCornerShape(12.dp),
+                            )
+                            .clickable { onSelected(statuses[index]) }
+                            .padding(12.dp),
+                    contentAlignment = Alignment.Center,
                 ) {
                     Text(statuses[index].displayName)
                 }
@@ -468,7 +481,7 @@ fun TransactionFormPreview() {
             transaction = Database.transactions.first(),
             onSaveTransaction = {},
             onDeleteTransaction = {},
-            onEditMode = {}
+            onEditMode = {},
         )
     }
 }

@@ -13,34 +13,35 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class GoalContributionRepository @Inject constructor(
-    private val contributionDao: GoalContributionDao
-) : BaseRepository<GoalContribution, GoalContributionEntity>(), IGoalContributionRepository {
+class GoalContributionRepository
+    @Inject
+    constructor(
+        private val contributionDao: GoalContributionDao,
+    ) : BaseRepository<GoalContribution, GoalContributionEntity>(), IGoalContributionRepository {
+        override val dao: IDao<GoalContributionEntity>
+            get() = contributionDao
 
-    override val dao: IDao<GoalContributionEntity>
-        get() = contributionDao
+        override val entityMapper: IEntityMapper<GoalContributionEntity, GoalContribution>
+            get() = GoalContributionEntityMapper
 
-    override val entityMapper: IEntityMapper<GoalContributionEntity, GoalContribution>
-        get() = GoalContributionEntityMapper
+        override fun getByGoalId(goalId: String): Flow<List<GoalContribution>> =
+            contributionDao.getByGoalId(goalId)
+                .map { entities -> entities.map { GoalContributionEntityMapper.toDomain(it) } }
 
-    override fun getByGoalId(goalId: String): Flow<List<GoalContribution>> =
-        contributionDao.getByGoalId(goalId)
-            .map { entities -> entities.map { GoalContributionEntityMapper.toDomain(it) } }
+        override suspend fun getById(id: String): GoalContribution? = null
 
-    override suspend fun getById(id: String): GoalContribution? = null
+        override suspend fun getAll(): Flow<List<GoalContribution>> {
+            throw UnsupportedOperationException("Use getByGoalId(goalId) instead")
+        }
 
-    override suspend fun getAll(): Flow<List<GoalContribution>> {
-        throw UnsupportedOperationException("Use getByGoalId(goalId) instead")
-    }
-
-    override suspend fun deleteByGoalId(goalId: String): Result<Unit> {
-        return withContext(Dispatchers.IO) {
-            try {
-                contributionDao.deleteByGoalId(goalId)
-                Result.success(Unit)
-            } catch (e: Exception) {
-                Result.failure(e)
+        override suspend fun deleteByGoalId(goalId: String): Result<Unit> {
+            return withContext(Dispatchers.IO) {
+                try {
+                    contributionDao.deleteByGoalId(goalId)
+                    Result.success(Unit)
+                } catch (e: Exception) {
+                    Result.failure(e)
+                }
             }
         }
     }
-}

@@ -63,70 +63,76 @@ fun AnalyticsContentImp() {
 }
 
 @Composable
-fun AnalyticsContent(
-    isDarkTheme: Boolean = isSystemInDarkTheme()
-) {
+fun AnalyticsContent(isDarkTheme: Boolean = isSystemInDarkTheme()) {
     var selectedChip by remember { mutableStateOf<String?>("7D") }
     Surface(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 30.dp, bottom = 80.dp)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(top = 30.dp, bottom = 80.dp),
     ) {
         Box(
             contentAlignment = Alignment.TopEnd,
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
         ) {
             Column {
                 FlowRow(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(start = 19.dp)
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .padding(start = 19.dp),
                 ) {
                     val chips = listOf("7D", "1M", "3M", "6M", "1Y")
                     chips.forEach { chipText ->
                         FilterChip(
                             selected = (selectedChip == chipText),
                             onClick = { selectedChip = chipText },
-                            label = { Text(text = chipText) }
+                            label = { Text(text = chipText) },
                         )
                     }
                 }
                 TotalBalanceCard(isDarkTheme)
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .padding(top = 16.dp, start = 19.dp, end = 19.dp)
+                    modifier =
+                        Modifier
+                            .padding(top = 16.dp, start = 19.dp, end = 19.dp),
                 ) {
                     Column(
-                        modifier = Modifier
-                            .weight(1f)
+                        modifier =
+                            Modifier
+                                .weight(1f),
                     ) {
                         TransactionCard(
-                            transactionReport = Database.transactionReportIncome
+                            transactionReport = Database.transactionReportIncome,
                         )
                     }
                     Spacer(modifier = Modifier.weight(0.1f))
                     Column(
-                        modifier = Modifier
-                            .weight(1f)
+                        modifier =
+                            Modifier
+                                .weight(1f),
                     ) {
                         TransactionCard(
-                            transactionReport = Database.transactionReportExpense
+                            transactionReport = Database.transactionReportExpense,
                         )
                     }
                 }
                 Row(
-                    modifier = Modifier
-                        .padding(top = 16.dp)
+                    modifier =
+                        Modifier
+                            .padding(top = 16.dp),
                 ) {
                     MidasTitleItem("Incomes by category")
                 }
                 Row(
-                    modifier = Modifier
-                        .padding(start = 16.dp, end = 16.dp)
+                    modifier =
+                        Modifier
+                            .padding(start = 16.dp, end = 16.dp),
                 ) {
                     val slices = mutableListOf<PieChartData.Slice>()
                     slices.add(PieChartData.Slice("Salary", 100f, MidasColors.Purple.primary))
@@ -139,16 +145,17 @@ fun AnalyticsContent(
                     MidasTitleItem("Expenses by category")
                 }
                 Row(
-                    modifier = Modifier
-                        .padding(start = 16.dp, end = 16.dp)
+                    modifier =
+                        Modifier
+                            .padding(start = 16.dp, end = 16.dp),
                 ) {
                     val slices = mutableListOf<PieChartData.Slice>()
                     slices.add(
                         PieChartData.Slice(
                             "Entertainment",
                             234f,
-                            MidasColors.Orange.primary
-                        )
+                            MidasColors.Orange.primary,
+                        ),
                     )
                     slices.add(PieChartData.Slice("Dining Out", 543f, MidasColors.Green.primary))
                     slices.add(PieChartData.Slice("Investments", 123f, MidasColors.Red.light))
@@ -162,8 +169,9 @@ fun AnalyticsContent(
                     MidasTitleItem("Expenses")
                 }
                 Row(
-                    modifier = Modifier
-                        .padding(start = 16.dp, end = 16.dp)
+                    modifier =
+                        Modifier
+                            .padding(start = 16.dp, end = 16.dp),
                 ) {
                     val points = mutableListOf<Point>()
                     points.add(Point(x = 1f, y = 534f))
@@ -179,8 +187,9 @@ fun AnalyticsContent(
                     MidasTitleItem("Incomes")
                 }
                 Row(
-                    modifier = Modifier
-                        .padding(start = 16.dp, end = 16.dp)
+                    modifier =
+                        Modifier
+                            .padding(start = 16.dp, end = 16.dp),
                 ) {
                     val points = mutableListOf<Point>()
                     points.add(Point(x = 1f, y = 9348f))
@@ -197,7 +206,6 @@ fun AnalyticsContent(
     }
 }
 
-
 /**
  * Simple pie chart
  *
@@ -207,7 +215,7 @@ fun AnalyticsContent(
 private fun SimplePieChart(
     context: Context,
     pieChartData: PieChartData,
-    isDarkTheme: Boolean = isSystemInDarkTheme()
+    isDarkTheme: Boolean = isSystemInDarkTheme(),
 ) {
     val pieChartConfig =
         PieChartConfig(
@@ -219,17 +227,18 @@ private fun SimplePieChart(
             chartPadding = 30,
             backgroundColor = if (isDarkTheme) Color.Black else Color.White,
             showSliceLabels = false,
-            animationDuration = 1500
+            animationDuration = 1500,
         )
     Column(modifier = Modifier.height(500.dp)) {
         Spacer(modifier = Modifier.height(20.dp))
         Legends(legendsConfig = DataUtils.getLegendsConfigFromPieChartData(pieChartData, 3))
         PieChart(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(400.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(400.dp),
             pieChartData,
-            pieChartConfig
+            pieChartConfig,
         ) { slice ->
             Toast.makeText(context, slice.label, Toast.LENGTH_SHORT).show()
         }
@@ -245,69 +254,73 @@ private fun SimplePieChart(
 private fun SingleLineChartWithGridLines(
     pointsData: List<Point>,
     type: TransactionType,
-    isDarkTheme: Boolean
+    isDarkTheme: Boolean,
 ) {
     val steps = 10
-    val xAxisData = AxisData.Builder()
-        .axisLabelColor(if (isDarkTheme) Color.White else Color.Black)
-        .axisStepSize(50.dp)
-        .topPadding(105.dp)
-        .steps(pointsData.size - 1)
-        .labelData { i -> pointsData[i].x.toInt().toString() }
-        .labelAndAxisLinePadding(15.dp)
-        .build()
-    val yAxisData = AxisData.Builder()
-        .axisLabelColor(if (isDarkTheme) Color.White else Color.Black)
-        .steps(steps)
-        .labelAndAxisLinePadding(20.dp)
-        .labelData { i ->
-            // Add yMin to get the negative axis values to the scale
-            val yMin = pointsData.minOf { it.y }
-            val yMax = pointsData.maxOf { it.y }
-            val yScale = (yMax - yMin) / steps
-            ((i * yScale) + yMin).formatToSinglePrecision()
-        }.build()
-    val data = LineChartData(
-        linePlotData = LinePlotData(
-            lines = listOf(
-                Line(
-                    dataPoints = pointsData,
-                    LineStyle(
-                        color = if (type == TransactionType.INCOME) MidasColors.Green.primary else MidasColors.Red.primary,
-                    ),
-                    IntersectionPoint(
-                        color = if (type == TransactionType.INCOME) MidasColors.Green.extraDark else MidasColors.Red.extraDark
-                    ),
-                    SelectionHighlightPoint(),
-                    ShadowUnderLine(
-                        color = if (type == TransactionType.INCOME) MidasColors.Green.light else MidasColors.Red.light
-                    ),
-                    SelectionHighlightPopUp()
-                )
-            )
-        ),
-        xAxisData = xAxisData,
-        yAxisData = yAxisData,
-        gridLines = GridLines(),
-        backgroundColor = if (isDarkTheme) Color.Black else Color.White
-    )
+    val xAxisData =
+        AxisData.Builder()
+            .axisLabelColor(if (isDarkTheme) Color.White else Color.Black)
+            .axisStepSize(50.dp)
+            .topPadding(105.dp)
+            .steps(pointsData.size - 1)
+            .labelData { i -> pointsData[i].x.toInt().toString() }
+            .labelAndAxisLinePadding(15.dp)
+            .build()
+    val yAxisData =
+        AxisData.Builder()
+            .axisLabelColor(if (isDarkTheme) Color.White else Color.Black)
+            .steps(steps)
+            .labelAndAxisLinePadding(20.dp)
+            .labelData { i ->
+                // Add yMin to get the negative axis values to the scale
+                val yMin = pointsData.minOf { it.y }
+                val yMax = pointsData.maxOf { it.y }
+                val yScale = (yMax - yMin) / steps
+                ((i * yScale) + yMin).formatToSinglePrecision()
+            }.build()
+    val data =
+        LineChartData(
+            linePlotData =
+                LinePlotData(
+                    lines =
+                        listOf(
+                            Line(
+                                dataPoints = pointsData,
+                                LineStyle(
+                                    color = if (type == TransactionType.INCOME) MidasColors.Green.primary else MidasColors.Red.primary,
+                                ),
+                                IntersectionPoint(
+                                    color = if (type == TransactionType.INCOME) MidasColors.Green.extraDark else MidasColors.Red.extraDark,
+                                ),
+                                SelectionHighlightPoint(),
+                                ShadowUnderLine(
+                                    color = if (type == TransactionType.INCOME) MidasColors.Green.light else MidasColors.Red.light,
+                                ),
+                                SelectionHighlightPopUp(),
+                            ),
+                        ),
+                ),
+            xAxisData = xAxisData,
+            yAxisData = yAxisData,
+            gridLines = GridLines(),
+            backgroundColor = if (isDarkTheme) Color.Black else Color.White,
+        )
 
     LineChart(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(300.dp),
-        lineChartData = data
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .height(300.dp),
+        lineChartData = data,
     )
 }
-
 
 @Preview(showBackground = true, backgroundColor = android.graphics.Color.WHITE.toLong())
 @Composable
 fun AnalyticsScreenLightPreview() {
     rememberNavController()
     MidasLightPreview {
-        AnalyticsContent(
-        )
+        AnalyticsContent()
     }
 }
 
@@ -317,7 +330,7 @@ fun AnalyticsScreenDarkPreview() {
     rememberNavController()
     MidasDarkPreview {
         AnalyticsContent(
-            isDarkTheme = true
+            isDarkTheme = true,
         )
     }
 }

@@ -76,7 +76,7 @@ fun AccountFormScreen(
     args: AccountRoute.AccountForm,
     navController: NavController,
     paddingValues: PaddingValues,
-    isDarkTheme: Boolean = isSystemInDarkTheme()
+    isDarkTheme: Boolean = isSystemInDarkTheme(),
 ) {
     val viewModel: AccountFormViewModel = hiltViewModel<AccountFormViewModel>()
     val formState by viewModel.formState.collectAsStateWithLifecycle()
@@ -146,10 +146,11 @@ fun AccountFormScreen(
                 },
                 navigationIcon = {
                     IconButton(
-                        onClick = { navController.popBackStack() }) {
+                        onClick = { navController.popBackStack() },
+                    ) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
+                            contentDescription = stringResource(R.string.back),
                         )
                     }
                 },
@@ -157,12 +158,13 @@ fun AccountFormScreen(
                     IconButton(
                         onClick = {
                             // Validate form
-                            val formData = AccountFormData(
-                                name = name,
-                                icon = selectedIcon?.let { IconModel(it) },
-                                color = selectedColor?.toArgb(),
-                                initialBalance = initialBalance
-                            )
+                            val formData =
+                                AccountFormData(
+                                    name = name,
+                                    icon = selectedIcon?.let { IconModel(it) },
+                                    color = selectedColor?.toArgb(),
+                                    initialBalance = initialBalance,
+                                )
 
                             val validationError = viewModel.validateForm(formData)
                             if (validationError != null) {
@@ -172,19 +174,21 @@ fun AccountFormScreen(
                             }
 
                             // Create or update account
-                            val account = Account(
-                                id = if (isEditMode) UUID(account.id.toString()) else UUID.randomUUID(),
-                                name = name,
-                                icon = IconModel(selectedIcon!!),
-                                color = selectedColor!!.toArgb(),
-                                balance = Balance(
-                                    initialBalance = initialBalance,
-                                    currentBalance = initialBalance,
-                                    income = if(initialBalance > 0 ) initialBalance else 0.0,
-                                    expense = if(initialBalance < 0) initialBalance else 0.0
-                                ),
-                                transactions = emptyList()
-                            )
+                            val account =
+                                Account(
+                                    id = if (isEditMode) UUID(account.id.toString()) else UUID.randomUUID(),
+                                    name = name,
+                                    icon = IconModel(selectedIcon!!),
+                                    color = selectedColor!!.toArgb(),
+                                    balance =
+                                        Balance(
+                                            initialBalance = initialBalance,
+                                            currentBalance = initialBalance,
+                                            income = if (initialBalance > 0) initialBalance else 0.0,
+                                            expense = if (initialBalance < 0) initialBalance else 0.0,
+                                        ),
+                                    transactions = emptyList(),
+                                )
 
                             if (isEditMode) {
                                 Log.d(TAG, "Update account")
@@ -196,40 +200,42 @@ fun AccountFormScreen(
                                 navController.popBackStack()
                             }
                         },
-                        enabled = formState !is AccountFormState.Loading
-
+                        enabled = formState !is AccountFormState.Loading,
                     ) {
                         Icon(Icons.Default.Check, contentDescription = "Save")
                     }
-                }
+                },
             )
-        }
+        },
     ) { padding ->
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(paddingValues)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(padding)
+                    .padding(paddingValues),
         ) {
             Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState())
+                        .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 // Error message
                 errorMessage?.let { error ->
                     Card(
-                        colors = CardDefaults.cardColors(
-                            containerColor = MidasColors.Red.primary.copy(alpha = 0.1f)
-                        ),
-                        modifier = Modifier.fillMaxWidth()
+                        colors =
+                            CardDefaults.cardColors(
+                                containerColor = MidasColors.Red.primary.copy(alpha = 0.1f),
+                            ),
+                        modifier = Modifier.fillMaxWidth(),
                     ) {
                         Text(
                             text = error,
                             color = MidasColors.Red.primary,
-                            modifier = Modifier.padding(16.dp)
+                            modifier = Modifier.padding(16.dp),
                         )
                     }
                 }
@@ -245,7 +251,7 @@ fun AccountFormScreen(
                     placeholder = { Text(stringResource(R.string.placeholder_account_name)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
-                    enabled = formState !is AccountFormState.Loading
+                    enabled = formState !is AccountFormState.Loading,
                 )
 
                 // Initial Balance
@@ -260,57 +266,67 @@ fun AccountFormScreen(
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                    enabled = formState !is AccountFormState.Loading
+                    enabled = formState !is AccountFormState.Loading,
                 )
 
                 // Icon Selection
                 Text(
                     text = stringResource(R.string.label_select_icon),
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
                 )
 
                 MidasCard(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable { showIconPicker = !showIconPicker }
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .clickable { showIconPicker = !showIconPicker },
                 ) {
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(
-                            text = if (selectedIcon != null)
-                                stringResource(R.string.label_selected_icon)
-                            else
-                                stringResource(R.string.label_tap_to_select_icon),
-                            color = if (selectedIcon != null)
-                                MaterialTheme.colorScheme.onSurface
-                            else
-                                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                            text =
+                                if (selectedIcon != null) {
+                                    stringResource(R.string.label_selected_icon)
+                                } else {
+                                    stringResource(R.string.label_tap_to_select_icon)
+                                },
+                            color =
+                                if (selectedIcon != null) {
+                                    MaterialTheme.colorScheme.onSurface
+                                } else {
+                                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                                },
                         )
 
                         if (selectedIcon != null) {
                             Icon(
-                                imageVector = IconConverter.getImageVector(
-                                    IconModel(
-                                        selectedIcon!!
-                                    )
-                                ),
+                                imageVector =
+                                    IconConverter.getImageVector(
+                                        IconModel(
+                                            selectedIcon!!,
+                                        ),
+                                    ),
                                 contentDescription = stringResource(R.string.description_selected_icon),
-                                modifier = Modifier
-                                    .size(32.dp)
-                                    .clip(CircleShape)
-                                    .background(
-                                        (selectedColor
-                                            ?: MaterialTheme.colorScheme.secondaryContainer)
-                                            .copy(alpha = 0.2f)
-                                    )
-                                    .padding(6.dp),
-                                tint = selectedColor ?: MaterialTheme.colorScheme.secondaryContainer
+                                modifier =
+                                    Modifier
+                                        .size(32.dp)
+                                        .clip(CircleShape)
+                                        .background(
+                                            (
+                                                selectedColor
+                                                    ?: MaterialTheme.colorScheme.secondaryContainer
+                                            )
+                                                .copy(alpha = 0.2f),
+                                        )
+                                        .padding(6.dp),
+                                tint = selectedColor ?: MaterialTheme.colorScheme.secondaryContainer,
                             )
                         }
                     }
@@ -324,7 +340,7 @@ fun AccountFormScreen(
                             selectedIcon = it
                             showIconPicker = false
                             errorMessage = null
-                        }
+                        },
                     )
                 }
 
@@ -332,38 +348,45 @@ fun AccountFormScreen(
                 Text(
                     text = stringResource(R.string.label_select_color),
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
                 )
 
                 MidasCard(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable { showColorPicker = !showColorPicker }
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .clickable { showColorPicker = !showColorPicker },
                 ) {
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(
-                            text = if (selectedColor != null)
-                                stringResource(R.string.label_selected_color)
-                            else
-                                stringResource(R.string.label_tap_to_select_color),
-                            color = if (selectedColor != null)
-                                MaterialTheme.colorScheme.onSurface
-                            else
-                                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                            text =
+                                if (selectedColor != null) {
+                                    stringResource(R.string.label_selected_color)
+                                } else {
+                                    stringResource(R.string.label_tap_to_select_color)
+                                },
+                            color =
+                                if (selectedColor != null) {
+                                    MaterialTheme.colorScheme.onSurface
+                                } else {
+                                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                                },
                         )
 
                         if (selectedColor != null) {
                             Box(
-                                modifier = Modifier
-                                    .size(32.dp)
-                                    .clip(CircleShape)
-                                    .background(selectedColor!!)
+                                modifier =
+                                    Modifier
+                                        .size(32.dp)
+                                        .clip(CircleShape)
+                                        .background(selectedColor!!),
                             )
                         }
                     }
@@ -376,7 +399,7 @@ fun AccountFormScreen(
                             selectedColor = it
                             showColorPicker = false
                             errorMessage = null
-                        }
+                        },
                     )
                 }
 
@@ -384,7 +407,7 @@ fun AccountFormScreen(
                 if (formState is AccountFormState.Loading) {
                     Box(
                         modifier = Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         CircularProgressIndicator()
                     }
@@ -404,7 +427,7 @@ fun AccountFormScreenPreview() {
             args = AccountRoute.AccountForm(null),
             navController = navController,
             paddingValues = paddingValues,
-            isDarkTheme = false
+            isDarkTheme = false,
         )
     }
 }
