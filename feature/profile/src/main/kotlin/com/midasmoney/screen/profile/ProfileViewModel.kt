@@ -1,12 +1,20 @@
 package com.midasmoney.screen.profile
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import javax.inject.Inject
 
-class ProfileViewModel {
+@HiltViewModel
+class ProfileViewModel
+    @Inject
+    constructor() : ViewModel() {
+        private val _uiState = MutableStateFlow(ProfileUiState())
+        val uiState: StateFlow<ProfileUiState> = _uiState.asStateFlow()
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is profile content"
+        fun logout() {
+            // Handle logout logic
+        }
     }
-    val text: LiveData<String> = _text
-}
