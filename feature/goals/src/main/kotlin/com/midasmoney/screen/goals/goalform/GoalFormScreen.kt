@@ -60,8 +60,8 @@ import com.midasmoney.core.ui.component.IconPickerGrid
 import com.midasmoney.core.ui.component.MidasCard
 import com.midasmoney.core.util.UUID
 import com.midasmoney.screen.goals.GoalsRoute
-import kotlinx.datetime.format
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.format
 import kotlinx.datetime.format.MonthNames
 import kotlinx.datetime.format.char
 import java.time.Instant
@@ -132,9 +132,10 @@ fun GoalFormScreen(
             confirmButton = {
                 TextButton(onClick = {
                     datePickerState.selectedDateMillis?.let { millis ->
-                        val javaDate = Instant.ofEpochMilli(millis)
-                            .atZone(ZoneOffset.UTC)
-                            .toLocalDate()
+                        val javaDate =
+                            Instant.ofEpochMilli(millis)
+                                .atZone(ZoneOffset.UTC)
+                                .toLocalDate()
                         targetDate = LocalDate(javaDate.year, javaDate.monthValue, javaDate.dayOfMonth)
                     }
                     showDatePicker = false
@@ -144,7 +145,7 @@ fun GoalFormScreen(
                 TextButton(onClick = { showDatePicker = false }) {
                     Text(stringResource(R.string.cancel))
                 }
-            }
+            },
         ) {
             DatePicker(state = datePickerState, showModeToggle = false)
         }
@@ -155,92 +156,107 @@ fun GoalFormScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = if (isEditMode) stringResource(R.string.title_edit_goal)
-                        else stringResource(R.string.title_new_goal)
+                        text =
+                            if (isEditMode) {
+                                stringResource(R.string.title_edit_goal)
+                            } else {
+                                stringResource(R.string.title_new_goal)
+                            },
                     )
                 },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.back)
+                            contentDescription = stringResource(R.string.back),
                         )
                     }
                 },
                 actions = {
                     IconButton(
                         onClick = {
-                            val formData = GoalFormData(
-                                title = title,
-                                description = description,
-                                amount = amount.toDoubleOrNull() ?: 0.0,
-                                monthlyValue = monthlyValue.toDoubleOrNull() ?: 0.0,
-                                icon = selectedIcon?.let { IconModel(it) },
-                                color = selectedColor?.toArgb(),
-                                targetDate = targetDate,
-                            )
+                            val formData =
+                                GoalFormData(
+                                    title = title,
+                                    description = description,
+                                    amount = amount.toDoubleOrNull() ?: 0.0,
+                                    monthlyValue = monthlyValue.toDoubleOrNull() ?: 0.0,
+                                    icon = selectedIcon?.let { IconModel(it) },
+                                    color = selectedColor?.toArgb(),
+                                    targetDate = targetDate,
+                                )
                             val validationError = viewModel.validateForm(formData)
                             if (validationError != null) {
                                 errorMessage = validationError
                                 return@IconButton
                             }
-                            val savedGoal = Goal(
-                                id = if (isEditMode) UUID(goal.id.toString()) else UUID.randomUUID(),
-                                title = title,
-                                description = description,
-                                amount = formData.amount,
-                                progress = if (isEditMode) goal.progress else 0.0,
-                                icon = IconModel(selectedIcon!!),
-                                color = selectedColor!!.toArgb(),
-                                targetDate = targetDate!!,
-                                monthlyValue = formData.monthlyValue,
-                            )
-                            if (isEditMode) viewModel.updateGoal(savedGoal)
-                            else viewModel.createGoal(savedGoal)
+                            val savedGoal =
+                                Goal(
+                                    id = if (isEditMode) UUID(goal.id.toString()) else UUID.randomUUID(),
+                                    title = title,
+                                    description = description,
+                                    amount = formData.amount,
+                                    progress = if (isEditMode) goal.progress else 0.0,
+                                    icon = IconModel(selectedIcon!!),
+                                    color = selectedColor!!.toArgb(),
+                                    targetDate = targetDate!!,
+                                    monthlyValue = formData.monthlyValue,
+                                )
+                            if (isEditMode) {
+                                viewModel.updateGoal(savedGoal)
+                            } else {
+                                viewModel.createGoal(savedGoal)
+                            }
                         },
-                        enabled = formState !is GoalFormState.Loading
+                        enabled = formState !is GoalFormState.Loading,
                     ) {
                         Icon(Icons.Default.Check, contentDescription = stringResource(R.string.save))
                     }
-                }
+                },
             )
-        }
+        },
     ) { padding ->
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(padding),
         ) {
             Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState())
+                        .padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 errorMessage?.let { error ->
                     Card(
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.errorContainer
-                        ),
-                        modifier = Modifier.fillMaxWidth()
+                        colors =
+                            CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.errorContainer,
+                            ),
+                        modifier = Modifier.fillMaxWidth(),
                     ) {
                         Text(
                             text = error,
                             color = MaterialTheme.colorScheme.onErrorContainer,
-                            modifier = Modifier.padding(16.dp)
+                            modifier = Modifier.padding(16.dp),
                         )
                     }
                 }
 
                 OutlinedTextField(
                     value = title,
-                    onValueChange = { title = it; errorMessage = null },
+                    onValueChange = {
+                        title = it
+                        errorMessage = null
+                    },
                     label = { Text(stringResource(R.string.label_goal_title)) },
                     placeholder = { Text(stringResource(R.string.placeholder_goal_title)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
-                    enabled = formState !is GoalFormState.Loading
+                    enabled = formState !is GoalFormState.Loading,
                 )
 
                 OutlinedTextField(
@@ -250,18 +266,21 @@ fun GoalFormScreen(
                     placeholder = { Text(stringResource(R.string.placeholder_goal_description)) },
                     modifier = Modifier.fillMaxWidth(),
                     maxLines = 3,
-                    enabled = formState !is GoalFormState.Loading
+                    enabled = formState !is GoalFormState.Loading,
                 )
 
                 OutlinedTextField(
                     value = amount,
-                    onValueChange = { amount = it; errorMessage = null },
+                    onValueChange = {
+                        amount = it
+                        errorMessage = null
+                    },
                     label = { Text(stringResource(R.string.label_goal_amount)) },
                     placeholder = { Text(stringResource(R.string.placeholder_goal_amount)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                    enabled = formState !is GoalFormState.Loading
+                    enabled = formState !is GoalFormState.Loading,
                 )
 
                 OutlinedTextField(
@@ -272,31 +291,39 @@ fun GoalFormScreen(
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                    enabled = formState !is GoalFormState.Loading
+                    enabled = formState !is GoalFormState.Loading,
                 )
 
                 // Target Date
                 Text(
                     text = stringResource(R.string.label_goal_target_date),
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
                 )
                 MidasCard(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable { showDatePicker = true }
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .clickable { showDatePicker = true },
                 ) {
                     Text(
-                        text = targetDate?.format(LocalDate.Format {
-                            monthName(MonthNames.ENGLISH_ABBREVIATED)
-                            char(' ')
-                            dayOfMonth()
-                            chars(", ")
-                            year()
-                        }) ?: stringResource(R.string.no_selected_date),
+                        text =
+                            targetDate?.format(
+                                LocalDate.Format {
+                                    monthName(MonthNames.ENGLISH_ABBREVIATED)
+                                    char(' ')
+                                    dayOfMonth()
+                                    chars(", ")
+                                    year()
+                                },
+                            ) ?: stringResource(R.string.no_selected_date),
                         modifier = Modifier.padding(16.dp),
-                        color = if (targetDate != null) MaterialTheme.colorScheme.onSurface
-                        else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                        color =
+                            if (targetDate != null) {
+                                MaterialTheme.colorScheme.onSurface
+                            } else {
+                                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                            },
                     )
                 }
 
@@ -304,40 +331,52 @@ fun GoalFormScreen(
                 Text(
                     text = stringResource(R.string.label_select_icon),
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
                 )
                 MidasCard(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable { showIconPicker = !showIconPicker }
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .clickable { showIconPicker = !showIconPicker },
                 ) {
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(
-                            text = if (selectedIcon != null) stringResource(R.string.label_selected_icon)
-                            else stringResource(R.string.label_tap_to_select_icon),
-                            color = if (selectedIcon != null) MaterialTheme.colorScheme.onSurface
-                            else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                            text =
+                                if (selectedIcon != null) {
+                                    stringResource(R.string.label_selected_icon)
+                                } else {
+                                    stringResource(R.string.label_tap_to_select_icon)
+                                },
+                            color =
+                                if (selectedIcon != null) {
+                                    MaterialTheme.colorScheme.onSurface
+                                } else {
+                                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                                },
                         )
                         if (selectedIcon != null) {
                             Icon(
-                                imageVector = com.midasmoney.core.domain.model.converter.IconConverter
-                                    .getImageVector(IconModel(selectedIcon!!)),
+                                imageVector =
+                                    com.midasmoney.core.domain.model.converter.IconConverter
+                                        .getImageVector(IconModel(selectedIcon!!)),
                                 contentDescription = null,
-                                modifier = Modifier
-                                    .size(32.dp)
-                                    .clip(CircleShape)
-                                    .background(
-                                        (selectedColor ?: MaterialTheme.colorScheme.secondaryContainer)
-                                            .copy(alpha = 0.2f)
-                                    )
-                                    .padding(6.dp),
-                                tint = selectedColor ?: MaterialTheme.colorScheme.secondaryContainer
+                                modifier =
+                                    Modifier
+                                        .size(32.dp)
+                                        .clip(CircleShape)
+                                        .background(
+                                            (selectedColor ?: MaterialTheme.colorScheme.secondaryContainer)
+                                                .copy(alpha = 0.2f),
+                                        )
+                                        .padding(6.dp),
+                                tint = selectedColor ?: MaterialTheme.colorScheme.secondaryContainer,
                             )
                         }
                     }
@@ -346,7 +385,11 @@ fun GoalFormScreen(
                     IconPickerGrid(
                         selectedIcon = selectedIcon,
                         selectedColor = selectedColor,
-                        onIconSelected = { selectedIcon = it; showIconPicker = false; errorMessage = null }
+                        onIconSelected = {
+                            selectedIcon = it
+                            showIconPicker = false
+                            errorMessage = null
+                        },
                     )
                 }
 
@@ -354,32 +397,43 @@ fun GoalFormScreen(
                 Text(
                     text = stringResource(R.string.label_select_color),
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
                 )
                 MidasCard(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable { showColorPicker = !showColorPicker }
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .clickable { showColorPicker = !showColorPicker },
                 ) {
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp),
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(
-                            text = if (selectedColor != null) stringResource(R.string.label_selected_color)
-                            else stringResource(R.string.label_tap_to_select_color),
-                            color = if (selectedColor != null) MaterialTheme.colorScheme.onSurface
-                            else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                            text =
+                                if (selectedColor != null) {
+                                    stringResource(R.string.label_selected_color)
+                                } else {
+                                    stringResource(R.string.label_tap_to_select_color)
+                                },
+                            color =
+                                if (selectedColor != null) {
+                                    MaterialTheme.colorScheme.onSurface
+                                } else {
+                                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                                },
                         )
                         if (selectedColor != null) {
                             Box(
-                                modifier = Modifier
-                                    .size(32.dp)
-                                    .clip(CircleShape)
-                                    .background(selectedColor!!)
+                                modifier =
+                                    Modifier
+                                        .size(32.dp)
+                                        .clip(CircleShape)
+                                        .background(selectedColor!!),
                             )
                         }
                     }
@@ -387,7 +441,11 @@ fun GoalFormScreen(
                 if (showColorPicker) {
                     ColorPickerGrid(
                         selectedColor = selectedColor,
-                        onColorSelected = { selectedColor = it; showColorPicker = false; errorMessage = null }
+                        onColorSelected = {
+                            selectedColor = it
+                            showColorPicker = false
+                            errorMessage = null
+                        },
                     )
                 }
 

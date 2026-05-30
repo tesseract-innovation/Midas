@@ -11,39 +11,41 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class TransactionRepository @Inject constructor(
-    private val transactionDao: TransactionDao,
-) : BaseRepository<Transaction, TransactionEntity>(), ITransactionRepository {
-    override val dao: IDao<TransactionEntity>
-        get() = transactionDao
-    override val entityMapper: IEntityMapper<TransactionEntity, Transaction>
-        get() = TransactionEntityMapper
+class TransactionRepository
+    @Inject
+    constructor(
+        private val transactionDao: TransactionDao,
+    ) : BaseRepository<Transaction, TransactionEntity>(), ITransactionRepository {
+        override val dao: IDao<TransactionEntity>
+            get() = transactionDao
+        override val entityMapper: IEntityMapper<TransactionEntity, Transaction>
+            get() = TransactionEntityMapper
 
-    override suspend fun getById(id: String): Transaction? {
-        val transactionEntity = transactionDao.getTransactionById(id)
-        return transactionEntity?.let { TransactionEntityMapper.toDomain(transactionEntity) }
-    }
+        override suspend fun getById(id: String): Transaction? {
+            val transactionEntity = transactionDao.getTransactionById(id)
+            return transactionEntity?.let { TransactionEntityMapper.toDomain(transactionEntity) }
+        }
 
-    override suspend fun getAll(): Flow<List<Transaction>> {
-        return transactionDao.getAllTransactions()
-            .map { it.map { entity -> TransactionEntityMapper.toDomain(entity) } }
-    }
+        override suspend fun getAll(): Flow<List<Transaction>> {
+            return transactionDao.getAllTransactions()
+                .map { it.map { entity -> TransactionEntityMapper.toDomain(entity) } }
+        }
 
-    override fun getTransactionForAccount(accountId: String): Flow<List<Transaction>> {
-        return transactionDao.getTransactionsForAccount(accountId).map { it ->
-            it.map { entity -> entityMapper.toDomain(entity) }
+        override fun getTransactionForAccount(accountId: String): Flow<List<Transaction>> {
+            return transactionDao.getTransactionsForAccount(accountId).map { it ->
+                it.map { entity -> entityMapper.toDomain(entity) }
+            }
+        }
+
+        override suspend fun getTotalAmountForAccount(accountId: String): Double {
+            return transactionDao.getTotalAmountForAccount(accountId)
+        }
+
+        override suspend fun getTotalExpense(accountId: String): Double {
+            return transactionDao.getTotalExpenseForAccount(accountId)
+        }
+
+        override suspend fun getTotalIncome(accountId: String): Double {
+            return transactionDao.getTotalIncomeForAccount(accountId)
         }
     }
-
-    override suspend fun getTotalAmountForAccount(accountId: String): Double {
-        return transactionDao.getTotalAmountForAccount(accountId)
-    }
-
-    override suspend fun getTotalExpense(accountId: String): Double {
-        return transactionDao.getTotalExpenseForAccount(accountId)
-    }
-
-    override suspend fun getTotalIncome(accountId: String): Double {
-        return transactionDao.getTotalIncomeForAccount(accountId)
-    }
-}

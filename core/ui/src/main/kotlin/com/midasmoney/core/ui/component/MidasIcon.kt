@@ -20,17 +20,18 @@ import com.midasmoney.core.resource.R
 @Composable
 fun MidasIcon(
     iconType: IconType,
-    color: Color?
+    color: Color?,
 ) {
     val defaultColor = MaterialTheme.colorScheme.secondaryContainer
     Icon(
         imageVector = IconConverter.getImageVector(IconModel(iconType)),
         contentDescription = stringResource(R.string.description_selected_icon),
-        modifier = Modifier
-            .size(32.dp)
-            .clip(CircleShape)
-            .background((color ?: defaultColor).copy(alpha = 0.2f))
-            .padding(6.dp),
-        tint = color ?: defaultColor
+        modifier =
+            Modifier
+                .size(32.dp)
+                .clip(CircleShape)
+                .background((color ?: defaultColor).copy(alpha = 0.2f))
+                .padding(6.dp),
+        tint = color ?: defaultColor,
     )
 }

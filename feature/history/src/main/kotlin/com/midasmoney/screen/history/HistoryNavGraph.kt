@@ -15,11 +15,11 @@ sealed class HistoryRoute(val route: String) {
 fun HistoryNavGraph(
     navController: NavHostController,
     shouldShowBottomBar: MutableState<Boolean>,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
 ) {
     NavHost(
         navController = navController,
-        startDestination = HistoryRoute.Main.route
+        startDestination = HistoryRoute.Main.route,
     ) {
         composable(route = HistoryRoute.Main.route) {
             shouldShowBottomBar.value = true

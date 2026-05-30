@@ -9,15 +9,16 @@ import com.midasmoney.core.domain.model.converter.ColorConverter
 import com.midasmoney.core.util.DateTimeUtils
 import kotlin.time.ExperimentalTime
 
-private val expenses = listOf(
-    TransactionType.WITHDRAWAL,
-    TransactionType.FEES,
-    TransactionType.REFUND,
-    TransactionType.LOAN_PAYMENT,
-    TransactionType.INTEREST,
-    TransactionType.TAX,
-    TransactionType.EXPENSE
-)
+private val expenses =
+    listOf(
+        TransactionType.WITHDRAWAL,
+        TransactionType.FEES,
+        TransactionType.REFUND,
+        TransactionType.LOAN_PAYMENT,
+        TransactionType.INTEREST,
+        TransactionType.TAX,
+        TransactionType.EXPENSE,
+    )
 
 fun Transaction.formatAmount(): String {
     return this.amount.toCurrency()
@@ -31,7 +32,6 @@ fun Transaction.formatAmountValue(): Double {
 fun Transaction.formatAmountColor(): Color {
     return if (this.type in expenses) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
 }
-
 
 @OptIn(ExperimentalTime::class)
 fun Transaction.formatDate(): String {

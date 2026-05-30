@@ -24,30 +24,33 @@ fun MidasGradientCard(
     secondaryColor: Color,
     height: Dp,
     isDarkTheme: Boolean = isSystemInDarkTheme(),
-    compose: @Composable () -> Unit
+    compose: @Composable () -> Unit,
 ) {
-    val gradientColors = if (isDarkTheme) {
-        listOf(
-            primaryColor.copy(alpha = 0.7f),
-            secondaryColor.copy(alpha = 0.5f)
-        )
-    } else {
-        listOf(
-            primaryColor,
-            secondaryColor
-        )
-    }
-    Column(
-        modifier = Modifier
-            .padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 5.dp)
-            .fillMaxWidth()
-            .height(height)
-            .clip(RoundedCornerShape(16.dp))
-            .background(
-                brush = Brush.linearGradient(
-                    colors = gradientColors
-                )
+    val gradientColors =
+        if (isDarkTheme) {
+            listOf(
+                primaryColor.copy(alpha = 0.7f),
+                secondaryColor.copy(alpha = 0.5f),
             )
+        } else {
+            listOf(
+                primaryColor,
+                secondaryColor,
+            )
+        }
+    Column(
+        modifier =
+            Modifier
+                .padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 5.dp)
+                .fillMaxWidth()
+                .height(height)
+                .clip(RoundedCornerShape(16.dp))
+                .background(
+                    brush =
+                        Brush.linearGradient(
+                            colors = gradientColors,
+                        ),
+                ),
     ) {
         Column {
             compose()
@@ -62,7 +65,7 @@ fun MidasGradientCardLightPreview() {
         MidasGradientCard(
             primaryColor = Color.Blue,
             secondaryColor = Color.Red,
-            height = 140.dp
+            height = 140.dp,
         ) {}
     }
 }
@@ -75,7 +78,7 @@ fun MidasGradientCardDarkPreview() {
             primaryColor = Color.Blue,
             secondaryColor = Color.Red,
             isDarkTheme = true,
-            height = 140.dp
+            height = 140.dp,
         ) {}
     }
 }

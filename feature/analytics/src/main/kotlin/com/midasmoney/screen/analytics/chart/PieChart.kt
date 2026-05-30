@@ -32,13 +32,15 @@ import com.midasmoney.core.ui.preview.MidasLightPreview
 @Composable
 fun AnalyticsPieChart() {
     Surface(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 30.dp, bottom = 100.dp)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(top = 30.dp, bottom = 100.dp),
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier =
+                Modifier
+                    .fillMaxSize(),
         ) {
             LazyColumn(content = {
                 items(3) { item ->
@@ -48,7 +50,7 @@ fun AnalyticsPieChart() {
                                 modifier = Modifier.padding(12.dp),
                                 text = "Simple piechart",
                                 style = MaterialTheme.typography.titleLarge,
-                                fontWeight = FontWeight.Bold
+                                fontWeight = FontWeight.Bold,
                             )
                             SimplePiechart(LocalContext.current)
                         }
@@ -58,7 +60,7 @@ fun AnalyticsPieChart() {
                                 modifier = Modifier.padding(12.dp),
                                 text = "Piechart with slice lables",
                                 style = MaterialTheme.typography.titleLarge,
-                                fontWeight = FontWeight.Bold
+                                fontWeight = FontWeight.Bold,
                             )
                             PiechartWithSliceLables(LocalContext.current)
                         }
@@ -87,23 +89,23 @@ private fun SimplePiechart(context: Context) {
             chartPadding = 30,
             backgroundColor = Color.Black,
             showSliceLabels = false,
-            animationDuration = 1500
+            animationDuration = 1500,
         )
     Column(modifier = Modifier.height(500.dp)) {
         Spacer(modifier = Modifier.height(20.dp))
         Legends(legendsConfig = DataUtils.getLegendsConfigFromPieChartData(pieChartData, 3))
         PieChart(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(400.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(400.dp),
             pieChartData,
-            pieChartConfig
+            pieChartConfig,
         ) { slice ->
             Toast.makeText(context, slice.label, Toast.LENGTH_SHORT).show()
         }
     }
 }
-
 
 /**
  * Piechart with slice lables
@@ -123,16 +125,17 @@ private fun PiechartWithSliceLables(context: Context) {
             isAnimationEnable = true,
             chartPadding = 20,
             showSliceLabels = true,
-            labelVisible = true
+            labelVisible = true,
         )
     Column(modifier = Modifier.height(500.dp)) {
         Legends(legendsConfig = DataUtils.getLegendsConfigFromPieChartData(pieChartData, 3))
         PieChart(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(400.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(400.dp),
             pieChartData,
-            pieChartConfig
+            pieChartConfig,
         ) { slice ->
             Toast.makeText(context, slice.label, Toast.LENGTH_SHORT).show()
         }
@@ -145,7 +148,7 @@ fun AnalyticsPieChartScreenLightPreview() {
 //    val navController = rememberNavController()
     MidasLightPreview {
         AnalyticsPieChart(
-            //navController
+            // navController
         )
     }
 }
@@ -156,8 +159,8 @@ fun AnalyticsPieChartScreenDarkPreview() {
 //    val navController = rememberNavController()
     MidasDarkPreview {
         AnalyticsPieChart(
-            //navController = navController,
-            //tisDarkTheme = true
+            // navController = navController,
+            // tisDarkTheme = true
         )
     }
 }

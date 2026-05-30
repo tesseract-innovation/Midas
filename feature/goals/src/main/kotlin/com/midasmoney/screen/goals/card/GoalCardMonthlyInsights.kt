@@ -27,8 +27,7 @@ import com.midasmoney.core.ui.theme.MidasColors
 import com.midasmoney.core.ui.theme.MidasTheme
 
 @Composable
-fun GoalCardMonthlyInsights(
-) {
+fun GoalCardMonthlyInsights() {
     MidasGradientCard(
         primaryColor = MidasColors.Orange.primary,
         secondaryColor = MidasColors.Pink.primary,
@@ -36,7 +35,7 @@ fun GoalCardMonthlyInsights(
     ) {
         Column {
             Row(
-                modifier = Modifier.padding(start = 19.dp, top = 24.dp)
+                modifier = Modifier.padding(start = 19.dp, top = 24.dp),
             ) {
                 Column {
                     Icon(
@@ -47,15 +46,16 @@ fun GoalCardMonthlyInsights(
                     )
                 }
                 Column(
-                    modifier = Modifier
-                        .padding(start = 12.dp)
+                    modifier =
+                        Modifier
+                            .padding(start = 12.dp),
                 ) {
                     Row {
                         Text(
                             text = stringResource(monthly_insights),
                             fontSize = 16.sp,
                             color = Color.White,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
                         )
                     }
                     Row {
@@ -69,9 +69,10 @@ fun GoalCardMonthlyInsights(
                 }
             }
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 24.dp, bottom = 28.dp, top = 18.dp)
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(start = 24.dp, bottom = 28.dp, top = 18.dp),
             ) {
                 Column {
                     Row {
@@ -87,13 +88,14 @@ fun GoalCardMonthlyInsights(
                             text = "$850",
                             fontSize = 21.sp,
                             color = Color.White,
-                            fontWeight = FontWeight.W400
+                            fontWeight = FontWeight.W400,
                         )
                     }
                 }
                 Column(
-                    modifier = Modifier
-                        .padding(start = 46.dp)
+                    modifier =
+                        Modifier
+                            .padding(start = 46.dp),
                 ) {
                     Row {
                         Text(
@@ -108,7 +110,7 @@ fun GoalCardMonthlyInsights(
                             text = "$850",
                             fontSize = 21.sp,
                             color = Color.White,
-                            fontWeight = FontWeight.W400
+                            fontWeight = FontWeight.W400,
                         )
                     }
                 }

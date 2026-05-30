@@ -58,7 +58,7 @@ fun AccountDetails(
     args: AccountRoute.AccountDetails,
     navController: NavHostController,
     paddingValues: PaddingValues,
-    viewModel: AccountDetailViewModel = hiltViewModel()
+    viewModel: AccountDetailViewModel = hiltViewModel(),
 ) {
     val account = args.account
     val transactions = viewModel.transactions.collectAsStateWithLifecycle()
@@ -69,7 +69,7 @@ fun AccountDetails(
         totalBalance = totalBalance,
         transactions = transactions,
         navController = navController,
-        paddingValues = paddingValues
+        paddingValues = paddingValues,
     )
 }
 
@@ -79,30 +79,34 @@ private fun AccountDetailsImp(
     totalBalance: State<Double?>,
     transactions: State<List<Transaction>>,
     navController: NavHostController,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
 ) {
     Surface(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(paddingValues)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(paddingValues),
     ) {
         Box(
             contentAlignment = Alignment.TopEnd,
-            modifier = Modifier
-                .fillMaxSize()
+            modifier =
+                Modifier
+                    .fillMaxSize(),
         ) {
             Column(
-                modifier = Modifier
-                    .fillMaxSize()
+                modifier =
+                    Modifier
+                        .fillMaxSize(),
             ) {
                 // Header
                 Row(
-                    modifier = Modifier
-                        .padding(horizontal = 12.dp)
+                    modifier =
+                        Modifier
+                            .padding(horizontal = 12.dp),
                 ) {
                     AccountDetailHeader(
                         account = account,
-                        totalBalance = totalBalance
+                        totalBalance = totalBalance,
                     )
                 }
                 Spacer(modifier = Modifier.height(16.dp))
@@ -111,7 +115,7 @@ private fun AccountDetailsImp(
                 Text(
                     text = stringResource(R.string.title_transactions),
                     style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(bottom = 8.dp, start = 12.dp)
+                    modifier = Modifier.padding(bottom = 8.dp, start = 12.dp),
                 )
 
                 // No transactions
@@ -120,9 +124,10 @@ private fun AccountDetailsImp(
                         text = stringResource(R.string.no_transactions),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MidasColors.Gray,
-                        modifier = Modifier
-                            .align(Alignment.CenterHorizontally)
-                            .padding(top = 20.dp)
+                        modifier =
+                            Modifier
+                                .align(Alignment.CenterHorizontally)
+                                .padding(top = 20.dp),
                     )
                 } else {
                     // List all transactions
@@ -136,15 +141,16 @@ private fun AccountDetailsImp(
                     navController.navigate(AccountRoute.TransactionForm(account))
                     Log.d(TAG, "Floating Action Button clicked!")
                 },
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(16.dp),
-                containerColor = MidasColors.Purple.primary
+                modifier =
+                    Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(16.dp),
+                containerColor = MidasColors.Purple.primary,
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = stringResource(description_add_account),
-                    tint = androidx.compose.ui.graphics.Color.White
+                    tint = androidx.compose.ui.graphics.Color.White,
                 )
             }
         }
@@ -155,10 +161,10 @@ private fun AccountDetailsImp(
 private fun ShowAllTransactions(
     transactions: State<List<Transaction>>,
     navController: NavHostController,
-    account: Account
+    account: Account,
 ) {
     LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         items(transactions.value.size) { index ->
             TransactionCard(
@@ -167,13 +173,13 @@ private fun ShowAllTransactions(
                     navController.navigate(
                         AccountRoute.TransactionForm(
                             account,
-                            transactions.value[index]
-                        )
+                            transactions.value[index],
+                        ),
                     )
                 },
                 paddingStart = 12.dp,
                 paddingEnd = 12.dp,
-                paddingTop = 0.dp
+                paddingTop = 0.dp,
             )
         }
     }
@@ -182,26 +188,28 @@ private fun ShowAllTransactions(
 @Composable
 fun AccountDetailHeader(
     account: Account,
-    totalBalance: State<Double?>
+    totalBalance: State<Double?>,
 ) {
     val icon = IconConverter.getImageVector(account.icon)
     val color = ColorConverter.aRgbToColor(account.color)
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 16.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp),
     ) {
         Icon(
             imageVector = icon,
             contentDescription = account.name,
             tint = color,
-            modifier = Modifier
-                .size(56.dp)
-                .clip(CircleShape)
-                .background(color.copy(alpha = 0.2f))
-                .padding(12.dp)
+            modifier =
+                Modifier
+                    .size(56.dp)
+                    .clip(CircleShape)
+                    .background(color.copy(alpha = 0.2f))
+                    .padding(12.dp),
         )
         Spacer(modifier = Modifier.width(16.dp))
         Column {
@@ -209,12 +217,12 @@ fun AccountDetailHeader(
                 text = account.name,
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onBackground
+                color = MaterialTheme.colorScheme.onBackground,
             )
             Text(
                 text = stringResource(R.string.balance) + ": ${totalBalance.value?.toCurrency()}",
                 style = MaterialTheme.typography.titleMedium,
-                color = MidasColors.Gray // Or adapt based on theme
+                color = MidasColors.Gray, // Or adapt based on theme
             )
         }
     }
@@ -227,16 +235,18 @@ fun AccountDetailsDarkPreview() {
         val paddingValues = PaddingValues()
         val navController = rememberNavController()
         val mockAccount = Database.accounts.first()
-        val args = AccountRoute.AccountDetails(
-            account = Account(
-                name = mockAccount.name,
-                icon = mockAccount.icon,
-                color = mockAccount.color,
-                balance = mockAccount.balance,
-                transactions = mockAccount.transactions,
-                id = mockAccount.id
+        val args =
+            AccountRoute.AccountDetails(
+                account =
+                    Account(
+                        name = mockAccount.name,
+                        icon = mockAccount.icon,
+                        color = mockAccount.color,
+                        balance = mockAccount.balance,
+                        transactions = mockAccount.transactions,
+                        id = mockAccount.id,
+                    ),
             )
-        )
         val transactions = remember { mutableStateOf(mockAccount.transactions) }
         val totalBalance = remember { mutableStateOf<Double?>(mockAccount.balance.currentBalance) }
         AccountDetailsImp(
@@ -244,7 +254,7 @@ fun AccountDetailsDarkPreview() {
             totalBalance = totalBalance,
             transactions = transactions,
             navController,
-            paddingValues
+            paddingValues,
         )
     }
 }

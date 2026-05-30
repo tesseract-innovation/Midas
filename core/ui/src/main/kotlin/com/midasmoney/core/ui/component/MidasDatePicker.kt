@@ -23,8 +23,9 @@ import com.midasmoney.core.resource.R
 fun midasDatePicker(): String {
     var showDatePicker by remember { mutableStateOf(true) }
     val dataPickerState = rememberDatePickerState()
-    val selectedDate = dataPickerState.selectedDateMillis?.toLocalDate()?.formatDate()
-        ?: stringResource(R.string.no_selected_date)
+    val selectedDate =
+        dataPickerState.selectedDateMillis?.toLocalDate()?.formatDate()
+            ?: stringResource(R.string.no_selected_date)
 
     if (showDatePicker) {
         DatePickerDialog(
@@ -33,22 +34,22 @@ fun midasDatePicker(): String {
                 TextButton(
                     onClick = {
                         showDatePicker = false
-                    }
+                    },
                 ) {
                     Text(stringResource(R.string.ok))
                 }
             },
             dismissButton = {
                 TextButton(
-                    onClick = { showDatePicker = false }
+                    onClick = { showDatePicker = false },
                 ) {
                     Text(stringResource(R.string.cancel))
                 }
-            }
+            },
         ) {
             DatePicker(
                 state = dataPickerState,
-                showModeToggle = false
+                showModeToggle = false,
             )
         }
     }

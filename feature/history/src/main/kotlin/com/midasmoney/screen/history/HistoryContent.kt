@@ -14,9 +14,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.midasmoney.screen.history.tab.TabNavigation
 import com.midasmoney.core.ui.preview.MidasDarkPreview
 import com.midasmoney.core.ui.preview.MidasLightPreview
+import com.midasmoney.screen.history.tab.TabNavigation
 
 @Composable
 fun HistoryContentImp(paddingValues: PaddingValues) {
@@ -28,17 +28,19 @@ fun HistoryContentImp(paddingValues: PaddingValues) {
 fun HistoryContent(paddingValues: PaddingValues) {
     val viewModel = HistoryViewModel()
     Surface(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(paddingValues)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(paddingValues),
     ) {
         Box(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .verticalScroll(rememberScrollState())
+                modifier =
+                    Modifier
+                        .verticalScroll(rememberScrollState()),
             ) {
                 TabNavigation(viewModel)
             }

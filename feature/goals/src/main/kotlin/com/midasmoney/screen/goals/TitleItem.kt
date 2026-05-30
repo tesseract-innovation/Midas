@@ -19,39 +19,46 @@ import com.midasmoney.core.ui.preview.MidasDarkPreview
 import com.midasmoney.core.ui.preview.MidasLightPreview
 
 @Composable
-fun TitleItem(textTitle: String, textButton: String, actionButton: () -> Unit) {
+fun TitleItem(
+    textTitle: String,
+    textButton: String,
+    actionButton: () -> Unit,
+) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 10.dp),
-        verticalAlignment = Alignment.CenterVertically
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(top = 10.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(
-            modifier = Modifier
-                .weight(0.8f)
-                .padding(start = 25.dp),
-            horizontalAlignment = Alignment.Start
+            modifier =
+                Modifier
+                    .weight(0.8f)
+                    .padding(start = 25.dp),
+            horizontalAlignment = Alignment.Start,
         ) {
             Text(
                 text = textTitle,
                 color = MaterialTheme.colorScheme.onSurface,
                 fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
             )
         }
         Column(
-            modifier = Modifier
-                .weight(0.3f)
-                .padding(end = 10.dp),
-            horizontalAlignment = Alignment.End
+            modifier =
+                Modifier
+                    .weight(0.3f)
+                    .padding(end = 10.dp),
+            horizontalAlignment = Alignment.End,
         ) {
             TextButton(
-                onClick = actionButton
+                onClick = actionButton,
             ) {
                 Text(
                     text = textButton,
                     color = MaterialTheme.colorScheme.secondary,
-                    fontSize = 15.sp
+                    fontSize = 15.sp,
                 )
             }
         }
@@ -65,7 +72,7 @@ fun TitleItemLightPreview() {
         TitleItem(
             textTitle = "Recent Transactions",
             textButton = "View All",
-            actionButton = {}
+            actionButton = {},
         )
     }
 }
@@ -77,7 +84,7 @@ fun TitleItemDarkPreview() {
         TitleItem(
             textTitle = "Recent Transactions",
             textButton = "View All",
-            actionButton = {}
+            actionButton = {},
         )
     }
 }

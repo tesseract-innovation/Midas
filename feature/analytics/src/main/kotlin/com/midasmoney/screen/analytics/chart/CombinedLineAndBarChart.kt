@@ -37,14 +37,16 @@ import com.midasmoney.core.ui.preview.MidasLightPreview
 @Composable
 fun AnalyticsCombinedChart() {
     Surface(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 30.dp, bottom = 100.dp)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(top = 30.dp, bottom = 100.dp),
     ) {
         Box(
             contentAlignment = Alignment.TopCenter,
-            modifier = Modifier
-                .fillMaxSize()
+            modifier =
+                Modifier
+                    .fillMaxSize(),
         ) {
             LazyColumn(content = {
                 items(2) { item ->
@@ -54,7 +56,7 @@ fun AnalyticsCombinedChart() {
                                 modifier = Modifier.padding(12.dp),
                                 text = "Combined bar line chart",
                                 style = MaterialTheme.typography.titleLarge,
-                                fontWeight = FontWeight.Bold
+                                fontWeight = FontWeight.Bold,
                             )
                             BarWithLineChart()
                         }
@@ -64,7 +66,7 @@ fun AnalyticsCombinedChart() {
                                 modifier = Modifier.padding(12.dp),
                                 text = "Combined bar line chart with background",
                                 style = MaterialTheme.typography.titleLarge,
-                                fontWeight = FontWeight.Bold
+                                fontWeight = FontWeight.Bold,
                             )
                             BarWithLineChartAndBackground()
                         }
@@ -84,65 +86,72 @@ fun BarWithLineChart() {
     val maxRange = 100
     val groupBarData = DataUtils.getGroupBarChartData(50, 100, 3)
     val yStepSize = 10
-    val xAxisData = AxisData.Builder()
-        .axisStepSize(30.dp)
-        .bottomPadding(5.dp)
-        .labelData { index -> index.toString() }
-        .build()
-    val yAxisData = AxisData.Builder()
-        .steps(yStepSize)
-        .labelAndAxisLinePadding(20.dp)
-        .axisOffset(20.dp)
-        .labelData { index -> (index * (maxRange / yStepSize)).toString() }
-        .build()
-    val linePlotData = LinePlotData(
-        lines = listOf(
-            Line(
-                DataUtils.getLineChartData(50, maxRange = 100),
-                lineStyle = LineStyle(color = Color.Blue),
-                intersectionPoint = IntersectionPoint(),
-                selectionHighlightPoint = SelectionHighlightPoint(),
-                selectionHighlightPopUp = SelectionHighlightPopUp()
-            ),
-            Line(
-                DataUtils.getLineChartData(50, maxRange = 100),
-                lineStyle = LineStyle(color = Color.Black),
-                intersectionPoint = IntersectionPoint(),
-                selectionHighlightPoint = SelectionHighlightPoint(),
-                selectionHighlightPopUp = SelectionHighlightPopUp()
-            )
+    val xAxisData =
+        AxisData.Builder()
+            .axisStepSize(30.dp)
+            .bottomPadding(5.dp)
+            .labelData { index -> index.toString() }
+            .build()
+    val yAxisData =
+        AxisData.Builder()
+            .steps(yStepSize)
+            .labelAndAxisLinePadding(20.dp)
+            .axisOffset(20.dp)
+            .labelData { index -> (index * (maxRange / yStepSize)).toString() }
+            .build()
+    val linePlotData =
+        LinePlotData(
+            lines =
+                listOf(
+                    Line(
+                        DataUtils.getLineChartData(50, maxRange = 100),
+                        lineStyle = LineStyle(color = Color.Blue),
+                        intersectionPoint = IntersectionPoint(),
+                        selectionHighlightPoint = SelectionHighlightPoint(),
+                        selectionHighlightPopUp = SelectionHighlightPopUp(),
+                    ),
+                    Line(
+                        DataUtils.getLineChartData(50, maxRange = 100),
+                        lineStyle = LineStyle(color = Color.Black),
+                        intersectionPoint = IntersectionPoint(),
+                        selectionHighlightPoint = SelectionHighlightPoint(),
+                        selectionHighlightPopUp = SelectionHighlightPopUp(),
+                    ),
+                ),
         )
-    )
     val colorPaletteList = DataUtils.getColorPaletteList(3)
-    val legendsConfig = LegendsConfig(
-        legendLabelList = DataUtils.getLegendsLabelData(colorPaletteList),
-        gridColumnCount = 3
-    )
-    val barPlotData = BarPlotData(
-        groupBarList = groupBarData,
-        barStyle = BarStyle(barWidth = 35.dp),
-        barColorPaletteList = colorPaletteList
-    )
-    val combinedChartData = CombinedChartData(
-        combinedPlotDataList = listOf(barPlotData, linePlotData),
-        xAxisData = xAxisData,
-        yAxisData = yAxisData
-    )
+    val legendsConfig =
+        LegendsConfig(
+            legendLabelList = DataUtils.getLegendsLabelData(colorPaletteList),
+            gridColumnCount = 3,
+        )
+    val barPlotData =
+        BarPlotData(
+            groupBarList = groupBarData,
+            barStyle = BarStyle(barWidth = 35.dp),
+            barColorPaletteList = colorPaletteList,
+        )
+    val combinedChartData =
+        CombinedChartData(
+            combinedPlotDataList = listOf(barPlotData, linePlotData),
+            xAxisData = xAxisData,
+            yAxisData = yAxisData,
+        )
     Column(
         Modifier
-            .height(500.dp)
+            .height(500.dp),
     ) {
         CombinedChart(
-            modifier = Modifier
-                .height(400.dp),
-            combinedChartData = combinedChartData
+            modifier =
+                Modifier
+                    .height(400.dp),
+            combinedChartData = combinedChartData,
         )
         Legends(
-            legendsConfig = legendsConfig
+            legendsConfig = legendsConfig,
         )
     }
 }
-
 
 /**
  * Bar with line chart and background
@@ -153,64 +162,72 @@ fun BarWithLineChartAndBackground() {
     val maxRange = 100
     val groupBarData = DataUtils.getGroupBarChartData(50, 100, 3)
     val yStepSize = 10
-    val xAxisData = AxisData.Builder()
-        .axisStepSize(30.dp)
-        .bottomPadding(5.dp)
+    val xAxisData =
+        AxisData.Builder()
+            .axisStepSize(30.dp)
+            .bottomPadding(5.dp)
 //        .backgroundColor(Color.Yellow)
-        .labelData { index -> index.toString() }
-        .build()
-    val yAxisData = AxisData.Builder()
-        .steps(yStepSize)
+            .labelData { index -> index.toString() }
+            .build()
+    val yAxisData =
+        AxisData.Builder()
+            .steps(yStepSize)
 //        .backgroundColor(Color.Yellow)
-        .labelAndAxisLinePadding(20.dp)
-        .axisOffset(20.dp)
-        .labelData { index -> (index * (maxRange / yStepSize)).toString() }
-        .build()
-    val linePlotData = LinePlotData(
-        lines = listOf(
-            Line(
-                DataUtils.getLineChartData(50, maxRange = 100),
-                lineStyle = LineStyle(color = Color.Blue),
-                intersectionPoint = IntersectionPoint(),
-                selectionHighlightPoint = SelectionHighlightPoint(),
-                selectionHighlightPopUp = SelectionHighlightPopUp()
-            ),
-            Line(
-                DataUtils.getLineChartData(50, maxRange = 100),
-                lineStyle = LineStyle(color = Color.Black),
-                intersectionPoint = IntersectionPoint(),
-                selectionHighlightPoint = SelectionHighlightPoint(),
-                selectionHighlightPopUp = SelectionHighlightPopUp()
-            )
+            .labelAndAxisLinePadding(20.dp)
+            .axisOffset(20.dp)
+            .labelData { index -> (index * (maxRange / yStepSize)).toString() }
+            .build()
+    val linePlotData =
+        LinePlotData(
+            lines =
+                listOf(
+                    Line(
+                        DataUtils.getLineChartData(50, maxRange = 100),
+                        lineStyle = LineStyle(color = Color.Blue),
+                        intersectionPoint = IntersectionPoint(),
+                        selectionHighlightPoint = SelectionHighlightPoint(),
+                        selectionHighlightPopUp = SelectionHighlightPopUp(),
+                    ),
+                    Line(
+                        DataUtils.getLineChartData(50, maxRange = 100),
+                        lineStyle = LineStyle(color = Color.Black),
+                        intersectionPoint = IntersectionPoint(),
+                        selectionHighlightPoint = SelectionHighlightPoint(),
+                        selectionHighlightPopUp = SelectionHighlightPopUp(),
+                    ),
+                ),
         )
-    )
     val colorPaletteList = DataUtils.getColorPaletteList(3)
-    val legendsConfig = LegendsConfig(
-        legendLabelList = DataUtils.getLegendsLabelData(colorPaletteList),
-        gridColumnCount = 3
-    )
-    val barPlotData = BarPlotData(
-        groupBarList = groupBarData,
-        barStyle = BarStyle(barWidth = 35.dp),
-        barColorPaletteList = colorPaletteList
-    )
-    val combinedChartData = CombinedChartData(
-        combinedPlotDataList = listOf(barPlotData, linePlotData),
-        xAxisData = xAxisData,
-        yAxisData = yAxisData,
+    val legendsConfig =
+        LegendsConfig(
+            legendLabelList = DataUtils.getLegendsLabelData(colorPaletteList),
+            gridColumnCount = 3,
+        )
+    val barPlotData =
+        BarPlotData(
+            groupBarList = groupBarData,
+            barStyle = BarStyle(barWidth = 35.dp),
+            barColorPaletteList = colorPaletteList,
+        )
+    val combinedChartData =
+        CombinedChartData(
+            combinedPlotDataList = listOf(barPlotData, linePlotData),
+            xAxisData = xAxisData,
+            yAxisData = yAxisData,
 //        backgroundColor = Color.Yellow
-    )
+        )
     Column(
         Modifier
-            .height(500.dp)
+            .height(500.dp),
     ) {
         CombinedChart(
-            modifier = Modifier
-                .height(400.dp),
-            combinedChartData = combinedChartData
+            modifier =
+                Modifier
+                    .height(400.dp),
+            combinedChartData = combinedChartData,
         )
         Legends(
-            legendsConfig = legendsConfig
+            legendsConfig = legendsConfig,
         )
     }
 }
@@ -221,7 +238,7 @@ fun AnalyticsCombinedChartScreenLightPreview() {
     val navController = rememberNavController()
     MidasLightPreview {
         AnalyticsCombinedChart(
-            //navController
+            // navController
         )
     }
 }
@@ -232,8 +249,8 @@ fun AnalyticsCombinedChartScreenDarkPreview() {
     val navController = rememberNavController()
     MidasDarkPreview {
         AnalyticsCombinedChart(
-            //navController = navController,
-            //isDarkTheme = true
+            // navController = navController,
+            // isDarkTheme = true
         )
     }
 }

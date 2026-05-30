@@ -40,14 +40,14 @@ import com.midasmoney.core.resource.R
 import com.midasmoney.core.ui.preview.CustomPreview
 import com.midasmoney.core.ui.theme.MidasColors
 import com.midasmoney.core.ui.theme.MidasTheme
+import com.midasmoney.screen.goals.card.GoalCard
 import com.midasmoney.screen.goals.card.GoalCardBalanceStatus
 import com.midasmoney.screen.goals.card.GoalCardCompleted
-import com.midasmoney.screen.goals.card.GoalCard
 
 @Composable
 fun GoalsContentImp(
     navController: NavController,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
 ) {
     val viewModel: GoalsViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -56,7 +56,7 @@ fun GoalsContentImp(
         navController = navController,
         paddingValues = paddingValues,
         uiState = uiState,
-        viewModel = viewModel
+        viewModel = viewModel,
     )
 }
 
@@ -66,19 +66,20 @@ fun GoalsContent(
     paddingValues: PaddingValues,
     uiState: GoalsUiState,
     viewModel: GoalsViewModel,
-    isDarkTheme: Boolean = isSystemInDarkTheme()
+    isDarkTheme: Boolean = isSystemInDarkTheme(),
 ) {
     Surface(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(paddingValues)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(paddingValues),
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             when (uiState) {
                 is GoalsUiState.Loading -> {
                     Box(
                         modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         CircularProgressIndicator()
                     }
@@ -87,21 +88,21 @@ fun GoalsContent(
                 is GoalsUiState.Error -> {
                     Box(
                         modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                            verticalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
                             Text(
                                 text = stringResource(R.string.error_load_goals),
                                 style = MaterialTheme.typography.titleMedium,
-                                color = MidasColors.Red.primary
+                                color = MidasColors.Red.primary,
                             )
                             Text(
                                 text = uiState.message,
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = MidasColors.Gray
+                                color = MidasColors.Gray,
                             )
                         }
                     }
@@ -112,24 +113,26 @@ fun GoalsContent(
                     val completedGoals = uiState.goals.filter { it.progress >= it.amount }
 
                     Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .verticalScroll(rememberScrollState())
-                            .padding(bottom = 80.dp)
+                        modifier =
+                            Modifier
+                                .fillMaxSize()
+                                .verticalScroll(rememberScrollState())
+                                .padding(bottom = 80.dp),
                     ) {
                         GoalCardBalanceStatus(summary = uiState.summary)
 
                         if (uiState.goals.isEmpty()) {
                             Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(32.dp),
-                                contentAlignment = Alignment.Center
+                                modifier =
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .padding(32.dp),
+                                contentAlignment = Alignment.Center,
                             ) {
                                 Text(
                                     text = stringResource(R.string.no_goals),
                                     style = MaterialTheme.typography.bodyLarge,
-                                    color = MidasColors.Gray
+                                    color = MidasColors.Gray,
                                 )
                             }
                         } else {
@@ -137,7 +140,7 @@ fun GoalsContent(
                                 TitleItem(
                                     textTitle = stringResource(R.string.goal_active),
                                     textButton = "",
-                                    actionButton = {}
+                                    actionButton = {},
                                 )
                                 activeGoals.forEach { goal ->
                                     GoalCardWithActions(
@@ -149,7 +152,7 @@ fun GoalsContent(
                                         onEdit = {
                                             navController.navigate(GoalsRoute.GoalForm(goal))
                                         },
-                                        onDelete = { viewModel.deleteGoal(goal) }
+                                        onDelete = { viewModel.deleteGoal(goal) },
                                     )
                                 }
                             }
@@ -158,7 +161,7 @@ fun GoalsContent(
                                 TitleItem(
                                     textTitle = stringResource(R.string.goal_recently_completed),
                                     textButton = "",
-                                    actionButton = {}
+                                    actionButton = {},
                                 )
                                 completedGoals.forEach { goal ->
                                     GoalCardCompleted(goal = goal)
@@ -171,15 +174,16 @@ fun GoalsContent(
 
             FloatingActionButton(
                 onClick = { navController.navigate(GoalsRoute.GoalForm()) },
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(16.dp),
-                containerColor = MidasColors.Blue.primary
+                modifier =
+                    Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(16.dp),
+                containerColor = MidasColors.Blue.primary,
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = stringResource(R.string.description_add_goal),
-                    tint = Color.White
+                    tint = Color.White,
                 )
             }
         }
@@ -202,19 +206,25 @@ fun GoalCardWithActions(
             isDarkTheme = isDarkTheme,
             onCardClick = onCardClick,
             onMenuClick = { showMenu = true },
-            onAddMoneyClick = onCardClick
+            onAddMoneyClick = onCardClick,
         )
         DropdownMenu(
             expanded = showMenu,
-            onDismissRequest = { showMenu = false }
+            onDismissRequest = { showMenu = false },
         ) {
             DropdownMenuItem(
                 text = { Text(stringResource(R.string.edit)) },
-                onClick = { showMenu = false; onEdit() }
+                onClick = {
+                    showMenu = false
+                    onEdit()
+                },
             )
             DropdownMenuItem(
                 text = { Text(stringResource(R.string.delete), color = MidasColors.Red.primary) },
-                onClick = { showMenu = false; onDelete() }
+                onClick = {
+                    showMenu = false
+                    onDelete()
+                },
             )
         }
     }
@@ -228,12 +238,13 @@ fun GoalsContentPreview() {
         GoalsContent(
             navController = androidx.navigation.compose.rememberNavController(),
             paddingValues = PaddingValues(),
-            uiState = GoalsUiState.Success(
-                goals = goals,
-                summary = GetGoalsSummaryUseCase()(goals),
-            ),
+            uiState =
+                GoalsUiState.Success(
+                    goals = goals,
+                    summary = GetGoalsSummaryUseCase()(goals),
+                ),
             viewModel = hiltViewModel(),
-            isDarkTheme = true
+            isDarkTheme = true,
         )
     }
 }

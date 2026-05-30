@@ -37,43 +37,47 @@ import com.midasmoney.core.domain.model.extension.toCurrency
 import com.midasmoney.core.resource.R.string.expense
 import com.midasmoney.core.resource.R.string.income
 import com.midasmoney.core.resource.R.string.total_balance
-import com.midasmoney.core.ui.theme.MidasColors
 import com.midasmoney.core.ui.preview.MidasDarkPreview
 import com.midasmoney.core.ui.preview.MidasLightPreview
+import com.midasmoney.core.ui.theme.MidasColors
 
 @Composable
 fun BalanceStatus(
     balance: Balance,
-    isDarkTheme: Boolean = isSystemInDarkTheme()
+    isDarkTheme: Boolean = isSystemInDarkTheme(),
 ) {
-    val gradientColors = if (isDarkTheme) {
-        listOf(
-            MidasColors.Purple.primary.copy(alpha = 0.7f),
-            MidasColors.Green.primary.copy(alpha = 0.5f)
-        )
-    } else {
-        listOf(
-            MidasColors.Purple.primary,
-            MidasColors.Green.primary
-        )
-    }
+    val gradientColors =
+        if (isDarkTheme) {
+            listOf(
+                MidasColors.Purple.primary.copy(alpha = 0.7f),
+                MidasColors.Green.primary.copy(alpha = 0.5f),
+            )
+        } else {
+            listOf(
+                MidasColors.Purple.primary,
+                MidasColors.Green.primary,
+            )
+        }
 
     Column(
-        modifier = Modifier
-            .padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 5.dp)
-            .height(180.dp)
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
-            .background(
-                brush = Brush.linearGradient(
-                    colors = gradientColors
-                )
-            )
+        modifier =
+            Modifier
+                .padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 5.dp)
+                .height(180.dp)
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(16.dp))
+                .background(
+                    brush =
+                        Brush.linearGradient(
+                            colors = gradientColors,
+                        ),
+                ),
     ) {
         Row {
             Column(
-                modifier = Modifier
-                    .padding(start = 28.dp, top = 25.dp)
+                modifier =
+                    Modifier
+                        .padding(start = 28.dp, top = 25.dp),
             ) {
                 Row {
                     Text(
@@ -84,14 +88,15 @@ fun BalanceStatus(
                     )
                 }
                 Row(
-                    modifier = Modifier
-                        .padding(bottom = 20.dp)
+                    modifier =
+                        Modifier
+                            .padding(bottom = 20.dp),
                 ) {
                     Text(
                         text = balance.currentBalance.toCurrency(),
                         fontSize = 28.sp,
                         color = Color.White,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
                     )
                 }
                 Row {
@@ -100,77 +105,83 @@ fun BalanceStatus(
                             text = stringResource(income),
                             color = Color.White,
                             fontWeight = FontWeight.W300,
-                            fontSize = 13.sp
-
+                            fontSize = 13.sp,
                         )
                         Text(
                             text = balance.income.toCurrency(),
                             fontWeight = FontWeight.Bold,
-                            color = Color.White
+                            color = Color.White,
                         )
                     }
                     VerticalDivider(
-                        modifier = Modifier
-                            .padding(horizontal = 10.dp)
-                            .height(0.dp)
+                        modifier =
+                            Modifier
+                                .padding(horizontal = 10.dp)
+                                .height(0.dp),
                     )
                     Column {
                         Text(
                             text = stringResource(expense),
                             color = Color.White,
                             fontWeight = FontWeight.W300,
-                            fontSize = 13.sp
+                            fontSize = 13.sp,
                         )
                         Text(
                             text = balance.expense.toCurrency(),
                             fontWeight = FontWeight.Bold,
-                            color = Color.White
+                            color = Color.White,
                         )
                     }
                 }
             }
             Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = 25.dp, end = 25.dp),
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .padding(top = 25.dp, end = 25.dp),
             ) {
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .weight(1f),
                     verticalAlignment = Alignment.Top,
-                    horizontalArrangement = Arrangement.End
+                    horizontalArrangement = Arrangement.End,
                 ) {
                     Icon(
                         imageVector = Icons.Filled.AccountBalanceWallet,
                         contentDescription = Icons.Filled.AccountBalanceWallet.name,
-                        modifier = Modifier
-                            .size(25.dp)
-                            .alpha(0.8f),
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer
+                        modifier =
+                            Modifier
+                                .size(25.dp)
+                                .alpha(0.8f),
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
                 }
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .weight(1f),
                     verticalAlignment = Alignment.Top,
-                    horizontalArrangement = Arrangement.End
+                    horizontalArrangement = Arrangement.End,
                 ) {
                     IconButton(
                         onClick = {},
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(10.dp))
-                            .size(40.dp)
-                            .background(color = Color.LightGray.copy(alpha = 0.5f))
-                            .padding(11.dp)
+                        modifier =
+                            Modifier
+                                .clip(RoundedCornerShape(10.dp))
+                                .size(40.dp)
+                                .background(color = Color.LightGray.copy(alpha = 0.5f))
+                                .padding(11.dp),
                     ) {
                         Icon(
                             imageVector = Icons.Filled.RemoveRedEye,
                             contentDescription = Icons.Filled.RemoveRedEye.name,
                             tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                            modifier = Modifier
-                                .fillMaxSize()
+                            modifier =
+                                Modifier
+                                    .fillMaxSize(),
                         )
                     }
                 }
@@ -184,7 +195,7 @@ fun BalanceStatus(
 fun BalanceStatusLightPreview() {
     MidasLightPreview {
         BalanceStatus(
-            balance = Database.balance
+            balance = Database.balance,
         )
     }
 }
@@ -195,7 +206,7 @@ fun BalanceStatusDarkPreview() {
     MidasDarkPreview {
         BalanceStatus(
             balance = Database.balance,
-            isDarkTheme = true
+            isDarkTheme = true,
         )
     }
 }

@@ -10,5 +10,5 @@ data class Account(
     val color: Int,
     var balance: Balance,
     val transactions: List<Transaction>,
-    val id: UUID = UUID.randomUUID()
+    val id: UUID = UUID.randomUUID(),
 )

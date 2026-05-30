@@ -15,23 +15,30 @@ import com.midasmoney.screen.analytics.chart.AnalyticsWaveChart
 
 sealed class AnalyticsRoute(val route: String) {
     data object Main : AnalyticsRoute("Analytics")
+
     data object BarChart : AnalyticsRoute("Bar_chart")
+
     data object BubbleChart : AnalyticsRoute("Bubble_chart")
+
     data object CombinedChart : AnalyticsRoute("Combined_chart")
+
     data object DonutChart : AnalyticsRoute("Donut_chart")
+
     data object LineChart : AnalyticsRoute("Line_chart")
+
     data object PieChart : AnalyticsRoute("Pie_chart")
+
     data object WaveChart : AnalyticsRoute("Wave_chart")
 }
 
 @Composable
 fun AnalyticsNavGraph(
     navController: NavHostController,
-    shouldShowBottomBar: MutableState<Boolean>
+    shouldShowBottomBar: MutableState<Boolean>,
 ) {
     NavHost(
         navController = navController,
-        startDestination = AnalyticsRoute.Main.route
+        startDestination = AnalyticsRoute.Main.route,
     ) {
         composable(AnalyticsRoute.Main.route) {
             shouldShowBottomBar.value = true

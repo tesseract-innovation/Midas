@@ -22,9 +22,13 @@ interface TransactionDao : IDao<TransactionEntity> {
     @Query("SELECT SUM(amount) FROM `transaction` WHERE accountId = :accountId")
     fun getTotalAmountForAccount(accountId: String): Double
 
-    @Query("SELECT SUM(amount) FROM `transaction` WHERE accountId = :accountId AND type IN ('WITHDRAWAL', 'FEES', 'REFUND', 'LOAN_PAYMENT', 'INTEREST', 'TAX', 'EXPENSE')")
+    @Query(
+        "SELECT SUM(amount) FROM `transaction` WHERE accountId = :accountId AND type IN ('WITHDRAWAL', 'FEES', 'REFUND', 'LOAN_PAYMENT', 'INTEREST', 'TAX', 'EXPENSE')",
+    )
     fun getTotalIncomeForAccount(accountId: String): Double
 
-    @Query("SELECT SUM(amount) FROM `transaction` WHERE accountId = :accountId AND type NOT IN ('WITHDRAWAL', 'FEES', 'REFUND', 'LOAN_PAYMENT', 'INTEREST', 'TAX', 'EXPENSE')")
+    @Query(
+        "SELECT SUM(amount) FROM `transaction` WHERE accountId = :accountId AND type NOT IN ('WITHDRAWAL', 'FEES', 'REFUND', 'LOAN_PAYMENT', 'INTEREST', 'TAX', 'EXPENSE')",
+    )
     fun getTotalExpenseForAccount(accountId: String): Double
 }

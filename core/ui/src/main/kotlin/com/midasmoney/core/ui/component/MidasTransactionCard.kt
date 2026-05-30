@@ -39,54 +39,60 @@ fun TransactionCard(
     onClick: (() -> Unit)? = null,
     paddingTop: Dp = 10.dp,
     paddingStart: Dp = 20.dp,
-    paddingEnd: Dp = 20.dp
+    paddingEnd: Dp = 20.dp,
 ) {
     Column(
-        modifier = Modifier
-            .padding(top = paddingTop, start = paddingStart, end = paddingEnd)
+        modifier =
+            Modifier
+                .padding(top = paddingTop, start = paddingStart, end = paddingEnd),
     ) {
         MidasCard(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(80.dp)
-                .clickable {
-                    onClick?.invoke()
-                }
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(80.dp)
+                    .clickable {
+                        onClick?.invoke()
+                    },
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxSize()
+                modifier =
+                    Modifier
+                        .fillMaxSize(),
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 15.dp, end = 18.dp),
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(start = 15.dp, end = 18.dp),
                 ) {
                     Column(
-                        modifier = Modifier
-                            .padding(end = 12.dp)
+                        modifier =
+                            Modifier
+                                .padding(end = 12.dp),
                     ) {
                         Icon(
                             contentDescription = transaction.title,
                             imageVector = IconConverter.getImageVector(transaction.icon),
                             tint = ColorConverter.aRgbToColor(transaction.color),
-                            modifier = Modifier
-                                .size(40.dp)
-                                .clip(CircleShape)
-                                .background(color = transaction.formatIconColorBackground())
-                                .padding(10.dp)
+                            modifier =
+                                Modifier
+                                    .size(40.dp)
+                                    .clip(CircleShape)
+                                    .background(color = transaction.formatIconColorBackground())
+                                    .padding(10.dp),
                         )
                     }
                     Column(
-                        horizontalAlignment = Alignment.Start
+                        horizontalAlignment = Alignment.Start,
                     ) {
                         Row {
                             Text(
                                 text = transaction.title,
                                 color = MaterialTheme.colorScheme.onBackground,
-                                fontWeight = FontWeight.Bold
+                                fontWeight = FontWeight.Bold,
                             )
                         }
                         Row {
@@ -95,45 +101,50 @@ fun TransactionCard(
                                 fontSize = 15.sp,
                                 color = MaterialTheme.colorScheme.outline,
                                 fontWeight = FontWeight.W400,
-                                modifier = Modifier
-                                    .padding(end = 4.dp)
+                                modifier =
+                                    Modifier
+                                        .padding(end = 4.dp),
                             )
                             Box(
-                                modifier = Modifier
-                                    .align(Alignment.CenterVertically)
-                                    .clip(CircleShape)
-                                    .size(5.dp)
-                                    .background(
-                                        color = MaterialTheme.colorScheme.outline
-                                    )
+                                modifier =
+                                    Modifier
+                                        .align(Alignment.CenterVertically)
+                                        .clip(CircleShape)
+                                        .size(5.dp)
+                                        .background(
+                                            color = MaterialTheme.colorScheme.outline,
+                                        ),
                             )
                             Text(
                                 text = transaction.formatDate(),
                                 fontSize = 15.sp,
                                 color = MaterialTheme.colorScheme.outline,
                                 fontWeight = FontWeight.W400,
-                                modifier = Modifier
-                                    .padding(start = 4.dp)
+                                modifier =
+                                    Modifier
+                                        .padding(start = 4.dp),
                             )
                         }
                     }
                     Column(
                         horizontalAlignment = Alignment.End,
-                        modifier = Modifier
-                            .weight(0.3f)
-                            .align(Alignment.CenterVertically)
+                        modifier =
+                            Modifier
+                                .weight(0.3f)
+                                .align(Alignment.CenterVertically),
                     ) {
                         Text(
                             text = transaction.formatAmount(),
                             color = transaction.formatAmountColor(),
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
                         )
                         Text(
                             text = transaction.status.displayName,
                             color = MaterialTheme.colorScheme.outline,
                             fontWeight = FontWeight.W400,
-                            modifier = Modifier
-                                .padding(start = 2.dp)
+                            modifier =
+                                Modifier
+                                    .padding(start = 2.dp),
                         )
                     }
                 }
@@ -148,7 +159,7 @@ fun TransactionCardPreview() {
     MidasTheme {
         TransactionCard(
             transaction = Database.transactions.first(),
-            onClick = {}
+            onClick = {},
         )
     }
 }

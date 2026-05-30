@@ -40,14 +40,16 @@ import com.midasmoney.core.ui.preview.MidasLightPreview
 @Composable
 fun AnalyticsWaveChart() {
     Surface(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 30.dp, bottom = 100.dp)
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(top = 30.dp, bottom = 100.dp),
     ) {
         Box(
             contentAlignment = Alignment.TopCenter,
-            modifier = Modifier
-                .fillMaxSize()
+            modifier =
+                Modifier
+                    .fillMaxSize(),
         ) {
             LazyColumn(content = {
                 items(3) { item ->
@@ -57,14 +59,14 @@ fun AnalyticsWaveChart() {
                                 modifier = Modifier.padding(12.dp),
                                 text = "Simple wave chart",
                                 style = MaterialTheme.typography.titleLarge,
-                                fontWeight = FontWeight.Bold
+                                fontWeight = FontWeight.Bold,
                             )
                             WaveGraph1(
                                 DataUtils.getWaveChartData(
                                     15.0,
                                     50.0,
-                                    0.5
-                                )
+                                    0.5,
+                                ),
                             )
                         }
 
@@ -73,14 +75,14 @@ fun AnalyticsWaveChart() {
                                 modifier = Modifier.padding(12.dp),
                                 text = "Sine wave chart",
                                 style = MaterialTheme.typography.titleLarge,
-                                fontWeight = FontWeight.Bold
+                                fontWeight = FontWeight.Bold,
                             )
                             WaveGraph2(
                                 DataUtils.getWaveChartData(
                                     15.0,
                                     50.0,
-                                    0.2
-                                )
+                                    0.2,
+                                ),
                             )
                         }
 
@@ -89,14 +91,14 @@ fun AnalyticsWaveChart() {
                                 modifier = Modifier.padding(12.dp),
                                 text = "Amplitude wave chart",
                                 style = MaterialTheme.typography.titleLarge,
-                                fontWeight = FontWeight.Bold
+                                fontWeight = FontWeight.Bold,
                             )
                             WaveGraph3(
                                 DataUtils.getWaveChartData(
                                     20.0,
                                     5.0,
-                                    1.0
-                                )
+                                    1.0,
+                                ),
                             )
                         }
                     }
@@ -109,182 +111,211 @@ fun AnalyticsWaveChart() {
 @Composable
 fun WaveGraph1(pointsData: List<Point>) {
     val steps = 5
-    val xAxisData = AxisData.Builder()
-        .axisStepSize(30.dp)
-        .startDrawPadding(48.dp)
-        .steps(pointsData.size - 1)
-        .labelData { i -> i.toString() }
-        .labelAndAxisLinePadding(15.dp)
-        .build()
-    val yAxisData = AxisData.Builder()
-        .steps(steps)
-        .labelAndAxisLinePadding(20.dp)
-        .labelData { i ->
-            // Add yMin to get the negative axis values to the scale
-            val yMin = pointsData.minOf { it.y }
-            val yMax = pointsData.maxOf { it.y }
-            val yScale = (yMax - yMin) / steps
-            ((i * yScale) + yMin).formatToSinglePrecision()
-        }.build()
-    val data = WaveChartData(
-        wavePlotData = WavePlotData(
-            lines = listOf(
-                Wave(
-                    dataPoints = pointsData,
-                    waveStyle = LineStyle(color = Color.Black),
-                    selectionHighlightPoint = SelectionHighlightPoint(),
-                    shadowUnderLine = ShadowUnderLine(),
-                    selectionHighlightPopUp = SelectionHighlightPopUp(),
-                    waveFillColor = WaveFillColor(topColor = Color.Green, bottomColor = Color.Red),
-                )
-            )
-        ),
-        xAxisData = xAxisData,
-        yAxisData = yAxisData,
-        gridLines = GridLines()
-    )
+    val xAxisData =
+        AxisData.Builder()
+            .axisStepSize(30.dp)
+            .startDrawPadding(48.dp)
+            .steps(pointsData.size - 1)
+            .labelData { i -> i.toString() }
+            .labelAndAxisLinePadding(15.dp)
+            .build()
+    val yAxisData =
+        AxisData.Builder()
+            .steps(steps)
+            .labelAndAxisLinePadding(20.dp)
+            .labelData { i ->
+                // Add yMin to get the negative axis values to the scale
+                val yMin = pointsData.minOf { it.y }
+                val yMax = pointsData.maxOf { it.y }
+                val yScale = (yMax - yMin) / steps
+                ((i * yScale) + yMin).formatToSinglePrecision()
+            }.build()
+    val data =
+        WaveChartData(
+            wavePlotData =
+                WavePlotData(
+                    lines =
+                        listOf(
+                            Wave(
+                                dataPoints = pointsData,
+                                waveStyle = LineStyle(color = Color.Black),
+                                selectionHighlightPoint = SelectionHighlightPoint(),
+                                shadowUnderLine = ShadowUnderLine(),
+                                selectionHighlightPopUp = SelectionHighlightPopUp(),
+                                waveFillColor = WaveFillColor(topColor = Color.Green, bottomColor = Color.Red),
+                            ),
+                        ),
+                ),
+            xAxisData = xAxisData,
+            yAxisData = yAxisData,
+            gridLines = GridLines(),
+        )
     WaveChart(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(300.dp),
-        waveChartData = data
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .height(300.dp),
+        waveChartData = data,
     )
 }
 
 @Composable
 fun WaveGraph2(pointsData: List<Point>) {
     val steps = 10
-    val xAxisData = AxisData.Builder()
-        .axisStepSize(40.dp)
-        .startDrawPadding(48.dp)
-        .steps(pointsData.size - 1)
-        .labelData { i -> (i).toString() }
-        .axisLabelAngle(20f)
-        .labelAndAxisLinePadding(15.dp)
-        .axisLabelColor(Color.Blue)
-        .axisLineColor(Color.DarkGray)
-        .typeFace(Typeface.DEFAULT_BOLD)
-        .build()
-    val yAxisData = AxisData.Builder()
-        .steps(10)
-        .labelData { i ->
-            // Add yMin to get the negative axis values to the scale
-            val yMin = pointsData.minOf { it.y }
-            val yMax = pointsData.maxOf { it.y }
-            val yScale = (yMax - yMin) / steps
-            ((i * yScale) + yMin).formatToSinglePrecision()
-        }
-        .labelAndAxisLinePadding(30.dp)
-        .axisLabelColor(Color.Blue)
-        .axisLineColor(Color.DarkGray)
-        .typeFace(Typeface.DEFAULT_BOLD)
-        .build()
-    val data = WaveChartData(
-        wavePlotData = WavePlotData(
-            lines = listOf(
-                Wave(
-                    dataPoints = pointsData,
-                    waveStyle = LineStyle(lineType = LineType.SmoothCurve(), color = Color.Blue),
-                    shadowUnderLine = ShadowUnderLine(alpha = 0.5f),
-                    waveFillColor = WaveFillColor(
-                        topColor = Color.Yellow,
-                        bottomColor = Color.Magenta
-                    ),
-                    selectionHighlightPopUp = SelectionHighlightPopUp(popUpLabel = { x, y ->
-                        val xLabel = "x : ${(1900 + x).toInt()} "
-                        val yLabel = "y : ${String.format("%.2f", y)}"
-                        "$xLabel $yLabel"
-                    })
-                )
-            )
-        ),
-        xAxisData = xAxisData,
-        yAxisData = yAxisData
-    )
+    val xAxisData =
+        AxisData.Builder()
+            .axisStepSize(40.dp)
+            .startDrawPadding(48.dp)
+            .steps(pointsData.size - 1)
+            .labelData { i -> (i).toString() }
+            .axisLabelAngle(20f)
+            .labelAndAxisLinePadding(15.dp)
+            .axisLabelColor(Color.Blue)
+            .axisLineColor(Color.DarkGray)
+            .typeFace(Typeface.DEFAULT_BOLD)
+            .build()
+    val yAxisData =
+        AxisData.Builder()
+            .steps(10)
+            .labelData { i ->
+                // Add yMin to get the negative axis values to the scale
+                val yMin = pointsData.minOf { it.y }
+                val yMax = pointsData.maxOf { it.y }
+                val yScale = (yMax - yMin) / steps
+                ((i * yScale) + yMin).formatToSinglePrecision()
+            }
+            .labelAndAxisLinePadding(30.dp)
+            .axisLabelColor(Color.Blue)
+            .axisLineColor(Color.DarkGray)
+            .typeFace(Typeface.DEFAULT_BOLD)
+            .build()
+    val data =
+        WaveChartData(
+            wavePlotData =
+                WavePlotData(
+                    lines =
+                        listOf(
+                            Wave(
+                                dataPoints = pointsData,
+                                waveStyle = LineStyle(lineType = LineType.SmoothCurve(), color = Color.Blue),
+                                shadowUnderLine = ShadowUnderLine(alpha = 0.5f),
+                                waveFillColor =
+                                    WaveFillColor(
+                                        topColor = Color.Yellow,
+                                        bottomColor = Color.Magenta,
+                                    ),
+                                selectionHighlightPopUp =
+                                    SelectionHighlightPopUp(popUpLabel = { x, y ->
+                                        val xLabel = "x : ${(1900 + x).toInt()} "
+                                        val yLabel = "y : ${String.format("%.2f", y)}"
+                                        "$xLabel $yLabel"
+                                    }),
+                            ),
+                        ),
+                ),
+            xAxisData = xAxisData,
+            yAxisData = yAxisData,
+        )
     WaveChart(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(300.dp),
-        waveChartData = data
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .height(300.dp),
+        waveChartData = data,
     )
 }
 
 @Composable
 fun WaveGraph3(pointsData: List<Point>) {
     val steps = 10
-    val xAxisData = AxisData.Builder()
-        .axisStepSize(40.dp)
-        .startDrawPadding(48.dp)
-        .steps(pointsData.size - 1)
-        .labelData { i -> i.toString() }
-        .labelAndAxisLinePadding(15.dp)
-        .axisLineColor(Color.Red)
-        .build()
-    val yAxisData = AxisData.Builder()
-        .steps(steps)
-        .labelData { i ->
-            val yMin = pointsData.minOf { it.y }
-            val yMax = pointsData.maxOf { it.y }
-            val yScale = (yMax - yMin) / steps
-            ((i * yScale) + yMin).formatToSinglePrecision()
-        }
-        .axisLineColor(Color.Red)
-        .labelAndAxisLinePadding(20.dp)
-        .bottomPadding(15.dp)
-        .build()
-    val data = WaveChartData(
-        wavePlotData = WavePlotData(
-            lines = listOf(
-                Wave(
-                    dataPoints = pointsData,
-                    waveStyle = LineStyle(
-                        lineType = LineType.Straight(isDotted = true),
-                        color = Color.Green
-                    ),
-                    shadowUnderLine = ShadowUnderLine(
-                        brush = Brush.verticalGradient(
-                            listOf(
-                                Color.Green,
-                                Color.Transparent
-                            )
-                        ), alpha = 0.3f
-                    ),
-                    selectionHighlightPoint = SelectionHighlightPoint(
-                        color = Color.Green
-                    ),
-                    selectionHighlightPopUp = SelectionHighlightPopUp(
-                        backgroundColor = Color.Black,
-                        backgroundStyle = Stroke(2f),
-                        labelColor = Color.Red,
-                        labelTypeface = Typeface.DEFAULT_BOLD
-                    ),
-                    waveFillColor = WaveFillColor(
-                        topColor = Color.Green,
-                        bottomColor = Color.Red,
-                        topBrush = Brush.verticalGradient(
-                            listOf(
-                                Color.Green,
-                                Color.Blue
-                            )
+    val xAxisData =
+        AxisData.Builder()
+            .axisStepSize(40.dp)
+            .startDrawPadding(48.dp)
+            .steps(pointsData.size - 1)
+            .labelData { i -> i.toString() }
+            .labelAndAxisLinePadding(15.dp)
+            .axisLineColor(Color.Red)
+            .build()
+    val yAxisData =
+        AxisData.Builder()
+            .steps(steps)
+            .labelData { i ->
+                val yMin = pointsData.minOf { it.y }
+                val yMax = pointsData.maxOf { it.y }
+                val yScale = (yMax - yMin) / steps
+                ((i * yScale) + yMin).formatToSinglePrecision()
+            }
+            .axisLineColor(Color.Red)
+            .labelAndAxisLinePadding(20.dp)
+            .bottomPadding(15.dp)
+            .build()
+    val data =
+        WaveChartData(
+            wavePlotData =
+                WavePlotData(
+                    lines =
+                        listOf(
+                            Wave(
+                                dataPoints = pointsData,
+                                waveStyle =
+                                    LineStyle(
+                                        lineType = LineType.Straight(isDotted = true),
+                                        color = Color.Green,
+                                    ),
+                                shadowUnderLine =
+                                    ShadowUnderLine(
+                                        brush =
+                                            Brush.verticalGradient(
+                                                listOf(
+                                                    Color.Green,
+                                                    Color.Transparent,
+                                                ),
+                                            ),
+                                        alpha = 0.3f,
+                                    ),
+                                selectionHighlightPoint =
+                                    SelectionHighlightPoint(
+                                        color = Color.Green,
+                                    ),
+                                selectionHighlightPopUp =
+                                    SelectionHighlightPopUp(
+                                        backgroundColor = Color.Black,
+                                        backgroundStyle = Stroke(2f),
+                                        labelColor = Color.Red,
+                                        labelTypeface = Typeface.DEFAULT_BOLD,
+                                    ),
+                                waveFillColor =
+                                    WaveFillColor(
+                                        topColor = Color.Green,
+                                        bottomColor = Color.Red,
+                                        topBrush =
+                                            Brush.verticalGradient(
+                                                listOf(
+                                                    Color.Green,
+                                                    Color.Blue,
+                                                ),
+                                            ),
+                                        bottomBrush =
+                                            Brush.verticalGradient(
+                                                listOf(
+                                                    Color.Green,
+                                                    Color.Red,
+                                                ),
+                                            ),
+                                    ),
+                            ),
                         ),
-                        bottomBrush = Brush.verticalGradient(
-                            listOf(
-                                Color.Green,
-                                Color.Red
-                            )
-                        )
-                    )
-                )
-            )
-        ),
-        xAxisData = xAxisData,
-        yAxisData = yAxisData
-    )
+                ),
+            xAxisData = xAxisData,
+            yAxisData = yAxisData,
+        )
     WaveChart(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(300.dp),
-        waveChartData = data
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .height(300.dp),
+        waveChartData = data,
     )
 }
 
@@ -294,7 +325,7 @@ fun AnalyticsWaveChartScreenLightPreview() {
 //    val navController = rememberNavController()
     MidasLightPreview {
         AnalyticsWaveChart(
-            //navController
+            // navController
         )
     }
 }
@@ -305,8 +336,8 @@ fun AnalyticsWaveChartScreenDarkPreview() {
 //    val navController = rememberNavController()
     MidasDarkPreview {
         AnalyticsWaveChart(
-            //navController = navController,
-            //tisDarkTheme = true
+            // navController = navController,
+            // tisDarkTheme = true
         )
     }
 }

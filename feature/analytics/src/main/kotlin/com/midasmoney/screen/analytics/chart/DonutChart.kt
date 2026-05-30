@@ -40,8 +40,8 @@ fun AnalyticsDonutChart() {
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-        })
-    {
+        },
+    ) {
         val context = LocalContext.current
         LazyColumn(content = {
             items(2) { item ->
@@ -51,12 +51,13 @@ fun AnalyticsDonutChart() {
                             modifier = Modifier.padding(12.dp),
                             text = "Simple donut chart",
                             style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
                         )
                         Box(
-                            modifier = Modifier
-                                .padding(it)
-                                .fillMaxWidth()
+                            modifier =
+                                Modifier
+                                    .padding(it)
+                                    .fillMaxWidth(),
                         ) {
                             Spacer(modifier = Modifier.height(20.dp))
                             SimpleDonutChart(context)
@@ -68,7 +69,7 @@ fun AnalyticsDonutChart() {
                             modifier = Modifier.padding(12.dp),
                             text = "Multiple donuts",
                             style = MaterialTheme.typography.titleLarge,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
                         )
                         MultipleSmallDonutCharts(context)
                     }
@@ -110,17 +111,19 @@ private fun SimpleDonutChart(context: Context) {
             isSumVisible = true,
         )
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(500.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .height(500.dp),
     ) {
         Legends(legendsConfig = DataUtils.getLegendsConfigFromPieChartData(pieChartData = data, 3))
         DonutPieChart(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(400.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(400.dp),
             data,
-            pieChartConfig
+            pieChartConfig,
         ) { slice ->
             Toast.makeText(context, slice.label, Toast.LENGTH_SHORT).show()
         }
@@ -155,7 +158,7 @@ private fun MultipleSmallDonutCharts(context: Context) {
             labelTypeface = Typeface.defaultFromStyle(Typeface.BOLD),
             isAnimationEnable = true,
             chartPadding = 25,
-            labelFontSize = 16.sp
+            labelFontSize = 16.sp,
         )
     val secondPieChartConfig =
         PieChartConfig(
@@ -172,7 +175,7 @@ private fun MultipleSmallDonutCharts(context: Context) {
             isSumVisible = true,
             sumUnit = "unit",
             labelColorType = PieChartConfig.LabelColorType.SLICE_COLOR,
-            labelType = PieChartConfig.LabelType.VALUE
+            labelType = PieChartConfig.LabelType.VALUE,
         )
     val thirdPieChartConfig =
         PieChartConfig(
@@ -185,27 +188,30 @@ private fun MultipleSmallDonutCharts(context: Context) {
             labelTypeface = Typeface.defaultFromStyle(Typeface.BOLD),
             isAnimationEnable = true,
             chartPadding = 25,
-            labelFontSize = 16.sp
+            labelFontSize = 16.sp,
         )
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(300.dp)
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .height(300.dp),
     ) {
         Legends(legendsConfig = DataUtils.getLegendsConfigFromPieChartData(pieChartData = data, 3))
         Spacer(modifier = Modifier.height(20.dp))
         LazyRow(
-            modifier = Modifier
-                .fillMaxWidth()
+            modifier =
+                Modifier
+                    .fillMaxWidth(),
         ) {
             item {
                 DonutPieChart(
-                    modifier = Modifier
-                        .width(100.dp)
-                        .height(100.dp),
+                    modifier =
+                        Modifier
+                            .width(100.dp)
+                            .height(100.dp),
                     data,
-                    firstPieChartConfig
+                    firstPieChartConfig,
                 ) { slice ->
                     Toast.makeText(context, slice.label, Toast.LENGTH_SHORT).show()
                 }
@@ -213,11 +219,12 @@ private fun MultipleSmallDonutCharts(context: Context) {
             }
             item {
                 DonutPieChart(
-                    modifier = Modifier
-                        .width(100.dp)
-                        .height(100.dp),
+                    modifier =
+                        Modifier
+                            .width(100.dp)
+                            .height(100.dp),
                     data,
-                    secondPieChartConfig
+                    secondPieChartConfig,
                 ) { slice ->
                     Toast.makeText(context, slice.label, Toast.LENGTH_SHORT).show()
                 }
@@ -225,11 +232,12 @@ private fun MultipleSmallDonutCharts(context: Context) {
             }
             item {
                 DonutPieChart(
-                    modifier = Modifier
-                        .width(100.dp)
-                        .height(100.dp),
+                    modifier =
+                        Modifier
+                            .width(100.dp)
+                            .height(100.dp),
                     data,
-                    thirdPieChartConfig
+                    thirdPieChartConfig,
                 ) { slice ->
                     Toast.makeText(context, slice.label, Toast.LENGTH_SHORT).show()
                 }
@@ -245,7 +253,7 @@ fun AnalyticsDonutChartScreenLightPreview() {
 //    val navController = rememberNavController()
     MidasLightPreview {
         AnalyticsDonutChart(
-            //navController
+            // navController
         )
     }
 }
@@ -256,8 +264,8 @@ fun AnalyticsDonutChartScreenDarkPreview() {
 //    val navController = rememberNavController()
     MidasDarkPreview {
         AnalyticsDonutChart(
-            //navController = navController,
-            //tisDarkTheme = true
+            // navController = navController,
+            // tisDarkTheme = true
         )
     }
 }

@@ -14,5 +14,5 @@ data class AccountEntity(
     val initialBalance: Double,
     val balance: Double,
     val income: Double,
-    val expense: Double
+    val expense: Double,
 ) : IEntity

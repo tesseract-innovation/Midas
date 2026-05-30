@@ -5,14 +5,17 @@ import com.midasmoney.core.ui.theme.MidasTheme
 
 enum class Theme {
     DARK,
-    LIGHT
+    LIGHT,
 }
 
 @Composable
-fun MidasPreview(theme: Theme = Theme.LIGHT, content: @Composable () -> Unit) {
+fun MidasPreview(
+    theme: Theme = Theme.LIGHT,
+    content: @Composable () -> Unit,
+) {
     MidasTheme(
         isTrueBlack = true,
-        dark = theme == Theme.DARK
+        dark = theme == Theme.DARK,
     ) {
         content()
     }
@@ -22,7 +25,7 @@ fun MidasPreview(theme: Theme = Theme.LIGHT, content: @Composable () -> Unit) {
 @Composable
 fun MidasDarkPreview(content: @Composable () -> Unit) {
     MidasPreview(
-        theme = Theme.DARK
+        theme = Theme.DARK,
     ) {
         content()
     }
@@ -32,7 +35,7 @@ fun MidasDarkPreview(content: @Composable () -> Unit) {
 @Composable
 fun MidasLightPreview(content: @Composable () -> Unit) {
     MidasPreview(
-        theme = Theme.LIGHT
+        theme = Theme.LIGHT,
     ) {
         content()
     }

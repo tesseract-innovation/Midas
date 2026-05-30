@@ -47,7 +47,7 @@ object TransactionEntityMapper : ITransactionEntityMapper<TransactionEntity> {
                 date = date,
                 time = time,
                 createdAt = createAt.epochSeconds.toString(),
-                id = id.toString()
+                id = id.toString(),
             )
         }
     }

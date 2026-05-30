@@ -15,9 +15,13 @@ import com.midasmoney.screen.profile.ProfileNavGraph
 
 sealed class Screen(val route: String) {
     data object Home : Screen("Home")
+
     data object History : Screen("History")
+
     data object Goals : Screen("Goals")
+
     data object Account : Screen("Account")
+
     data object Profile : Screen("Profile")
 }
 
@@ -25,45 +29,45 @@ sealed class Screen(val route: String) {
 fun SetupNavGraph(
     navController: NavHostController,
     shouldShowBottomBar: MutableState<Boolean>,
-    paddingValues: PaddingValues
+    paddingValues: PaddingValues,
 ) {
     NavHost(
         navController = navController,
-        startDestination = Screen.Home.route
+        startDestination = Screen.Home.route,
     ) {
         composable(Screen.Home.route) {
             HomeNavGraph(
                 rememberNavController(),
                 shouldShowBottomBar,
-                paddingValues
+                paddingValues,
             )
         }
         composable(Screen.History.route) {
             HistoryNavGraph(
                 rememberNavController(),
                 shouldShowBottomBar,
-                paddingValues
+                paddingValues,
             )
         }
         composable(Screen.Goals.route) {
             GoalsNavGraph(
                 rememberNavController(),
                 shouldShowBottomBar,
-                paddingValues
+                paddingValues,
             )
         }
         composable(Screen.Account.route) {
             AccountNavGraph(
                 rememberNavController(),
                 shouldShowBottomBar,
-                paddingValues
+                paddingValues,
             )
         }
         composable(Screen.Profile.route) {
             ProfileNavGraph(
                 rememberNavController(),
                 shouldShowBottomBar,
-                paddingValues
+                paddingValues,
             )
         }
     }

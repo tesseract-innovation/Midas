@@ -40,25 +40,28 @@ fun GoalContributeDialog(
                 Text(
                     text = goalTitle,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 OutlinedTextField(
                     value = amountText,
-                    onValueChange = { amountText = it; errorMessage = null },
+                    onValueChange = {
+                        amountText = it
+                        errorMessage = null
+                    },
                     label = { Text(stringResource(R.string.label_contribute_amount)) },
                     placeholder = { Text(stringResource(R.string.placeholder_contribute_amount)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     isError = errorMessage != null,
-                    supportingText = errorMessage?.let { { Text(it) } }
+                    supportingText = errorMessage?.let { { Text(it) } },
                 )
                 errorMessage?.let {
                     Text(
                         text = it,
                         color = MaterialTheme.colorScheme.error,
                         style = MaterialTheme.typography.bodySmall,
-                        modifier = Modifier.padding(start = 4.dp)
+                        modifier = Modifier.padding(start = 4.dp),
                     )
                 }
             }
@@ -79,10 +82,10 @@ fun GoalContributeDialog(
             TextButton(onClick = onDismiss) {
                 Text(
                     text = stringResource(R.string.cancel),
-                    color = MaterialTheme.colorScheme.error
+                    color = MaterialTheme.colorScheme.error,
                 )
             }
-        }
+        },
     )
 }
 
@@ -93,7 +96,7 @@ private fun GoalContributeDialogPreview() {
         GoalContributeDialog(
             goalTitle = "Goal Title",
             onConfirm = {},
-            onDismiss = {}
+            onDismiss = {},
         )
     }
 }

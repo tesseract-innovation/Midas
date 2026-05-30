@@ -8,10 +8,12 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class GetGoalsSummaryUseCaseTest {
-
     private val useCase = GetGoalsSummaryUseCase()
 
-    private fun goal(progress: Double, amount: Double) = Goal(
+    private fun goal(
+        progress: Double,
+        amount: Double,
+    ) = Goal(
         title = "title",
         description = "description",
         amount = amount,
@@ -33,11 +35,12 @@ class GetGoalsSummaryUseCaseTest {
 
     @Test
     fun `sums progress and counts active goals`() {
-        val goals = listOf(
-            goal(progress = 250.0, amount = 1000.0),
-            goal(progress = 500.0, amount = 1000.0),
-            goal(progress = 1000.0, amount = 1000.0), // completed
-        )
+        val goals =
+            listOf(
+                goal(progress = 250.0, amount = 1000.0),
+                goal(progress = 500.0, amount = 1000.0),
+                goal(progress = 1000.0, amount = 1000.0), // completed
+            )
 
         val result = useCase(goals)
 
@@ -47,9 +50,10 @@ class GetGoalsSummaryUseCaseTest {
 
     @Test
     fun `completion percent is weighted ratio rounded`() {
-        val goals = listOf(
-            goal(progress = 780.0, amount = 1000.0),
-        )
+        val goals =
+            listOf(
+                goal(progress = 780.0, amount = 1000.0),
+            )
 
         assertEquals(78, useCase(goals).completionPercent)
     }

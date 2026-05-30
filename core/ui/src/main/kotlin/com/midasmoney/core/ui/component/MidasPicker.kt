@@ -33,40 +33,42 @@ import com.midasmoney.core.ui.theme.MidasColors
 @Composable
 fun ColorPickerGrid(
     selectedColor: Color?,
-    onColorSelected: (Color) -> Unit
+    onColorSelected: (Color) -> Unit,
 ) {
     val colors = MidasColors.AllColors
     MidasCard(modifier = Modifier.fillMaxWidth()) {
         LazyVerticalGrid(
             columns = GridCells.Fixed(4),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(150.dp)
-                .padding(8.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(150.dp)
+                    .padding(8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             items(colors.size) { index ->
                 val color = colors[index]
                 Box(
-                    modifier = Modifier
-                        .size(60.dp)
-                        .clip(CircleShape)
-                        .background(color)
-                        .border(
-                            width = if (selectedColor == color) 3.dp else 0.dp,
-                            color = MaterialTheme.colorScheme.onSurface,
-                            shape = CircleShape
-                        )
-                        .clickable { onColorSelected(color) },
-                    contentAlignment = Alignment.Center
+                    modifier =
+                        Modifier
+                            .size(60.dp)
+                            .clip(CircleShape)
+                            .background(color)
+                            .border(
+                                width = if (selectedColor == color) 3.dp else 0.dp,
+                                color = MaterialTheme.colorScheme.onSurface,
+                                shape = CircleShape,
+                            )
+                            .clickable { onColorSelected(color) },
+                    contentAlignment = Alignment.Center,
                 ) {
                     if (selectedColor == color) {
                         Icon(
                             imageVector = Icons.Default.Check,
                             contentDescription = stringResource(R.string.selected),
                             tint = Color.White,
-                            modifier = Modifier.size(32.dp)
+                            modifier = Modifier.size(32.dp),
                         )
                     }
                 }
@@ -79,51 +81,57 @@ fun ColorPickerGrid(
 fun IconPickerGrid(
     selectedIcon: IconType?,
     selectedColor: Color?,
-    onIconSelected: (IconType?) -> Unit
+    onIconSelected: (IconType?) -> Unit,
 ) {
     val icons = IconType.entries
     MidasCard(modifier = Modifier.fillMaxWidth()) {
         LazyVerticalGrid(
             columns = GridCells.Fixed(4),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp)
-                .padding(8.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(300.dp)
+                    .padding(8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             items(icons.size) { index ->
                 Box(
-                    modifier = Modifier
-                        .size(60.dp)
-                        .clip(RoundedCornerShape(8.dp))
-                        .background(
-                            if (icons[index] == selectedIcon) {
-                                selectedColor?.copy(alpha = 0.2f)
-                                    ?: MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.2f)
-                            } else {
-                                MaterialTheme.colorScheme.surface
-                            }
-                        )
-                        .border(
-                            width = if (icons[index] == selectedIcon) 3.dp else 0.dp,
-                            color = if (icons[index] == selectedIcon)
-                                selectedColor ?: MaterialTheme.colorScheme.secondaryContainer
-                            else
-                                MaterialTheme.colorScheme.outline.copy(alpha = 0.3f),
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                        .clickable { onIconSelected(icons[index]) },
-                    contentAlignment = Alignment.Center
+                    modifier =
+                        Modifier
+                            .size(60.dp)
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(
+                                if (icons[index] == selectedIcon) {
+                                    selectedColor?.copy(alpha = 0.2f)
+                                        ?: MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.2f)
+                                } else {
+                                    MaterialTheme.colorScheme.surface
+                                },
+                            )
+                            .border(
+                                width = if (icons[index] == selectedIcon) 3.dp else 0.dp,
+                                color =
+                                    if (icons[index] == selectedIcon) {
+                                        selectedColor ?: MaterialTheme.colorScheme.secondaryContainer
+                                    } else {
+                                        MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
+                                    },
+                                shape = RoundedCornerShape(8.dp),
+                            )
+                            .clickable { onIconSelected(icons[index]) },
+                    contentAlignment = Alignment.Center,
                 ) {
                     Icon(
                         imageVector = IconConverter.getImageVector(IconModel(icons[index])),
                         contentDescription = icons[index].name,
                         modifier = Modifier.size(32.dp),
-                        tint = if (icons[index] == selectedIcon)
-                            selectedColor ?: MaterialTheme.colorScheme.secondaryContainer
-                        else
-                            MaterialTheme.colorScheme.onSurface
+                        tint =
+                            if (icons[index] == selectedIcon) {
+                                selectedColor ?: MaterialTheme.colorScheme.secondaryContainer
+                            } else {
+                                MaterialTheme.colorScheme.onSurface
+                            },
                     )
                 }
             }

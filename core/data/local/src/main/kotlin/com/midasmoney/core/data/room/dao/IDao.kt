@@ -6,7 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Update
 import com.midasmoney.core.data.room.entity.IEntity
 
-interface IDao<T: IEntity> {
+interface IDao<T : IEntity> {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(item: T)
 

@@ -18,17 +18,19 @@ import com.midasmoney.core.ui.theme.MidasTheme
 
 @Composable
 fun MidasCard(
-    modifier: Modifier,
-    content: @Composable () -> Unit
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
 ) {
     Card(
         shape = RoundedCornerShape(16.dp),
         border = BorderStroke(1.dp, getBorderColor()),
-        modifier = Modifier
-
+        modifier = modifier,
     ) {
         Column(
-            modifier = modifier.background(color = MaterialTheme.colorScheme.surface)
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .background(color = MaterialTheme.colorScheme.surface),
         ) {
             content()
         }
@@ -37,9 +39,10 @@ fun MidasCard(
 
 @Composable
 private fun getBorderColor(): Color {
-    return if (isSystemInDarkTheme()){
-        MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
-    } else {
+    return if (isSystemInDarkTheme())
+        {
+            MaterialTheme.colorScheme.outline.copy(alpha = 0.3f)
+        } else {
         MaterialTheme.colorScheme.outline.copy(alpha = 0.2f)
     }
 }
@@ -49,10 +52,11 @@ private fun getBorderColor(): Color {
 fun MidasCardPreview() {
     MidasTheme {
         MidasCard(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(80.dp),
-            {}
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(80.dp),
+            {},
         )
     }
 }

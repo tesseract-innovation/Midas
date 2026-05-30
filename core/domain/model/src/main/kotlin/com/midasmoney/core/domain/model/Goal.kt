@@ -14,5 +14,5 @@ data class Goal(
     val color: Int,
     val targetDate: LocalDate,
     val monthlyValue: Double,
-    val id: UUID = UUID.randomUUID()
+    val id: UUID = UUID.randomUUID(),
 )

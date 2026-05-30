@@ -17,8 +17,11 @@ import javax.inject.Inject
 
 sealed class AccountFormState {
     object Idle : AccountFormState()
+
     object Loading : AccountFormState()
+
     object Success : AccountFormState()
+
     data class Error(val message: String) : AccountFormState()
 }
 
@@ -26,83 +29,87 @@ data class AccountFormData(
     val name: String = "",
     val icon: IconModel? = null,
     val color: Int? = null,
-    val initialBalance: Double = 0.0
+    val initialBalance: Double = 0.0,
 )
 
 @Suppress("unused")
 @HiltViewModel
-class AccountFormViewModel @Inject constructor(
-    private val accountRepository: IAccountRepository,
-    private val transactionRepository: ITransactionRepository
-) : ViewModel() {
-    private val _formState = MutableStateFlow<AccountFormState>(AccountFormState.Idle)
-    val formState: StateFlow<AccountFormState> = _formState.asStateFlow()
+class AccountFormViewModel
+    @Inject
+    constructor(
+        private val accountRepository: IAccountRepository,
+        private val transactionRepository: ITransactionRepository,
+    ) : ViewModel() {
+        private val _formState = MutableStateFlow<AccountFormState>(AccountFormState.Idle)
+        val formState: StateFlow<AccountFormState> = _formState.asStateFlow()
 
-    private val _formData = MutableStateFlow(AccountFormData())
-    val formData: StateFlow<AccountFormData> = _formData.asStateFlow()
+        private val _formData = MutableStateFlow(AccountFormData())
+        val formData: StateFlow<AccountFormData> = _formData.asStateFlow()
 
-    fun updateFormData(formData: AccountFormData) {
-        _formData.value = formData
-    }
+        fun updateFormData(formData: AccountFormData) {
+            _formData.value = formData
+        }
 
-    fun createAccount(account: Account) {
-        viewModelScope.launch((Dispatchers.IO)) {
-            _formState.value = AccountFormState.Loading
-            accountRepository.insert(account)
-                .onSuccess {
-                    Log.d(TAG, "Account created successfully")
-                    _formState.value = AccountFormState.Success
-                }
-                .onFailure { e ->
-                    Log.e(TAG, "Failed to create account", e)
-                    _formState.value = AccountFormState.Error(
-                        e.message ?: "Failed to create account"
-                    )
-                }
+        fun createAccount(account: Account) {
+            viewModelScope.launch((Dispatchers.IO)) {
+                _formState.value = AccountFormState.Loading
+                accountRepository.insert(account)
+                    .onSuccess {
+                        Log.d(TAG, "Account created successfully")
+                        _formState.value = AccountFormState.Success
+                    }
+                    .onFailure { e ->
+                        Log.e(TAG, "Failed to create account", e)
+                        _formState.value =
+                            AccountFormState.Error(
+                                e.message ?: "Failed to create account",
+                            )
+                    }
+            }
+        }
+
+        fun updateAccount(account: Account) {
+            viewModelScope.launch {
+                _formState.value = AccountFormState.Loading
+                accountRepository.update(account)
+                    .onSuccess {
+                        Log.d(TAG, "Account updated successfully")
+                        _formState.value = AccountFormState.Success
+                        resetForm()
+                    }
+                    .onFailure { e ->
+                        Log.e(TAG, "Failed to update account", e)
+                        _formState.value =
+                            AccountFormState.Error(
+                                e.message ?: "Failed to update account",
+                            )
+                    }
+            }
+        }
+
+        fun resetForm() {
+            _formData.value = AccountFormData()
+            _formState.value = AccountFormState.Idle
+        }
+
+        fun resetFormState() {
+            _formState.value = AccountFormState.Idle
+        }
+
+        suspend fun getAccountById(accountId: String): Account? {
+            return accountRepository.getById(accountId)
+        }
+
+        fun validateForm(formData: AccountFormData): String? {
+            return when {
+                formData.name.isBlank() -> "Account name is required"
+                formData.icon == null -> "Please select an icon"
+                formData.color == null -> "Please select a color"
+                else -> null
+            }
+        }
+
+        companion object {
+            private val TAG = AccountFormViewModel::class.simpleName
         }
     }
-
-    fun updateAccount(account: Account) {
-        viewModelScope.launch {
-            _formState.value = AccountFormState.Loading
-            accountRepository.update(account)
-                .onSuccess {
-                    Log.d(TAG, "Account updated successfully")
-                    _formState.value = AccountFormState.Success
-                    resetForm()
-                }
-                .onFailure { e ->
-                    Log.e(TAG, "Failed to update account", e)
-                    _formState.value = AccountFormState.Error(
-                        e.message ?: "Failed to update account"
-                    )
-                }
-        }
-    }
-
-    fun resetForm() {
-        _formData.value = AccountFormData()
-        _formState.value = AccountFormState.Idle
-    }
-
-    fun resetFormState() {
-        _formState.value = AccountFormState.Idle
-    }
-
-    suspend fun getAccountById(accountId: String): Account? {
-        return accountRepository.getById(accountId)
-    }
-
-    fun validateForm(formData: AccountFormData): String? {
-        return when {
-            formData.name.isBlank() -> "Account name is required"
-            formData.icon == null -> "Please select an icon"
-            formData.color == null -> "Please select a color"
-            else -> null
-        }
-    }
-
-    companion object {
-        private val TAG = AccountFormViewModel::class.simpleName
-    }
-}

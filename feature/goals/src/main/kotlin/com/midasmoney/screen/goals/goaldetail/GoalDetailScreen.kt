@@ -55,15 +55,15 @@ import com.midasmoney.core.ui.preview.CustomPreview
 import com.midasmoney.core.ui.theme.MidasColors
 import com.midasmoney.core.ui.theme.MidasTheme
 import com.midasmoney.screen.goals.GoalsRoute
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
-import kotlin.time.Instant
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.format
 import kotlinx.datetime.format.MonthNames
 import kotlinx.datetime.format.char
 import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -104,7 +104,7 @@ fun GoalDetailScreen(
                 showContributeDialog = false
                 viewModel.contribute(goal, amount)
             },
-            onDismiss = { showContributeDialog = false }
+            onDismiss = { showContributeDialog = false },
         )
     }
 
@@ -114,19 +114,20 @@ fun GoalDetailScreen(
             GoalDetailTopBar(
                 title = goal.title,
                 onBack = { navController.popBackStack() },
-                onEdit = { navController.navigate(GoalsRoute.GoalForm(goal)) }
+                onEdit = { navController.navigate(GoalsRoute.GoalForm(goal)) },
             )
         },
         floatingActionButton = {
             ContributeFab(onClick = { showContributeDialog = true })
-        }
+        },
     ) { padding ->
         GoalDetailContent(
             goal = goal,
             contributions = contributions,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(padding),
         )
     }
 }
@@ -144,7 +145,7 @@ private fun GoalDetailTopBar(
             IconButton(onClick = onBack) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = stringResource(R.string.back)
+                    contentDescription = stringResource(R.string.back),
                 )
             }
         },
@@ -152,10 +153,10 @@ private fun GoalDetailTopBar(
             IconButton(onClick = onEdit) {
                 Icon(
                     imageVector = Icons.Default.Edit,
-                    contentDescription = stringResource(R.string.description_edit_goal)
+                    contentDescription = stringResource(R.string.description_edit_goal),
                 )
             }
-        }
+        },
     )
 }
 
@@ -164,7 +165,7 @@ private fun ContributeFab(onClick: () -> Unit) {
     ExtendedFloatingActionButton(
         onClick = onClick,
         containerColor = MidasColors.Blue.primary,
-        contentColor = Color.White
+        contentColor = Color.White,
     ) {
         Text(stringResource(R.string.add_money))
     }
@@ -181,10 +182,11 @@ private fun GoalDetailContent(
     val progress = (goal.progress / goal.amount).coerceIn(0.0, 1.0).toFloat()
 
     Column(
-        modifier = modifier
-            .verticalScroll(rememberScrollState())
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        modifier =
+            modifier
+                .verticalScroll(rememberScrollState())
+                .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         GoalHeaderCard(goal = goal, accentColor = color, icon = icon)
         GoalMonthlyContributionCard(goal = goal, accentColor = color)
@@ -202,33 +204,34 @@ private fun GoalHeaderCard(
     MidasCard(modifier = Modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 Icon(
                     imageVector = icon,
                     contentDescription = goal.description,
                     tint = accentColor,
-                    modifier = Modifier
-                        .size(48.dp)
-                        .clip(CircleShape)
-                        .background(accentColor.copy(alpha = 0.2f))
-                        .padding(12.dp)
+                    modifier =
+                        Modifier
+                            .size(48.dp)
+                            .clip(CircleShape)
+                            .background(accentColor.copy(alpha = 0.2f))
+                            .padding(12.dp),
                 )
                 Column {
                     Text(
                         text = goal.title,
                         style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
                     )
                     if (goal.description.isNotBlank()) {
                         Text(
                             text = goal.description,
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MidasColors.Gray
+                            color = MidasColors.Gray,
                         )
                     }
                 }
@@ -236,7 +239,7 @@ private fun GoalHeaderCard(
             Text(
                 text = "${stringResource(R.string.target)}: ${goal.targetDate.format(TargetDateFormat)}",
                 style = MaterialTheme.typography.bodyMedium,
-                color = MidasColors.Gray
+                color = MidasColors.Gray,
             )
         }
     }
@@ -251,42 +254,43 @@ private fun GoalProgressCard(
     MidasCard(modifier = Modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+            verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             Text(
                 text = stringResource(R.string.progress),
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
             )
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
                     text = goal.progress.toCurrency(),
                     style = MaterialTheme.typography.bodyLarge,
-                    color = MidasColors.Gray
+                    color = MidasColors.Gray,
                 )
                 Text(
                     text = "${(progress * 100).toInt()}%",
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Bold,
-                    color = accentColor
+                    color = accentColor,
                 )
             }
             LinearProgressIndicator(
                 progress = { progress },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(10.dp)
-                    .clip(CircleShape),
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .height(10.dp)
+                        .clip(CircleShape),
                 color = accentColor,
-                trackColor = MidasColors.ExtraLightGray
+                trackColor = MidasColors.ExtraLightGray,
             )
             Text(
                 text = "${stringResource(R.string.target)}: ${goal.amount.toCurrency()}",
                 style = MaterialTheme.typography.bodyMedium,
-                color = MidasColors.Gray
+                color = MidasColors.Gray,
             )
         }
     }
@@ -299,21 +303,22 @@ private fun GoalMonthlyContributionCard(
 ) {
     MidasCard(modifier = Modifier.fillMaxWidth()) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = stringResource(R.string.monthly_target),
-                style = MaterialTheme.typography.bodyLarge
+                style = MaterialTheme.typography.bodyLarge,
             )
             Text(
                 text = goal.monthlyValue.toCurrency(),
                 style = MaterialTheme.typography.bodyLarge,
                 fontWeight = FontWeight.Bold,
-                color = accentColor
+                color = accentColor,
             )
         }
     }
@@ -327,18 +332,18 @@ private fun GoalContributionsCard(
     MidasCard(modifier = Modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             Text(
                 text = stringResource(R.string.contribution_history),
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
             )
             if (contributions.isEmpty()) {
                 Text(
                     text = stringResource(R.string.no_contributions),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MidasColors.Gray
+                    color = MidasColors.Gray,
                 )
             } else {
                 contributions.forEach { contribution ->
@@ -358,18 +363,18 @@ private fun ContributionRow(
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = contribution.date.formatAsContributionDate(),
             style = MaterialTheme.typography.bodyMedium,
-            color = MidasColors.Gray
+            color = MidasColors.Gray,
         )
         Text(
             text = contribution.amount.toCurrency(),
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Bold,
-            color = accentColor
+            color = accentColor,
         )
     }
 }
@@ -378,13 +383,14 @@ private fun ContributionRow(
 private fun Instant.formatAsContributionDate(): String =
     toLocalDateTime(TimeZone.currentSystemDefault()).date.format(TargetDateFormat)
 
-private val TargetDateFormat = LocalDate.Format {
-    monthName(MonthNames.ENGLISH_ABBREVIATED)
-    char(' ')
-    day()
-    chars(", ")
-    year()
-}
+private val TargetDateFormat =
+    LocalDate.Format {
+        monthName(MonthNames.ENGLISH_ABBREVIATED)
+        char(' ')
+        day()
+        chars(", ")
+        year()
+    }
 
 @OptIn(ExperimentalTime::class)
 @CustomPreview
@@ -392,11 +398,12 @@ private val TargetDateFormat = LocalDate.Format {
 private fun GoalDetailContentPreview() {
     val goal = Database.goalList.first()
     val now = Clock.System.now()
-    val sampleContributions = listOf(
-        GoalContribution(goalId = goal.id, amount = 250.0, date = now),
-        GoalContribution(goalId = goal.id, amount = 100.0, date = now),
-        GoalContribution(goalId = goal.id, amount = 75.5, date = now),
-    )
+    val sampleContributions =
+        listOf(
+            GoalContribution(goalId = goal.id, amount = 250.0, date = now),
+            GoalContribution(goalId = goal.id, amount = 100.0, date = now),
+            GoalContribution(goalId = goal.id, amount = 75.5, date = now),
+        )
     MidasTheme {
         GoalDetailContent(
             goal = goal,
