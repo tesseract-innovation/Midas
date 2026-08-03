@@ -45,9 +45,12 @@ fun AccountNavGraph(
     ) {
         composable<AccountRoute.Main> {
             shouldShowBottomBar.value = true
-            AccountContentImp(
-                navController = navController,
-                paddingValues = paddingValues,
+//            AccountContentImp(
+//                navController = navController,
+//                paddingValues = paddingValues,
+//            )
+            AccountsScreen(
+                paddingValues = paddingValues
             )
         }
 

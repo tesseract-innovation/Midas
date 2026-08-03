@@ -51,6 +51,7 @@ fun ProfileNavGraph(
 
             shouldShowBottomBar.value = true
             ProfileScreen(
+                paddingValues = paddingValues,
                 uiState = uiState,
                 onBackClick = { navController.popBackStack() },
                 onLogoutClick = {

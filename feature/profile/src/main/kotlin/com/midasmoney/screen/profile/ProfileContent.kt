@@ -22,6 +22,7 @@ import com.midasmoney.core.ui.component.MidasOutlinedButton
 import com.midasmoney.core.ui.component.MidasSettingsDivider
 import com.midasmoney.core.ui.component.MidasSettingsGroup
 import com.midasmoney.core.ui.component.MidasSettingsTile
+import com.midasmoney.core.ui.preview.CustomPreview
 import com.midasmoney.core.ui.theme.MidasColors
 import com.midasmoney.core.ui.theme.MidasTheme
 
@@ -51,6 +52,7 @@ data class SettingsItem(
 
 @Composable
 fun ProfileScreen(
+    paddingValues: PaddingValues,
     uiState: ProfileUiState = ProfileUiState(),
     onBackClick: () -> Unit = {},
     onLogoutClick: () -> Unit = {},
@@ -82,7 +84,7 @@ fun ProfileScreen(
 
     MidasTheme {
         Surface(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().padding(bottom = paddingValues.calculateBottomPadding()),
             color = MaterialTheme.colorScheme.background,
         ) {
             Column(
@@ -573,16 +575,11 @@ private fun supportItems(
 
 // ─── Preview ─────────────────────────────────────────────────────────────────
 
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-private fun ProfileScreenPreview() {
-    ProfileScreen()
-}
-
-@Preview(showBackground = true, showSystemUi = true, name = "Light Theme")
+@CustomPreview
 @Composable
 private fun ProfileScreenLightPreview() {
     MidasTheme(dark = false) {
-        ProfileScreen()
+        val paddingValues = PaddingValues()
+        ProfileScreen(paddingValues = paddingValues)
     }
 }
