@@ -68,7 +68,8 @@ fun HomeContentImp(
     navController: NavHostController,
     paddingValues: PaddingValues,
 ) {
-    HomeContent(navController, paddingValues)
+//    HomeContent(navController, paddingValues)
+    HomeScreenV2(navController, paddingValues)
 }
 
 @Composable
