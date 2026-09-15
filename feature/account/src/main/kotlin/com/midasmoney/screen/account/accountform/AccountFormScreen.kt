@@ -1,13 +1,10 @@
 package com.midasmoney.screen.account.accountform
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -67,16 +64,11 @@ import com.midasmoney.core.ui.theme.MidasTheme
 import com.midasmoney.core.util.UUID
 import com.midasmoney.screen.account.AccountRoute
 
-private const val TAG = "AccountFormScreen"
-
-@Suppress("unused")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AccountFormScreen(
     args: AccountRoute.AccountForm,
     navController: NavController,
-    paddingValues: PaddingValues,
-    isDarkTheme: Boolean = isSystemInDarkTheme(),
 ) {
     val viewModel: AccountFormViewModel = hiltViewModel<AccountFormViewModel>()
     val formState by viewModel.formState.collectAsStateWithLifecycle()
@@ -94,16 +86,12 @@ fun AccountFormScreen(
     val account = args.account
     val isEditMode = account != null
 
-    // Reset form state on screen load
     LaunchedEffect(Unit) {
-        Log.d(TAG, "Reset FormState")
         viewModel.resetFormState()
         hasHandledSuccess = false
     }
 
-    // Load account data if editing
     LaunchedEffect(isEditMode) {
-        Log.d(TAG, "Edit mode - Load account data")
         account?.let {
             name = it.name
             selectedIcon = it.icon.iconType
@@ -112,27 +100,20 @@ fun AccountFormScreen(
         }
     }
 
-    // Handle form state changes
     LaunchedEffect(formState) {
-        Log.d(TAG, "FormState - $formState")
         when (formState) {
             is AccountFormState.Success -> {
-                Log.d(TAG, "State - Success")
                 if (!hasHandledSuccess) {
                     hasHandledSuccess = true
-                    Log.d(TAG, "State - Success - Handled")
                     navController.popBackStack()
                 }
             }
 
             is AccountFormState.Error -> {
-                Log.d(TAG, "State - Error")
                 errorMessage = (formState as AccountFormState.Error).message
             }
 
-            else -> {
-                Log.d(TAG, "State None")
-            }
+            else -> {}
         }
     }
 
@@ -157,7 +138,6 @@ fun AccountFormScreen(
                 actions = {
                     IconButton(
                         onClick = {
-                            // Validate form
                             val formData =
                                 AccountFormData(
                                     name = name,
@@ -169,11 +149,9 @@ fun AccountFormScreen(
                             val validationError = viewModel.validateForm(formData)
                             if (validationError != null) {
                                 errorMessage = validationError
-                                Log.d(TAG, "Validation error return at error")
                                 return@IconButton
                             }
 
-                            // Create or update account
                             val account =
                                 Account(
                                     id = if (isEditMode) UUID(account.id.toString()) else UUID.randomUUID(),
@@ -191,18 +169,15 @@ fun AccountFormScreen(
                                 )
 
                             if (isEditMode) {
-                                Log.d(TAG, "Update account")
                                 viewModel.updateAccount(account)
-                                navController.popBackStack()
                             } else {
-                                Log.d(TAG, "Create account")
                                 viewModel.createAccount(account)
-                                navController.popBackStack()
                             }
+                            navController.popBackStack()
                         },
                         enabled = formState !is AccountFormState.Loading,
                     ) {
-                        Icon(Icons.Default.Check, contentDescription = "Save")
+                        Icon(Icons.Default.Check, contentDescription = stringResource(R.string.save))
                     }
                 },
             )
@@ -212,8 +187,7 @@ fun AccountFormScreen(
             modifier =
                 Modifier
                     .fillMaxSize()
-                    .padding(padding)
-                    .padding(paddingValues),
+                    .padding(padding),
         ) {
             Column(
                 modifier =
@@ -421,13 +395,10 @@ fun AccountFormScreen(
 @Composable
 fun AccountFormScreenPreview() {
     MidasTheme {
-        val paddingValues = PaddingValues()
         val navController = rememberNavController()
         AccountFormScreen(
             args = AccountRoute.AccountForm(null),
             navController = navController,
-            paddingValues = paddingValues,
-            isDarkTheme = false,
         )
     }
 }
