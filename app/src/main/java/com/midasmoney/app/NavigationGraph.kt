@@ -9,7 +9,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.midasmoney.screen.account.AccountNavGraph
 import com.midasmoney.screen.goals.GoalsNavGraph
-import com.midasmoney.screen.history.HistoryNavGraph
+// TODO: re-add once the History tab comes back.
+// import com.midasmoney.screen.history.HistoryNavGraph
 import com.midasmoney.screen.home.HomeNavGraph
 import com.midasmoney.screen.profile.ProfileNavGraph
 
@@ -42,13 +43,14 @@ fun SetupNavGraph(
                 paddingValues,
             )
         }
-        composable(Screen.History.route) {
-            HistoryNavGraph(
-                rememberNavController(),
-                shouldShowBottomBar,
-                paddingValues,
-            )
-        }
+        // TODO: History tab disabled for now — find a better place for it (e.g. inside Home or Account) and remove this.
+        // composable(Screen.History.route) {
+        //     HistoryNavGraph(
+        //         rememberNavController(),
+        //         shouldShowBottomBar,
+        //         paddingValues,
+        //     )
+        // }
         composable(Screen.Goals.route) {
             GoalsNavGraph(
                 rememberNavController(),

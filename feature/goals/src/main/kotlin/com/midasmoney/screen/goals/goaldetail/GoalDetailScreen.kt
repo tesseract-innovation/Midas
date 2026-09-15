@@ -2,21 +2,31 @@ package com.midasmoney.screen.goals.goaldetail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.outlined.AddCircleOutline
+import androidx.compose.material.icons.outlined.CalendarMonth
+import androidx.compose.material.icons.outlined.CalendarToday
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -24,6 +34,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -50,7 +61,6 @@ import com.midasmoney.core.domain.model.converter.ColorConverter
 import com.midasmoney.core.domain.model.converter.IconConverter
 import com.midasmoney.core.domain.model.extension.toCurrency
 import com.midasmoney.core.resource.R
-import com.midasmoney.core.ui.component.MidasCard
 import com.midasmoney.core.ui.preview.CustomPreview
 import com.midasmoney.core.ui.theme.MidasColors
 import com.midasmoney.core.ui.theme.MidasTheme
@@ -108,26 +118,31 @@ fun GoalDetailScreen(
         )
     }
 
-    Scaffold(
-        snackbarHost = { SnackbarHost(snackbarHostState) },
-        topBar = {
-            GoalDetailTopBar(
-                title = goal.title,
-                onBack = { navController.popBackStack() },
-                onEdit = { navController.navigate(GoalsRoute.GoalForm(goal)) },
+    Box(modifier = Modifier.fillMaxSize()) {
+        Scaffold(
+            snackbarHost = { SnackbarHost(snackbarHostState) },
+            topBar = {
+                GoalDetailTopBar(
+                    title = goal.title,
+                    onBack = { navController.popBackStack() },
+                    onEdit = { navController.navigate(GoalsRoute.GoalForm(goal)) },
+                )
+            },
+            containerColor = MaterialTheme.colorScheme.background,
+        ) { padding ->
+            GoalDetailContent(
+                goal = goal,
+                contributions = contributions,
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .padding(padding),
             )
-        },
-        floatingActionButton = {
-            ContributeFab(onClick = { showContributeDialog = true })
-        },
-    ) { padding ->
-        GoalDetailContent(
-            goal = goal,
-            contributions = contributions,
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(padding),
+        }
+
+        AddMoneyButton(
+            onClick = { showContributeDialog = true },
+            modifier = Modifier.align(Alignment.BottomCenter),
         )
     }
 }
@@ -161,13 +176,28 @@ private fun GoalDetailTopBar(
 }
 
 @Composable
-private fun ContributeFab(onClick: () -> Unit) {
-    ExtendedFloatingActionButton(
+private fun AddMoneyButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Button(
         onClick = onClick,
-        containerColor = MidasColors.Blue.primary,
-        contentColor = Color.White,
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp, vertical = 24.dp)
+                .height(54.dp)
+                .navigationBarsPadding(),
+        shape = RoundedCornerShape(16.dp),
+        colors =
+            ButtonDefaults.buttonColors(
+                containerColor = MidasColors.Blue.primary,
+                contentColor = Color.White,
+            ),
     ) {
-        Text(stringResource(R.string.add_money))
+        Icon(Icons.Outlined.AddCircleOutline, contentDescription = null, modifier = Modifier.size(18.dp))
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(stringResource(R.string.add_money), fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodyLarge)
     }
 }
 
@@ -192,6 +222,7 @@ private fun GoalDetailContent(
         GoalMonthlyContributionCard(goal = goal, accentColor = color)
         GoalProgressCard(goal = goal, progress = progress, accentColor = color)
         GoalContributionsCard(contributions = contributions, accentColor = color)
+        Spacer(modifier = Modifier.height(100.dp))
     }
 }
 
@@ -201,7 +232,7 @@ private fun GoalHeaderCard(
     accentColor: Color,
     icon: ImageVector,
 ) {
-    MidasCard(modifier = Modifier.fillMaxWidth()) {
+    Surface(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp), color = MaterialTheme.colorScheme.surfaceContainer) {
         Column(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -216,8 +247,8 @@ private fun GoalHeaderCard(
                     tint = accentColor,
                     modifier =
                         Modifier
-                            .size(48.dp)
-                            .clip(CircleShape)
+                            .size(52.dp)
+                            .clip(RoundedCornerShape(14.dp))
                             .background(accentColor.copy(alpha = 0.2f))
                             .padding(12.dp),
                 )
@@ -236,11 +267,19 @@ private fun GoalHeaderCard(
                     }
                 }
             }
-            Text(
-                text = "${stringResource(R.string.target)}: ${goal.targetDate.format(TargetDateFormat)}",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MidasColors.Gray,
-            )
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                Icon(
+                    imageVector = Icons.Outlined.CalendarToday,
+                    contentDescription = null,
+                    tint = MidasColors.Gray,
+                    modifier = Modifier.size(12.dp),
+                )
+                Text(
+                    text = "${stringResource(R.string.target)}: ${goal.targetDate.format(TargetDateFormat)}",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MidasColors.Gray,
+                )
+            }
         }
     }
 }
@@ -251,7 +290,7 @@ private fun GoalProgressCard(
     progress: Float,
     accentColor: Color,
 ) {
-    MidasCard(modifier = Modifier.fillMaxWidth()) {
+    Surface(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp), color = MaterialTheme.colorScheme.surfaceContainer) {
         Column(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -301,7 +340,7 @@ private fun GoalMonthlyContributionCard(
     goal: Goal,
     accentColor: Color,
 ) {
-    MidasCard(modifier = Modifier.fillMaxWidth()) {
+    Surface(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp), color = MaterialTheme.colorScheme.surfaceContainer) {
         Row(
             modifier =
                 Modifier
@@ -310,10 +349,24 @@ private fun GoalMonthlyContributionCard(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
-                text = stringResource(R.string.monthly_target),
-                style = MaterialTheme.typography.bodyLarge,
-            )
+            Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                Icon(
+                    imageVector = Icons.Outlined.CalendarMonth,
+                    contentDescription = null,
+                    tint = accentColor,
+                    modifier =
+                        Modifier
+                            .size(36.dp)
+                            .clip(RoundedCornerShape(10.dp))
+                            .background(accentColor.copy(alpha = 0.12f))
+                            .padding(8.dp),
+                )
+                Text(
+                    text = stringResource(R.string.monthly_target),
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Medium,
+                )
+            }
             Text(
                 text = goal.monthlyValue.toCurrency(),
                 style = MaterialTheme.typography.bodyLarge,
@@ -329,7 +382,7 @@ private fun GoalContributionsCard(
     contributions: List<GoalContribution>,
     accentColor: Color,
 ) {
-    MidasCard(modifier = Modifier.fillMaxWidth()) {
+    Surface(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(16.dp), color = MaterialTheme.colorScheme.surfaceContainer) {
         Column(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -346,8 +399,11 @@ private fun GoalContributionsCard(
                     color = MidasColors.Gray,
                 )
             } else {
-                contributions.forEach { contribution ->
+                contributions.forEachIndexed { index, contribution ->
                     ContributionRow(contribution = contribution, accentColor = accentColor)
+                    if (index < contributions.lastIndex) {
+                        HorizontalDivider(thickness = 0.5.dp, color = MaterialTheme.colorScheme.outline.copy(alpha = 0.15f))
+                    }
                 }
             }
         }
@@ -361,17 +417,29 @@ private fun ContributionRow(
     accentColor: Color,
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Box(
+                modifier =
+                    Modifier
+                        .size(8.dp)
+                        .clip(CircleShape)
+                        .background(accentColor),
+            )
+            Text(
+                text = contribution.date.formatAsContributionDate(),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MidasColors.Gray,
+            )
+        }
         Text(
-            text = contribution.date.formatAsContributionDate(),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MidasColors.Gray,
-        )
-        Text(
-            text = contribution.amount.toCurrency(),
+            text = "+ ${contribution.amount.toCurrency()}",
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Bold,
             color = accentColor,

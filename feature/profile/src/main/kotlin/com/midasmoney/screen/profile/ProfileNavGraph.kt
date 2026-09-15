@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -51,6 +51,7 @@ fun ProfileNavGraph(
 
             shouldShowBottomBar.value = true
             ProfileScreen(
+                paddingValues = paddingValues,
                 uiState = uiState,
                 onBackClick = { navController.popBackStack() },
                 onLogoutClick = {

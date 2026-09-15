@@ -10,8 +10,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Check
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,7 +27,6 @@ import com.midasmoney.core.data.mock.Database
 import com.midasmoney.core.domain.model.Goal
 import com.midasmoney.core.domain.model.extension.toCurrency
 import com.midasmoney.core.resource.R
-import com.midasmoney.core.ui.component.MidasCard
 import com.midasmoney.core.ui.preview.CustomPreview
 import com.midasmoney.core.ui.theme.MidasColors
 import com.midasmoney.core.ui.theme.MidasTheme
@@ -38,11 +39,13 @@ fun GoalCardCompleted(goal: Goal) {
     Column(
         modifier = Modifier.padding(start = 20.dp, top = 12.dp, end = 20.dp),
     ) {
-        MidasCard(
+        Surface(
             modifier =
                 Modifier
                     .fillMaxWidth()
                     .height(78.dp),
+            shape = RoundedCornerShape(16.dp),
+            color = MaterialTheme.colorScheme.surfaceContainer,
         ) {
             Row(
                 modifier = Modifier.padding(start = 17.dp, top = 19.dp, bottom = 12.dp, end = 17.dp),

@@ -2,12 +2,11 @@ package com.midasmoney.app
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Adjust
-import androidx.compose.material.icons.filled.History
+// TODO: re-add History icon imports (filled/outlined) once the tab comes back.
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Wallet
 import androidx.compose.material.icons.outlined.Adjust
-import androidx.compose.material.icons.outlined.History
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Wallet
@@ -32,12 +31,13 @@ fun BottomNavigationBar(
     val items =
         listOf(
             Screen.Home to Triple(Screen.Home.route, Icons.Outlined.Home, Icons.Filled.Home),
-            Screen.History to
-                Triple(
-                    Screen.History.route,
-                    Icons.Outlined.History,
-                    Icons.Filled.History,
-                ),
+            // TODO: History tab disabled for now — find a better place for it (e.g. inside Home or Account) and remove this.
+            // Screen.History to
+            //     Triple(
+            //         Screen.History.route,
+            //         Icons.Outlined.History,
+            //         Icons.Filled.History,
+            //     ),
             Screen.Goals to Triple(Screen.Goals.route, Icons.Outlined.Adjust, Icons.Filled.Adjust),
             Screen.Account to Triple(Screen.Account.route, Icons.Outlined.Wallet, Icons.Filled.Wallet),
             Screen.Profile to Triple(Screen.Profile.route, Icons.Outlined.Person, Icons.Filled.Person),

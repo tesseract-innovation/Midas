@@ -1,6 +1,7 @@
 package com.midasmoney.core.domain.model.converter
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.TrendingUp
 import androidx.compose.material.icons.filled.AccountBalance
 import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.material.icons.filled.Build
@@ -16,7 +17,6 @@ import androidx.compose.material.icons.filled.Savings
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.TheaterComedy
-import androidx.compose.material.icons.filled.TrendingUp
 import androidx.compose.material.icons.filled.Work
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.midasmoney.core.domain.model.IconModel
@@ -36,7 +36,7 @@ object IconConverter {
             IconType.THEATER_COMEDY -> Icons.Filled.TheaterComedy
             IconType.WORK -> Icons.Filled.Work
             IconType.BUILD -> Icons.Filled.Build
-            IconType.TRENDING_UP -> Icons.Filled.TrendingUp
+            IconType.TRENDING_UP -> Icons.AutoMirrored.Filled.TrendingUp
             IconType.CARD_GIFT_CARD -> Icons.Filled.CardGiftcard
             IconType.SAVINGS -> Icons.Filled.Savings
             IconType.FLIGHT -> Icons.Filled.Flight
@@ -58,7 +58,7 @@ object IconConverter {
             Icons.Filled.TheaterComedy -> IconType.THEATER_COMEDY
             Icons.Filled.Work -> IconType.WORK
             Icons.Filled.Build -> IconType.BUILD
-            Icons.Filled.TrendingUp -> IconType.TRENDING_UP
+            Icons.AutoMirrored.Filled.TrendingUp -> IconType.TRENDING_UP
             Icons.Filled.CardGiftcard -> IconType.CARD_GIFT_CARD
             Icons.Filled.Savings -> IconType.SAVINGS
             Icons.Filled.Flight -> IconType.FLIGHT

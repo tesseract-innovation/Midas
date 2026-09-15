@@ -1,14 +1,15 @@
 package com.midasmoney.screen.goals
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -29,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -66,13 +68,13 @@ fun GoalsContent(
     paddingValues: PaddingValues,
     uiState: GoalsUiState,
     viewModel: GoalsViewModel,
-    isDarkTheme: Boolean = isSystemInDarkTheme(),
 ) {
     Surface(
         modifier =
             Modifier
                 .fillMaxSize()
-                .padding(paddingValues),
+                .padding(bottom = paddingValues.calculateBottomPadding()),
+        color = MaterialTheme.colorScheme.background,
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             when (uiState) {
@@ -137,15 +139,10 @@ fun GoalsContent(
                             }
                         } else {
                             if (activeGoals.isNotEmpty()) {
-                                TitleItem(
-                                    textTitle = stringResource(R.string.goal_active),
-                                    textButton = "",
-                                    actionButton = {},
-                                )
+                                ActiveGoalsHeader(count = activeGoals.size)
                                 activeGoals.forEach { goal ->
                                     GoalCardWithActions(
                                         goal = goal,
-                                        isDarkTheme = isDarkTheme,
                                         onCardClick = {
                                             navController.navigate(GoalsRoute.GoalDetail(goal))
                                         },
@@ -178,7 +175,8 @@ fun GoalsContent(
                     Modifier
                         .align(Alignment.BottomEnd)
                         .padding(16.dp),
-                containerColor = MidasColors.Blue.primary,
+                shape = RoundedCornerShape(16.dp),
+                containerColor = MidasColors.Purple.primary,
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
@@ -191,9 +189,39 @@ fun GoalsContent(
 }
 
 @Composable
+private fun ActiveGoalsHeader(count: Int) {
+    Row(
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp, vertical = 12.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            text = stringResource(R.string.goal_active),
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onSurface,
+        )
+        Surface(
+            shape = RoundedCornerShape(20.dp),
+            color = MidasColors.Green.primary.copy(alpha = 0.12f),
+        ) {
+            Text(
+                text = "$count",
+                modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
+                style = MaterialTheme.typography.labelMedium,
+                color = MidasColors.Green.primary,
+                fontWeight = FontWeight.Bold,
+            )
+        }
+    }
+}
+
+@Composable
 fun GoalCardWithActions(
     goal: Goal,
-    isDarkTheme: Boolean,
     onCardClick: () -> Unit,
     onEdit: () -> Unit,
     onDelete: () -> Unit,
@@ -203,7 +231,6 @@ fun GoalCardWithActions(
     Box {
         GoalCard(
             goal = goal,
-            isDarkTheme = isDarkTheme,
             onCardClick = onCardClick,
             onMenuClick = { showMenu = true },
             onAddMoneyClick = onCardClick,
@@ -244,7 +271,6 @@ fun GoalsContentPreview() {
                     summary = GetGoalsSummaryUseCase()(goals),
                 ),
             viewModel = hiltViewModel(),
-            isDarkTheme = true,
         )
     }
 }

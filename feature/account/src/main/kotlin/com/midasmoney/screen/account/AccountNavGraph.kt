@@ -16,7 +16,6 @@ import com.midasmoney.screen.account.transactionform.TransactionFormScreen
 import kotlinx.serialization.Serializable
 import kotlin.reflect.typeOf
 
-@Suppress("unused")
 @Serializable
 sealed class AccountRoute(val route: String) {
     @Serializable
@@ -45,7 +44,7 @@ fun AccountNavGraph(
     ) {
         composable<AccountRoute.Main> {
             shouldShowBottomBar.value = true
-            AccountContentImp(
+            AccountsScreenImp(
                 navController = navController,
                 paddingValues = paddingValues,
             )
@@ -59,7 +58,6 @@ fun AccountNavGraph(
             AccountDetails(
                 args = args,
                 navController = navController,
-                paddingValues = paddingValues,
             )
         }
 
@@ -71,7 +69,6 @@ fun AccountNavGraph(
             AccountFormScreen(
                 args = args,
                 navController = navController,
-                paddingValues = paddingValues,
             )
         }
 
