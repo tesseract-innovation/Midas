@@ -5,6 +5,8 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.*
+import androidx.compose.material.icons.automirrored.outlined.*
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
@@ -245,7 +247,7 @@ private fun ProfileHeader(
             ) {
                 IconButton(onClick = onBackClick) {
                     Icon(
-                        imageVector = Icons.Default.ArrowBack,
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "Voltar",
                         tint = MidasColors.White,
                     )
@@ -378,7 +380,7 @@ private fun StatsRow(uiState: ProfileUiState) {
             modifier = Modifier.weight(1f),
             label = "Investido",
             value = uiState.totalInvested,
-            icon = Icons.Outlined.TrendingUp,
+            icon = Icons.AutoMirrored.Outlined.TrendingUp,
             accentColor = MidasColors.Blue.primary,
         )
         StatCard(
@@ -447,7 +449,7 @@ private fun LogoutButton(onClick: () -> Unit) {
     MidasOutlinedButton(
         text = "Sair da conta",
         onClick = onClick,
-        icon = Icons.Outlined.Logout,
+        icon = Icons.AutoMirrored.Outlined.Logout,
         borderColor = MidasColors.Red.primary,
         contentColor = MidasColors.Red.primary,
         modifier = Modifier.padding(horizontal = 20.dp),
@@ -547,13 +549,13 @@ private fun supportItems(
 ): List<SettingsItem> =
     listOf(
         SettingsItem(
-            icon = Icons.Outlined.HelpOutline,
+            icon = Icons.AutoMirrored.Outlined.HelpOutline,
             label = "Ajuda & FAQ",
             tint = MidasColors.Blue.primary,
             onClick = onHelpFaqClick,
         ),
         SettingsItem(
-            icon = Icons.Outlined.Chat,
+            icon = Icons.AutoMirrored.Outlined.Chat,
             label = "Falar com suporte",
             subtitle = "Disponível 24h",
             tint = MidasColors.Green.primary,

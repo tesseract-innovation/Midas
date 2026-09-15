@@ -19,10 +19,10 @@ import com.midasmoney.core.domain.model.TransactionStatus
 import com.midasmoney.core.domain.model.TransactionType
 import com.midasmoney.core.domain.model.converter.IconConverter
 import com.midasmoney.core.util.UUID
-import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDate
 import java.math.BigDecimal
 import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 @OptIn(ExperimentalTime::class)
 object Database {

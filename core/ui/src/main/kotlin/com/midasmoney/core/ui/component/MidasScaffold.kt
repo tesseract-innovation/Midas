@@ -3,7 +3,7 @@ package com.midasmoney.core.ui.component
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.font.FontWeight
@@ -32,7 +32,7 @@ fun MidasScaffold(
                     if (onBackClick != null) {
                         IconButton(onClick = onBackClick) {
                             Icon(
-                                imageVector = Icons.Default.ArrowBack,
+                                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                                 contentDescription = "Voltar",
                             )
                         }
