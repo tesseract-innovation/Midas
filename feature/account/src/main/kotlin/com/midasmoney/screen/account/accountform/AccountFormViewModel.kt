@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.midasmoney.core.domain.model.Account
+import com.midasmoney.core.domain.model.AccountType
 import com.midasmoney.core.domain.model.IconModel
 import com.midasmoney.domain.repository.IAccountRepository
 import com.midasmoney.domain.repository.ITransactionRepository
@@ -30,6 +31,9 @@ data class AccountFormData(
     val icon: IconModel? = null,
     val color: Int? = null,
     val initialBalance: Double = 0.0,
+    val type: AccountType = AccountType.CHECKING,
+    val creditLimit: Double? = null,
+    val dueDay: Int? = null,
 )
 
 @Suppress("unused")
@@ -105,6 +109,10 @@ class AccountFormViewModel
                 formData.name.isBlank() -> "Account name is required"
                 formData.icon == null -> "Please select an icon"
                 formData.color == null -> "Please select a color"
+                formData.type == AccountType.CREDIT_CARD && (formData.creditLimit == null || formData.creditLimit <= 0.0) ->
+                    "Please enter a valid credit limit"
+                formData.type == AccountType.CREDIT_CARD && (formData.dueDay == null || formData.dueDay !in 1..31) ->
+                    "Please enter a valid due day (1-31)"
                 else -> null
             }
         }

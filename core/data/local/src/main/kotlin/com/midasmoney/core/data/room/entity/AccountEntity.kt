@@ -15,4 +15,8 @@ data class AccountEntity(
     val balance: Double,
     val income: Double,
     val expense: Double,
+    val type: String = "CHECKING",
+    // Credit-card-only fields; null for every other account type.
+    val creditLimit: Double? = null,
+    val dueDay: Int? = null,
 ) : IEntity

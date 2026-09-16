@@ -17,10 +17,13 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -49,6 +52,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.midasmoney.core.domain.model.Account
+import com.midasmoney.core.domain.model.AccountType
 import com.midasmoney.core.domain.model.Balance
 import com.midasmoney.core.domain.model.IconModel
 import com.midasmoney.core.domain.model.IconType
@@ -78,6 +82,9 @@ fun AccountFormScreen(
     var selectedIcon by remember { mutableStateOf<IconType?>(IconType.CREDIT_CARD) }
     var selectedColor by remember { mutableStateOf<Color?>(defaultColor) }
     var initialBalance by remember { mutableDoubleStateOf(0.0) }
+    var selectedType by remember { mutableStateOf(AccountType.CHECKING) }
+    var creditLimitText by remember { mutableStateOf("") }
+    var dueDayText by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var showIconPicker by remember { mutableStateOf(false) }
     var showColorPicker by remember { mutableStateOf(false) }
@@ -97,6 +104,9 @@ fun AccountFormScreen(
             selectedIcon = it.icon.iconType
             selectedColor = ColorConverter.aRgbToColor(it.color)
             initialBalance = it.balance.currentBalance
+            selectedType = it.type
+            creditLimitText = it.creditLimit?.toString() ?: ""
+            dueDayText = it.dueDay?.toString() ?: ""
         }
     }
 
@@ -144,6 +154,9 @@ fun AccountFormScreen(
                                     icon = selectedIcon?.let { IconModel(it) },
                                     color = selectedColor?.toArgb(),
                                     initialBalance = initialBalance,
+                                    type = selectedType,
+                                    creditLimit = if (selectedType == AccountType.CREDIT_CARD) creditLimitText.toDoubleOrNull() else null,
+                                    dueDay = if (selectedType == AccountType.CREDIT_CARD) dueDayText.toIntOrNull() else null,
                                 )
 
                             val validationError = viewModel.validateForm(formData)
@@ -166,6 +179,9 @@ fun AccountFormScreen(
                                             expense = if (initialBalance < 0) initialBalance else 0.0,
                                         ),
                                     transactions = emptyList(),
+                                    type = formData.type,
+                                    creditLimit = formData.creditLimit,
+                                    dueDay = formData.dueDay,
                                 )
 
                             if (isEditMode) {
@@ -242,6 +258,56 @@ fun AccountFormScreen(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     enabled = formState !is AccountFormState.Loading,
                 )
+
+                // Account Type
+                Text(
+                    text = stringResource(R.string.label_account_type),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                )
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    items(AccountType.entries.toList()) { type ->
+                        FilterChip(
+                            selected = selectedType == type,
+                            onClick = {
+                                selectedType = type
+                                errorMessage = null
+                            },
+                            label = { Text(type.displayName) },
+                            enabled = formState !is AccountFormState.Loading,
+                        )
+                    }
+                }
+
+                if (selectedType == AccountType.CREDIT_CARD) {
+                    OutlinedTextField(
+                        value = creditLimitText,
+                        onValueChange = {
+                            creditLimitText = it
+                            errorMessage = null
+                        },
+                        label = { Text(stringResource(R.string.label_credit_limit)) },
+                        placeholder = { Text(stringResource(R.string.placeholder_credit_limit)) },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                        enabled = formState !is AccountFormState.Loading,
+                    )
+
+                    OutlinedTextField(
+                        value = dueDayText,
+                        onValueChange = {
+                            dueDayText = it
+                            errorMessage = null
+                        },
+                        label = { Text(stringResource(R.string.label_due_day)) },
+                        placeholder = { Text(stringResource(R.string.placeholder_due_day)) },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true,
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        enabled = formState !is AccountFormState.Loading,
+                    )
+                }
 
                 // Icon Selection
                 Text(

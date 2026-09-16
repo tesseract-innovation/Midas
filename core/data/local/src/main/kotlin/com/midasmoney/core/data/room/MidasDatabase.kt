@@ -25,7 +25,7 @@ import com.midasmoney.core.util.Constants.DATABASE_NAME
         GoalEntity::class,
         GoalContributionEntity::class,
     ],
-    version = 3,
+    version = 4,
     exportSchema = false,
 )
 @TypeConverters(
