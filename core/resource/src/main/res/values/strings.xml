@@ -106,7 +106,14 @@
     <string name="no_accounts">No accounts yet. Tap + to create one!</string>
     <string name="error_load_accounts">Error loading accounts</string>
     <string name="label_account_name">Account Name</string>
+    <string name="label_account_type">Account Type</string>
     <string name="label_initial_balance">Initial Balance</string>
+    <string name="label_credit_limit">Credit Limit</string>
+    <string name="placeholder_credit_limit">0.00</string>
+    <string name="label_due_day">Bill Due Day</string>
+    <string name="placeholder_due_day">e.g., 10</string>
+    <string name="description_view_statement">View Statement</string>
+    <string name="label_statement">Statement</string>
     <string name="label_select_color">Select Color</string>
     <string name="label_select_icon">Select Icon</string>
     <string name="label_selected_icon">Icon selected</string>
