@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.Money
 import androidx.compose.material.icons.filled.Restaurant
 import androidx.compose.material.icons.filled.Savings
 import com.midasmoney.core.domain.model.Account
+import com.midasmoney.core.domain.model.AccountType
 import com.midasmoney.core.domain.model.Balance
 import com.midasmoney.core.domain.model.Goal
 import com.midasmoney.core.domain.model.IconModel
@@ -595,6 +596,9 @@ object Database {
                 name = "Credit Card",
                 icon = IconModel(IconConverter.getIconType(Icons.Filled.CreditCard)!!),
                 color = 0xFF00BCD4.toInt(),
+                type = AccountType.CREDIT_CARD,
+                creditLimit = 5_000.00,
+                dueDay = 10,
                 balance =
                     Balance(
                         initialBalance = 32352.81,
