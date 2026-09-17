@@ -71,6 +71,21 @@ class AccountViewModel
             }
         }
 
+        fun setAccountActive(
+            account: Account,
+            isActive: Boolean,
+        ) {
+            viewModelScope.launch(Dispatchers.IO) {
+                repository.update(account.copy(isActive = isActive))
+                    .onFailure { e ->
+                        _uiState.value =
+                            AccountUiState.Error(
+                                e.message ?: "Failed to update account",
+                            )
+                    }
+            }
+        }
+
         fun deleteAccountById(accountId: String) {
             viewModelScope.launch(Dispatchers.IO) {
                 repository.deleteAccountById(accountId)

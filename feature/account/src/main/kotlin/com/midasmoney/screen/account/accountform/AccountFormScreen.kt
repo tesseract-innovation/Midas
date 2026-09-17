@@ -182,6 +182,7 @@ fun AccountFormScreen(
                                     type = formData.type,
                                     creditLimit = formData.creditLimit,
                                     dueDay = formData.dueDay,
+                                    isActive = if (isEditMode) account.isActive else true,
                                 )
 
                             if (isEditMode) {
