@@ -29,6 +29,7 @@ object AccountEntityMapper : IAccountEntityMapper<AccountEntity> {
                 type = AccountType.valueOf(type),
                 creditLimit = creditLimit,
                 dueDay = dueDay,
+                isActive = isActive,
             )
         }
     }
@@ -47,6 +48,7 @@ object AccountEntityMapper : IAccountEntityMapper<AccountEntity> {
                 type = type.name,
                 creditLimit = creditLimit,
                 dueDay = dueDay,
+                isActive = isActive,
             )
         }
     }

@@ -24,4 +24,5 @@ data class Account(
     val creditLimit: Double? = null,
     val dueDay: Int? = null,
     val id: UUID = UUID.randomUUID(),
+    val isActive: Boolean = true,
 )
