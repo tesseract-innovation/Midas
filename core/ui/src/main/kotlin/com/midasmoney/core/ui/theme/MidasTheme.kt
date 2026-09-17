@@ -30,6 +30,7 @@ fun MidasTheme(
     }
     MaterialTheme(
         colorScheme = if (dark) midasDarkColorScheme(isTrueBlack) else midasLightColorScheme(),
+        typography = MidasTypography,
         content = content,
     )
 }
