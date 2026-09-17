@@ -138,5 +138,18 @@
     <string name="new_transaction">New Transaction</string>
     <string name="edit_transaction">Edit Transaction</string>
     <string name="no_selected_date">No selected date</string>
+    <string name="current_balance">Current balance</string>
+    <string name="current_bill">Current bill</string>
+    <string name="bill">Bill</string>
+    <string name="saved">Saved</string>
+    <string name="withdrawn">Withdrawn</string>
+    <string name="contributions">Contributions</string>
+    <string name="withdrawals">Withdrawals</string>
+    <string name="due_in">Due in</string>
+    <string name="limit">Limit</string>
+    <string name="description_account_options">Options</string>
+    <string name="deactivate_account">Deactivate account</string>
+    <string name="activate_account">Activate account</string>
+    <string name="deactivated_accounts">Deactivated accounts</string>
 </resources>
 

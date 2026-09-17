@@ -21,7 +21,7 @@ fun MidasTheme(
         SideEffect {
             val window = (view.context as Activity).window
             val colorScheme =
-                if (!dark) midasDarkColorScheme(isTrueBlack) else midasLightColorScheme()
+                if (dark) midasDarkColorScheme(isTrueBlack) else midasLightColorScheme()
             window.statusBarColor = colorScheme.primary.toArgb()
             WindowCompat
                 .getInsetsController(window, view)
@@ -30,6 +30,7 @@ fun MidasTheme(
     }
     MaterialTheme(
         colorScheme = if (dark) midasDarkColorScheme(isTrueBlack) else midasLightColorScheme(),
+        typography = MidasTypography,
         content = content,
     )
 }

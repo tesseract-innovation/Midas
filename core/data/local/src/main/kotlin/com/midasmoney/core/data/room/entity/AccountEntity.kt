@@ -19,4 +19,5 @@ data class AccountEntity(
     // Credit-card-only fields; null for every other account type.
     val creditLimit: Double? = null,
     val dueDay: Int? = null,
+    val isActive: Boolean = true,
 ) : IEntity

@@ -2,25 +2,22 @@ package com.midasmoney.screen.account
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.TrendingUp
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -39,15 +36,28 @@ import com.midasmoney.core.domain.model.AccountType
 import com.midasmoney.core.domain.model.converter.ColorConverter
 import com.midasmoney.core.domain.model.converter.IconConverter
 import com.midasmoney.core.domain.model.extension.toCurrency
-import com.midasmoney.core.resource.R.string.delete
+import com.midasmoney.core.resource.R.string.activate_account
+import com.midasmoney.core.resource.R.string.bill
+import com.midasmoney.core.resource.R.string.contributions
+import com.midasmoney.core.resource.R.string.current_balance
+import com.midasmoney.core.resource.R.string.current_bill
+import com.midasmoney.core.resource.R.string.deactivate_account
+import com.midasmoney.core.resource.R.string.deactivated_accounts
+import com.midasmoney.core.resource.R.string.description_account_options
 import com.midasmoney.core.resource.R.string.description_add_account
-import com.midasmoney.core.resource.R.string.edit
+import com.midasmoney.core.resource.R.string.description_delete_account
+import com.midasmoney.core.resource.R.string.description_edit_account
+import com.midasmoney.core.resource.R.string.due_in
 import com.midasmoney.core.resource.R.string.error_load_accounts
 import com.midasmoney.core.resource.R.string.expense
 import com.midasmoney.core.resource.R.string.income
-import com.midasmoney.core.resource.R.string.label_statement
+import com.midasmoney.core.resource.R.string.limit
 import com.midasmoney.core.resource.R.string.no_accounts
+import com.midasmoney.core.resource.R.string.saved
+import com.midasmoney.core.resource.R.string.title_transactions
 import com.midasmoney.core.resource.R.string.total_balance
+import com.midasmoney.core.resource.R.string.withdrawals
+import com.midasmoney.core.resource.R.string.withdrawn
 import com.midasmoney.core.ui.preview.CustomPreview
 import com.midasmoney.core.ui.theme.MidasColors
 import com.midasmoney.core.ui.theme.MidasTheme
@@ -136,9 +146,11 @@ fun AccountsScreen(
 
                     is AccountUiState.Success -> {
                         val accounts = uiState.accounts
-                        val totalBalance = accounts.sumOf { it.balance.currentBalance }
-                        val totalIncome = accounts.sumOf { it.balance.income }
-                        val totalExpense = accounts.sumOf { it.balance.expense }
+                        val activeAccounts = accounts.filter { it.isActive }
+                        val deactivatedAccounts = accounts.filter { !it.isActive }
+                        val totalBalance = activeAccounts.sumOf { it.balance.currentBalance }
+                        val totalIncome = activeAccounts.sumOf { it.balance.income }
+                        val totalExpense = activeAccounts.sumOf { it.balance.expense }
 
                         Column(
                             modifier =
@@ -150,7 +162,7 @@ fun AccountsScreen(
                                 totalBalance = totalBalance,
                                 totalIncome = totalIncome,
                                 totalExpense = totalExpense,
-                                accountCount = accounts.size,
+                                accountCount = activeAccounts.size,
                             )
 
                             if (accounts.isEmpty()) {
@@ -172,26 +184,30 @@ fun AccountsScreen(
                                     modifier =
                                         Modifier
                                             .padding(horizontal = 16.dp)
-                                            .padding(top = 16.dp),
-                                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                                            .padding(top = 20.dp),
                                 ) {
-                                    AccountsListHeader(count = accounts.size)
-                                    accounts.forEach { account ->
-                                        if (account.type == AccountType.CREDIT_CARD) {
-                                            AccountCardCreditCard(
-                                                account = account,
-                                                onClick = {
-                                                    navController.navigate(AccountRoute.AccountDetails(account))
-                                                },
-                                                onEdit = {
-                                                    navController.navigate(AccountRoute.AccountForm(account))
-                                                },
-                                                onDelete = { viewModel.deleteAccount(account) },
-                                                onStatement = {
-                                                    navController.navigate(AccountRoute.AccountDetails(account))
-                                                },
-                                            )
-                                        } else {
+                                    AccountsListHeader(count = activeAccounts.size)
+                                    Spacer(modifier = Modifier.height(12.dp))
+                                    activeAccounts.forEach { account ->
+                                        AccountCard(
+                                            account = account,
+                                            onClick = {
+                                                navController.navigate(AccountRoute.AccountDetails(account))
+                                            },
+                                            onEdit = {
+                                                navController.navigate(AccountRoute.AccountForm(account))
+                                            },
+                                            onDelete = { viewModel.deleteAccount(account) },
+                                            onSetActive = { isActive -> viewModel.setAccountActive(account, isActive) },
+                                        )
+                                        Spacer(modifier = Modifier.height(8.dp))
+                                    }
+
+                                    if (deactivatedAccounts.isNotEmpty()) {
+                                        Spacer(modifier = Modifier.height(20.dp))
+                                        DeactivatedAccountsHeader(count = deactivatedAccounts.size)
+                                        Spacer(modifier = Modifier.height(12.dp))
+                                        deactivatedAccounts.forEach { account ->
                                             AccountCard(
                                                 account = account,
                                                 onClick = {
@@ -201,10 +217,9 @@ fun AccountsScreen(
                                                     navController.navigate(AccountRoute.AccountForm(account))
                                                 },
                                                 onDelete = { viewModel.deleteAccount(account) },
-                                                onStatement = {
-                                                    navController.navigate(AccountRoute.AccountDetails(account))
-                                                },
+                                                onSetActive = { isActive -> viewModel.setAccountActive(account, isActive) },
                                             )
+                                            Spacer(modifier = Modifier.height(8.dp))
                                         }
                                     }
                                 }
@@ -239,8 +254,6 @@ private fun AccountsHeroCard(
     totalExpense: Double,
     accountCount: Int,
 ) {
-    val netFlow = totalIncome - totalExpense
-
     Box(
         modifier =
             Modifier
@@ -324,14 +337,6 @@ private fun AccountsHeroCard(
                     icon = Icons.Outlined.ArrowUpward,
                     iconColor = MidasColors.Red.primary,
                 )
-                AccountsHeroStatDivider()
-                AccountsHeroStat(
-                    modifier = Modifier.weight(1f),
-                    label = "Net",
-                    value = netFlow.toCurrency(),
-                    icon = Icons.AutoMirrored.Outlined.TrendingUp,
-                    iconColor = if (netFlow >= 0) MidasColors.Green.primary else MidasColors.Red.primary,
-                )
             }
         }
     }
@@ -386,14 +391,37 @@ private fun AccountsListHeader(count: Int) {
     ) {
         Text(
             "Accounts",
-            style = MaterialTheme.typography.titleMedium,
+            style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurface,
         )
         Text(
             "$count active",
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            fontWeight = FontWeight.SemiBold,
+            color = MidasColors.Green.primary,
+        )
+    }
+}
+
+@Composable
+private fun DeactivatedAccountsHeader(count: Int) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(
+            stringResource(deactivated_accounts),
+            style = MaterialTheme.typography.titleSmall,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onSurface,
+        )
+        Text(
+            "$count inactive",
+            style = MaterialTheme.typography.labelSmall,
+            fontWeight = FontWeight.SemiBold,
+            color = MidasColors.Green.primary,
         )
     }
 }
@@ -404,9 +432,10 @@ private fun AccountCard(
     onClick: () -> Unit,
     onEdit: () -> Unit,
     onDelete: () -> Unit,
-    onStatement: () -> Unit,
+    onSetActive: (Boolean) -> Unit,
 ) {
     var showDeleteDialog by remember { mutableStateOf(false) }
+    var menuExpanded by remember { mutableStateOf(false) }
 
     if (showDeleteDialog) {
         DeleteDialog(
@@ -422,207 +451,191 @@ private fun AccountCard(
     val icon = IconConverter.getImageVector(account.icon)
     val accentColor = ColorConverter.aRgbToColor(account.color)
     val balance = account.balance.currentBalance
-    val accountIncome = account.balance.income
-    val accountExpense = account.balance.expense
-    val transactionCount = account.transactions.size
-    val maxFlow = maxOf(accountIncome, accountExpense).coerceAtLeast(1.0)
+    val isCreditCard = account.type == AccountType.CREDIT_CARD
+    val balanceColor =
+        when {
+            isCreditCard -> if (balance < 0) MidasColors.Red.primary else MidasColors.Green.primary
+            balance >= 0 -> MaterialTheme.colorScheme.onSurface
+            else -> MidasColors.Red.primary
+        }
 
     Surface(
+        onClick = onClick,
         shape = RoundedCornerShape(16.dp),
         color = MaterialTheme.colorScheme.surfaceContainer,
         modifier =
             Modifier
                 .fillMaxWidth()
-                // Colored accent bar indicating the account's own color.
-                .drawBehind {
-                    drawRect(
-                        color = accentColor,
-                        topLeft = Offset(0f, 12.dp.toPx()),
-                        size = Size(3.dp.toPx(), size.height - 24.dp.toPx()),
-                    )
-                },
+                .alpha(if (account.isActive) 1f else 0.5f),
     ) {
         Column {
-            Column(
+            Row(
                 modifier =
                     Modifier
-                        .clickable(onClick = onClick)
-                        .padding(14.dp),
+                        .fillMaxWidth()
+                        .padding(start = 14.dp, end = 10.dp, top = 14.dp, bottom = 14.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
             ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                Box(
+                    modifier =
+                        Modifier
+                            .size(44.dp)
+                            .clip(RoundedCornerShape(13.dp))
+                            .background(accentColor.copy(alpha = 0.15f)),
+                    contentAlignment = Alignment.Center,
                 ) {
-                    Box(
-                        modifier =
-                            Modifier
-                                .size(44.dp)
-                                .clip(RoundedCornerShape(13.dp))
-                                .background(accentColor.copy(alpha = 0.15f)),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Icon(icon, null, tint = accentColor, modifier = Modifier.size(20.dp))
-                    }
+                    Icon(icon, null, tint = accentColor, modifier = Modifier.size(20.dp))
+                }
 
-                    Column(modifier = Modifier.weight(1f)) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        account.name,
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(3.dp),
+                        modifier = Modifier.padding(top = 2.dp),
+                    ) {
+                        Icon(
+                            Icons.Outlined.AccountBalance,
+                            null,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.size(10.dp),
+                        )
                         Text(
-                            account.name,
-                            style = MaterialTheme.typography.bodyMedium,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onSurface,
+                            account.type.displayName,
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f),
+                            fontSize = 11.sp,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
-                        )
-                        Text(
-                            balance.toCurrency(),
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.ExtraBold,
-                            color = if (balance >= 0) MaterialTheme.colorScheme.onSurface else MidasColors.Red.primary,
-                        )
-                    }
-
-                    Surface(
-                        shape = RoundedCornerShape(20.dp),
-                        color =
-                            if (balance >= 0) {
-                                MidasColors.Green.primary.copy(alpha = 0.12f)
-                            } else {
-                                MidasColors.Red.primary.copy(alpha = 0.12f)
-                            },
-                    ) {
-                        Text(
-                            if (balance >= 0) "+ ${accountIncome.toCurrency()}" else "- ${accountExpense.toCurrency()}",
-                            modifier = Modifier.padding(horizontal = 7.dp, vertical = 3.dp),
-                            style = MaterialTheme.typography.labelSmall,
-                            fontWeight = FontWeight.Bold,
-                            color = if (balance >= 0) MidasColors.Green.primary else MidasColors.Red.primary,
                         )
                     }
                 }
 
-                Spacer(modifier = Modifier.height(12.dp))
-                HorizontalDivider(thickness = 0.5.dp, color = MaterialTheme.colorScheme.outline.copy(alpha = 0.15f))
-                Spacer(modifier = Modifier.height(10.dp))
+                Column(horizontalAlignment = Alignment.End, verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                    Box {
+                        Box(
+                            modifier =
+                                Modifier
+                                    .size(28.dp)
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .background(
+                                        if (menuExpanded) {
+                                            MaterialTheme.colorScheme.onSurface.copy(alpha = 0.15f)
+                                        } else {
+                                            MaterialTheme.colorScheme.onSurface.copy(alpha = 0.07f)
+                                        },
+                                    )
+                                    .clickable { menuExpanded = true },
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Icon(
+                                Icons.Default.MoreVert,
+                                contentDescription = stringResource(description_account_options),
+                                tint =
+                                    if (menuExpanded) {
+                                        MaterialTheme.colorScheme.onSurface
+                                    } else {
+                                        MaterialTheme.colorScheme.onSurfaceVariant
+                                    },
+                                modifier = Modifier.size(16.dp),
+                            )
+                        }
 
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    StatWithProgress(
-                        modifier = Modifier.weight(1f),
-                        label = stringResource(income),
-                        value = accountIncome.toCurrency(),
-                        valueColor = MidasColors.Green.primary,
-                        progress = (accountIncome / maxFlow).toFloat(),
-                        progressColor = MidasColors.Green.primary,
-                        icon = Icons.Outlined.ArrowDownward,
+                        DropdownMenu(
+                            expanded = menuExpanded,
+                            onDismissRequest = { menuExpanded = false },
+                            modifier =
+                                Modifier
+                                    .background(MaterialTheme.colorScheme.surfaceContainerHigh)
+                                    .width(175.dp),
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text(stringResource(description_edit_account), style = MaterialTheme.typography.bodyMedium) },
+                                leadingIcon = {
+                                    Icon(Icons.Outlined.Edit, null, tint = MidasColors.Blue.primary, modifier = Modifier.size(18.dp))
+                                },
+                                onClick = {
+                                    menuExpanded = false
+                                    onEdit()
+                                },
+                            )
+                            HorizontalDivider(thickness = 0.5.dp, color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f))
+                            DropdownMenuItem(
+                                text = {
+                                    Text(
+                                        stringResource(if (account.isActive) deactivate_account else activate_account),
+                                        style = MaterialTheme.typography.bodyMedium,
+                                    )
+                                },
+                                leadingIcon = {
+                                    Icon(
+                                        if (account.isActive) Icons.Outlined.VisibilityOff else Icons.Outlined.Visibility,
+                                        null,
+                                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        modifier = Modifier.size(18.dp),
+                                    )
+                                },
+                                onClick = {
+                                    menuExpanded = false
+                                    onSetActive(!account.isActive)
+                                },
+                            )
+                            HorizontalDivider(thickness = 0.5.dp, color = MaterialTheme.colorScheme.outline.copy(alpha = 0.2f))
+                            DropdownMenuItem(
+                                text = {
+                                    Text(
+                                        stringResource(description_delete_account),
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = MidasColors.Red.primary,
+                                    )
+                                },
+                                leadingIcon = {
+                                    Icon(Icons.Outlined.Delete, null, tint = MidasColors.Red.primary, modifier = Modifier.size(18.dp))
+                                },
+                                onClick = {
+                                    menuExpanded = false
+                                    showDeleteDialog = true
+                                },
+                            )
+                        }
+                    }
+
+                    Text(
+                        balance.toCurrency(),
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.ExtraBold,
+                        fontSize = 16.sp,
+                        color = balanceColor,
                     )
-                    VerticalDivider(
-                        modifier = Modifier.padding(horizontal = 6.dp).height(36.dp),
-                        color = MaterialTheme.colorScheme.outline.copy(alpha = 0.12f),
-                    )
-                    StatWithProgress(
-                        modifier = Modifier.weight(1f),
-                        label = stringResource(expense),
-                        value = accountExpense.toCurrency(),
-                        valueColor = MidasColors.Red.primary,
-                        progress = (accountExpense / maxFlow).toFloat(),
-                        progressColor = MidasColors.Red.primary,
-                        icon = Icons.Outlined.ArrowUpward,
-                    )
-                    VerticalDivider(
-                        modifier = Modifier.padding(horizontal = 6.dp).height(36.dp),
-                        color = MaterialTheme.colorScheme.outline.copy(alpha = 0.12f),
-                    )
-                    StatWithProgress(
-                        modifier = Modifier.weight(1f),
-                        label = "Transactions",
-                        value = "$transactionCount",
-                        valueColor = MaterialTheme.colorScheme.onSurface,
-                        progress = (transactionCount / 20f).coerceIn(0f, 1f),
-                        progressColor = accentColor,
-                        icon = Icons.Outlined.Receipt,
+                    Text(
+                        stringResource(if (isCreditCard) current_bill else current_balance),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f),
+                        fontSize = 12.sp,
                     )
                 }
             }
 
             HorizontalDivider(thickness = 0.5.dp, color = MaterialTheme.colorScheme.outline.copy(alpha = 0.12f))
-            Row(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .height(42.dp),
-            ) {
-                ActionFooterButton(
-                    modifier = Modifier.weight(1f),
-                    icon = Icons.Outlined.Edit,
-                    label = stringResource(edit),
-                    color = MidasColors.Blue.primary,
-                    onClick = onEdit,
-                )
-                VerticalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.12f))
-                ActionFooterButton(
-                    modifier = Modifier.weight(1f),
-                    icon = Icons.Outlined.Receipt,
-                    label = stringResource(label_statement),
-                    color = MidasColors.Green.primary,
-                    onClick = onStatement,
-                )
-                VerticalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.12f))
-                ActionFooterButton(
-                    modifier = Modifier.weight(1f),
-                    icon = Icons.Outlined.Delete,
-                    label = stringResource(delete),
-                    color = MidasColors.Red.primary,
-                    onClick = { showDeleteDialog = true },
-                )
+            if (isCreditCard) {
+                CreditCardFooter(account)
+            } else {
+                FlowFooter(account)
             }
         }
     }
 }
 
-@Composable
-private fun StatWithProgress(
-    modifier: Modifier,
-    label: String,
-    value: String,
-    valueColor: Color,
-    progress: Float,
-    progressColor: Color,
-    icon: ImageVector,
-) {
-    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(3.dp)) {
-        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(3.dp)) {
-            Icon(icon, null, tint = progressColor, modifier = Modifier.size(9.dp))
-            Text(
-                label,
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                fontSize = 9.sp,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-        }
-        Text(value, style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold, color = valueColor)
-        Box(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .height(3.dp)
-                    .clip(RoundedCornerShape(2.dp))
-                    .background(MaterialTheme.colorScheme.surfaceVariant),
-        ) {
-            Box(
-                modifier =
-                    Modifier
-                        .fillMaxWidth(progress.coerceIn(0f, 1f))
-                        .fillMaxHeight()
-                        .clip(RoundedCornerShape(2.dp))
-                        .background(progressColor),
-            )
-        }
-    }
-}
-
 // ─────────────────────────────────────────────────────────────────────────────
-// CREDIT CARD ACCOUNT CARD
+// FOOTER VARIANTS
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
@@ -652,248 +665,147 @@ private fun daysUntilDue(
 }
 
 @Composable
-private fun AccountCardCreditCard(
-    account: Account,
-    onClick: () -> Unit,
-    onEdit: () -> Unit,
-    onDelete: () -> Unit,
-    onStatement: () -> Unit,
-) {
-    var showDeleteDialog by remember { mutableStateOf(false) }
-
-    if (showDeleteDialog) {
-        DeleteDialog(
-            titleItem = account.name,
-            onConfirm = {
-                onDelete()
-                showDeleteDialog = false
-            },
-            onDismiss = { showDeleteDialog = false },
-        )
-    }
-
-    val icon = IconConverter.getImageVector(account.icon)
-    val accentColor = ColorConverter.aRgbToColor(account.color)
-    val balance = account.balance.currentBalance
-    val expense = account.balance.expense
+private fun FlowFooter(account: Account) {
+    val incomeValue = account.balance.income
+    val expenseValue = account.balance.expense
     val transactionCount = account.transactions.size
-    val dueDay = account.dueDay
-    val daysUntilDue = dueDay?.let { daysUntilDue(it) }
-    val hasAlert = daysUntilDue != null && daysUntilDue <= 3
 
-    Surface(
-        shape = RoundedCornerShape(16.dp),
-        color = MaterialTheme.colorScheme.surfaceContainer,
-        modifier = Modifier.fillMaxWidth(),
-    ) {
-        Column {
-            Column(
-                modifier =
-                    Modifier
-                        .clickable(onClick = onClick)
-                        .padding(14.dp),
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                ) {
-                    Box {
-                        Box(
-                            modifier =
-                                Modifier
-                                    .size(44.dp)
-                                    .clip(RoundedCornerShape(13.dp))
-                                    .background(accentColor.copy(alpha = 0.15f)),
-                            contentAlignment = Alignment.Center,
-                        ) {
-                            Icon(icon, null, tint = accentColor, modifier = Modifier.size(20.dp))
-                        }
-                        if (hasAlert) {
-                            Box(
-                                modifier =
-                                    Modifier
-                                        .size(16.dp)
-                                        .clip(CircleShape)
-                                        .background(MidasColors.Red.primary)
-                                        .border(
-                                            width = 2.dp,
-                                            color = MaterialTheme.colorScheme.surfaceContainer,
-                                            shape = CircleShape,
-                                        )
-                                        .align(Alignment.BottomEnd),
-                                contentAlignment = Alignment.Center,
-                            ) {
-                                Icon(Icons.Outlined.Warning, null, tint = MidasColors.White, modifier = Modifier.size(8.dp))
-                            }
-                        }
-                    }
-
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            account.name,
-                            style = MaterialTheme.typography.bodyMedium,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onSurface,
-                        )
-                        Text(
-                            account.type.displayName,
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            fontSize = 9.sp,
-                        )
-                    }
-
-                    Column(horizontalAlignment = Alignment.End) {
-                        Text(
-                            balance.toCurrency(),
-                            style = MaterialTheme.typography.titleSmall,
-                            fontWeight = FontWeight.ExtraBold,
-                            color = if (balance < 0) MidasColors.Red.primary else MidasColors.Green.primary,
-                        )
-                        Text(
-                            "Open bill",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            fontSize = 9.sp,
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(12.dp))
-                HorizontalDivider(thickness = 0.5.dp, color = MaterialTheme.colorScheme.outline.copy(alpha = 0.15f))
-                Spacer(modifier = Modifier.height(10.dp))
-
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    CreditCardStat(
-                        modifier = Modifier.weight(1f),
-                        icon = Icons.Outlined.ArrowUpward,
-                        iconBg = MidasColors.Red.primary.copy(alpha = 0.1f),
-                        iconTint = MidasColors.Red.primary,
-                        label = "Bill",
-                        value = expense.toCurrency(),
-                        valueColor = MidasColors.Red.primary,
-                    )
-                    VerticalDivider(
-                        modifier = Modifier.padding(horizontal = 6.dp).height(36.dp),
-                        color = MaterialTheme.colorScheme.outline.copy(alpha = 0.12f),
-                    )
-                    CreditCardStat(
-                        modifier = Modifier.weight(1f),
-                        icon = Icons.Outlined.CalendarToday,
-                        iconBg = MidasColors.Blue.primary.copy(alpha = 0.1f),
-                        iconTint = MidasColors.Blue.primary,
-                        label = "Due in",
-                        value = if (daysUntilDue != null) "$daysUntilDue days" else "—",
-                        valueColor = MidasColors.Blue.primary,
-                    )
-                    VerticalDivider(
-                        modifier = Modifier.padding(horizontal = 6.dp).height(36.dp),
-                        color = MaterialTheme.colorScheme.outline.copy(alpha = 0.12f),
-                    )
-                    CreditCardStat(
-                        modifier = Modifier.weight(1f),
-                        icon = Icons.Outlined.PieChart,
-                        iconBg = MaterialTheme.colorScheme.surfaceVariant,
-                        iconTint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        label = "Limit",
-                        value = account.creditLimit?.toCurrency() ?: "—",
-                        valueColor = MaterialTheme.colorScheme.onSurface,
-                    )
-                }
-
-                if (transactionCount > 0) {
-                    Spacer(modifier = Modifier.height(6.dp))
-                    Text(
-                        "$transactionCount transactions",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
-            }
-
-            HorizontalDivider(thickness = 0.5.dp, color = MaterialTheme.colorScheme.outline.copy(alpha = 0.12f))
-            Row(
-                modifier =
-                    Modifier
-                        .fillMaxWidth()
-                        .height(42.dp),
-            ) {
-                ActionFooterButton(
-                    modifier = Modifier.weight(1f),
-                    icon = Icons.Outlined.Edit,
-                    label = stringResource(edit),
-                    color = MidasColors.Blue.primary,
-                    onClick = onEdit,
-                )
-                VerticalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.12f))
-                ActionFooterButton(
-                    modifier = Modifier.weight(1f),
-                    icon = Icons.Outlined.Receipt,
-                    label = stringResource(label_statement),
-                    color = MidasColors.Green.primary,
-                    onClick = onStatement,
-                )
-                VerticalDivider(color = MaterialTheme.colorScheme.outline.copy(alpha = 0.12f))
-                ActionFooterButton(
-                    modifier = Modifier.weight(1f),
-                    icon = Icons.Outlined.Delete,
-                    label = stringResource(delete),
-                    color = MidasColors.Red.primary,
-                    onClick = { showDeleteDialog = true },
-                )
-            }
+    val incomeLabel =
+        when (account.type) {
+            AccountType.SAVINGS -> stringResource(saved)
+            AccountType.INVESTMENT -> stringResource(contributions)
+            else -> stringResource(income)
         }
+    val expenseLabel =
+        when (account.type) {
+            AccountType.SAVINGS -> stringResource(withdrawn)
+            AccountType.INVESTMENT -> stringResource(withdrawals)
+            else -> stringResource(expense)
+        }
+
+    Row(modifier = Modifier.fillMaxWidth()) {
+        FooterStat(
+            modifier = Modifier.weight(1f),
+            iconBg = MidasColors.Green.primary.copy(alpha = 0.1f),
+            icon = Icons.Outlined.ArrowDownward,
+            iconTint = MidasColors.Green.primary,
+            label = incomeLabel,
+            value = incomeValue.toCurrency(),
+            valueColor = MidasColors.Green.primary,
+        )
+        FooterDivider()
+        FooterStat(
+            modifier = Modifier.weight(1f),
+            iconBg = MidasColors.Red.primary.copy(alpha = 0.1f),
+            icon = Icons.Outlined.ArrowUpward,
+            iconTint = MidasColors.Red.primary,
+            label = expenseLabel,
+            value = expenseValue.toCurrency(),
+            valueColor = MidasColors.Red.primary,
+        )
+        FooterDivider()
+        FooterStat(
+            modifier = Modifier.weight(1f),
+            iconBg = MaterialTheme.colorScheme.surfaceVariant,
+            icon = Icons.Outlined.Receipt,
+            iconTint = MaterialTheme.colorScheme.onSurfaceVariant,
+            label = stringResource(title_transactions),
+            value = "$transactionCount",
+            valueColor = MaterialTheme.colorScheme.onSurface,
+        )
     }
 }
 
 @Composable
-private fun CreditCardStat(
+private fun CreditCardFooter(account: Account) {
+    val billValue = account.balance.expense
+    val daysUntilDueValue = account.dueDay?.let { daysUntilDue(it) }
+    val dueColor =
+        when {
+            daysUntilDueValue == null -> MaterialTheme.colorScheme.onSurfaceVariant
+            daysUntilDueValue <= 3 -> MidasColors.Red.primary
+            else -> MidasColors.Yellow.kindaDark
+        }
+
+    Row(modifier = Modifier.fillMaxWidth()) {
+        FooterStat(
+            modifier = Modifier.weight(1f),
+            iconBg = MidasColors.Red.primary.copy(alpha = 0.1f),
+            icon = Icons.Outlined.RequestPage,
+            iconTint = MidasColors.Red.primary,
+            label = stringResource(bill),
+            value = billValue.toCurrency(),
+            valueColor = MidasColors.Red.primary,
+        )
+        FooterDivider()
+        FooterStat(
+            modifier = Modifier.weight(1f),
+            iconBg = dueColor.copy(alpha = 0.1f),
+            icon = Icons.Outlined.CalendarMonth,
+            iconTint = dueColor,
+            label = stringResource(due_in),
+            value = if (daysUntilDueValue != null) "$daysUntilDueValue days" else "—",
+            valueColor = dueColor,
+        )
+        FooterDivider()
+        FooterStat(
+            modifier = Modifier.weight(1f),
+            iconBg = MaterialTheme.colorScheme.surfaceVariant,
+            icon = Icons.Outlined.PieChart,
+            iconTint = MaterialTheme.colorScheme.onSurfaceVariant,
+            label = stringResource(limit),
+            value = account.creditLimit?.toCurrency() ?: "—",
+            valueColor = MaterialTheme.colorScheme.onSurface,
+        )
+    }
+}
+
+@Composable
+private fun FooterStat(
     modifier: Modifier,
-    icon: ImageVector,
     iconBg: Color,
+    icon: ImageVector,
     iconTint: Color,
     label: String,
     value: String,
     valueColor: Color,
 ) {
-    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(7.dp)) {
-        Box(
-            modifier =
-                Modifier
-                    .size(28.dp)
-                    .clip(RoundedCornerShape(8.dp))
-                    .background(iconBg),
-            contentAlignment = Alignment.Center,
-        ) {
-            Icon(icon, null, tint = iconTint, modifier = Modifier.size(13.dp))
-        }
-        Column {
-            Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 9.sp)
-            Text(value, style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold, color = valueColor)
+    Column(
+        modifier = modifier.padding(horizontal = 10.dp, vertical = 10.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        Text(
+            label,
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.55f),
+            fontSize = 12.sp,
+            maxLines = 2,
+        )
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(7.dp)) {
+            Box(
+                modifier =
+                    Modifier
+                        .size(24.dp)
+                        .clip(RoundedCornerShape(7.dp))
+                        .background(iconBg),
+                contentAlignment = Alignment.Center,
+            ) {
+                Icon(icon, null, tint = iconTint, modifier = Modifier.size(12.dp))
+            }
+            Text(value, style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold, color = valueColor, maxLines = 1)
         }
     }
 }
 
 @Composable
-private fun ActionFooterButton(
-    modifier: Modifier,
-    icon: ImageVector,
-    label: String,
-    color: Color,
-    onClick: () -> Unit,
-) {
-    Row(
+private fun FooterDivider() {
+    VerticalDivider(
         modifier =
-            modifier
-                .fillMaxHeight()
-                .clickable(onClick = onClick),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Icon(icon, null, tint = color, modifier = Modifier.size(14.dp))
-        Spacer(modifier = Modifier.width(4.dp))
-        Text(label, style = MaterialTheme.typography.labelSmall, fontWeight = FontWeight.SemiBold, color = color)
-    }
+            Modifier
+                .padding(vertical = 8.dp)
+                .width(0.5.dp),
+        color = MaterialTheme.colorScheme.outline.copy(alpha = 0.12f),
+    )
 }
 
 @CustomPreview
