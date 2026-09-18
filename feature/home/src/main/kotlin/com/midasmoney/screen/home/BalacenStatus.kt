@@ -34,6 +34,8 @@ import androidx.compose.ui.unit.sp
 import com.midasmoney.core.data.mock.Database
 import com.midasmoney.core.domain.model.Balance
 import com.midasmoney.core.domain.model.extension.toCurrency
+import com.midasmoney.core.domain.model.extension.toExpenseCurrency
+import com.midasmoney.core.domain.model.extension.toIncomeCurrency
 import com.midasmoney.core.resource.R.string.expense
 import com.midasmoney.core.resource.R.string.income
 import com.midasmoney.core.resource.R.string.total_balance
@@ -108,7 +110,7 @@ fun BalanceStatus(
                             fontSize = 13.sp,
                         )
                         Text(
-                            text = balance.income.toCurrency(),
+                            text = balance.income.toIncomeCurrency(),
                             fontWeight = FontWeight.Bold,
                             color = Color.White,
                         )
@@ -127,7 +129,7 @@ fun BalanceStatus(
                             fontSize = 13.sp,
                         )
                         Text(
-                            text = balance.expense.toCurrency(),
+                            text = balance.expense.toExpenseCurrency(),
                             fontWeight = FontWeight.Bold,
                             color = Color.White,
                         )
