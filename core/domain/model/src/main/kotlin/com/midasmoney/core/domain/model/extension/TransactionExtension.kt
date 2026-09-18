@@ -21,7 +21,7 @@ private val expenses =
     )
 
 fun Transaction.formatAmount(): String {
-    return this.amount.toCurrency()
+    return if (this.type in expenses) this.amount.toExpenseCurrency() else this.amount.toIncomeCurrency()
 }
 
 fun Transaction.formatAmountValue(): Double {
