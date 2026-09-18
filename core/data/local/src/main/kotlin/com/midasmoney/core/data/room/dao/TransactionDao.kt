@@ -5,10 +5,18 @@ import androidx.room.Query
 import com.midasmoney.core.data.room.entity.TransactionEntity
 import kotlinx.coroutines.flow.Flow
 
+data class AccountTransactionCount(
+    val accountId: String,
+    val count: Int,
+)
+
 @Dao
 interface TransactionDao : IDao<TransactionEntity> {
     @Query("SELECT * FROM `transaction` ORDER BY createdAt DESC")
     fun getAllTransactions(): Flow<List<TransactionEntity>>
+
+    @Query("SELECT accountId, COUNT(*) AS count FROM `transaction` GROUP BY accountId")
+    fun getTransactionCounts(): Flow<List<AccountTransactionCount>>
 
     @Query("SELECT * FROM `transaction` WHERE accountId = :accountId ORDER BY createdAt DESC")
     fun getTransactionsForAccount(accountId: String): Flow<List<TransactionEntity>>
@@ -23,12 +31,12 @@ interface TransactionDao : IDao<TransactionEntity> {
     fun getTotalAmountForAccount(accountId: String): Double
 
     @Query(
-        "SELECT SUM(amount) FROM `transaction` WHERE accountId = :accountId AND type IN ('WITHDRAWAL', 'FEES', 'REFUND', 'LOAN_PAYMENT', 'INTEREST', 'TAX', 'EXPENSE')",
+        "SELECT SUM(amount) FROM `transaction` WHERE accountId = :accountId AND type NOT IN ('WITHDRAWAL', 'FEES', 'REFUND', 'LOAN_PAYMENT', 'INTEREST', 'TAX', 'EXPENSE')",
     )
     fun getTotalIncomeForAccount(accountId: String): Double
 
     @Query(
-        "SELECT SUM(amount) FROM `transaction` WHERE accountId = :accountId AND type NOT IN ('WITHDRAWAL', 'FEES', 'REFUND', 'LOAN_PAYMENT', 'INTEREST', 'TAX', 'EXPENSE')",
+        "SELECT SUM(ABS(amount)) FROM `transaction` WHERE accountId = :accountId AND type IN ('WITHDRAWAL', 'FEES', 'REFUND', 'LOAN_PAYMENT', 'INTEREST', 'TAX', 'EXPENSE')",
     )
     fun getTotalExpenseForAccount(accountId: String): Double
 }
