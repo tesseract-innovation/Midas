@@ -25,4 +25,8 @@ data class Account(
     val dueDay: Int? = null,
     val id: UUID = UUID.randomUUID(),
     val isActive: Boolean = true,
+    // Total transaction count for this account. Populated from a lightweight
+    // SQL COUNT rather than transactions.size, since `transactions` is left
+    // empty on the account-list query path for performance.
+    val transactionCount: Int = 0,
 )
