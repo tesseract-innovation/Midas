@@ -190,7 +190,6 @@ fun AccountFormScreen(
                             } else {
                                 viewModel.createAccount(account)
                             }
-                            navController.popBackStack()
                         },
                         enabled = formState !is AccountFormState.Loading,
                     ) {
