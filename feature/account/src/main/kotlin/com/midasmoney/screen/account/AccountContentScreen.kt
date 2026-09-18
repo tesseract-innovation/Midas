@@ -36,6 +36,8 @@ import com.midasmoney.core.domain.model.AccountType
 import com.midasmoney.core.domain.model.converter.ColorConverter
 import com.midasmoney.core.domain.model.converter.IconConverter
 import com.midasmoney.core.domain.model.extension.toCurrency
+import com.midasmoney.core.domain.model.extension.toExpenseCurrency
+import com.midasmoney.core.domain.model.extension.toIncomeCurrency
 import com.midasmoney.core.resource.R.string.activate_account
 import com.midasmoney.core.resource.R.string.bill
 import com.midasmoney.core.resource.R.string.contributions
@@ -325,7 +327,7 @@ private fun AccountsHeroCard(
                 AccountsHeroStat(
                     modifier = Modifier.weight(1f),
                     label = stringResource(income),
-                    value = totalIncome.toCurrency(),
+                    value = totalIncome.toIncomeCurrency(),
                     icon = Icons.Outlined.ArrowDownward,
                     iconColor = MidasColors.Green.primary,
                 )
@@ -333,7 +335,7 @@ private fun AccountsHeroCard(
                 AccountsHeroStat(
                     modifier = Modifier.weight(1f),
                     label = stringResource(expense),
-                    value = totalExpense.toCurrency(),
+                    value = totalExpense.toExpenseCurrency(),
                     icon = Icons.Outlined.ArrowUpward,
                     iconColor = MidasColors.Red.primary,
                 )
@@ -668,7 +670,7 @@ private fun daysUntilDue(
 private fun FlowFooter(account: Account) {
     val incomeValue = account.balance.income
     val expenseValue = account.balance.expense
-    val transactionCount = account.transactions.size
+    val transactionCount = account.transactionCount
 
     val incomeLabel =
         when (account.type) {
@@ -690,7 +692,7 @@ private fun FlowFooter(account: Account) {
             icon = Icons.Outlined.ArrowDownward,
             iconTint = MidasColors.Green.primary,
             label = incomeLabel,
-            value = incomeValue.toCurrency(),
+            value = incomeValue.toIncomeCurrency(),
             valueColor = MidasColors.Green.primary,
         )
         FooterDivider()
@@ -700,7 +702,7 @@ private fun FlowFooter(account: Account) {
             icon = Icons.Outlined.ArrowUpward,
             iconTint = MidasColors.Red.primary,
             label = expenseLabel,
-            value = expenseValue.toCurrency(),
+            value = expenseValue.toExpenseCurrency(),
             valueColor = MidasColors.Red.primary,
         )
         FooterDivider()
@@ -792,7 +794,15 @@ private fun FooterStat(
             ) {
                 Icon(icon, null, tint = iconTint, modifier = Modifier.size(12.dp))
             }
-            Text(value, style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Bold, color = valueColor, maxLines = 1)
+            Text(
+                value,
+                style = MaterialTheme.typography.labelSmall,
+                fontWeight = FontWeight.Bold,
+                color = valueColor,
+                maxLines = 1,
+                overflow = TextOverflow.Visible,
+                softWrap = false,
+            )
         }
     }
 }
