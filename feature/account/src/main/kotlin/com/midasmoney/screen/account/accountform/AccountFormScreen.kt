@@ -172,12 +172,20 @@ fun AccountFormScreen(
                                     icon = IconModel(selectedIcon!!),
                                     color = selectedColor!!.toArgb(),
                                     balance =
-                                        Balance(
-                                            initialBalance = initialBalance,
-                                            currentBalance = initialBalance,
-                                            income = if (initialBalance > 0) initialBalance else 0.0,
-                                            expense = if (initialBalance < 0) initialBalance else 0.0,
-                                        ),
+                                        if (isEditMode) {
+                                            // Balance/income/expense are left untouched here - any
+                                            // change to the balance field is applied separately as
+                                            // a BalanceAdjustment transaction, so they stay correct
+                                            // relative to the account's real transaction history.
+                                            account.balance
+                                        } else {
+                                            Balance(
+                                                initialBalance = initialBalance,
+                                                currentBalance = initialBalance,
+                                                income = if (initialBalance > 0) initialBalance else 0.0,
+                                                expense = if (initialBalance < 0) initialBalance else 0.0,
+                                            )
+                                        },
                                     transactions = emptyList(),
                                     type = formData.type,
                                     creditLimit = formData.creditLimit,
@@ -186,7 +194,7 @@ fun AccountFormScreen(
                                 )
 
                             if (isEditMode) {
-                                viewModel.updateAccount(account)
+                                viewModel.updateAccount(account, initialBalance)
                             } else {
                                 viewModel.createAccount(account)
                             }
@@ -244,14 +252,21 @@ fun AccountFormScreen(
                     enabled = formState !is AccountFormState.Loading,
                 )
 
-                // Initial Balance
+                // Balance (shown as "Initial Balance" only when creating a new account;
+                // editing it afterwards records the difference as its own transaction)
                 OutlinedTextField(
                     value = initialBalance.toString(),
                     onValueChange = {
                         initialBalance = it.toDoubleOrNull() ?: 0.0
                         errorMessage = null
                     },
-                    label = { Text(stringResource(R.string.label_initial_balance)) },
+                    label = {
+                        Text(
+                            stringResource(
+                                if (isEditMode) R.string.label_balance else R.string.label_initial_balance,
+                            ),
+                        )
+                    },
                     placeholder = { Text(stringResource(R.string.placeholder_initial_balance)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,

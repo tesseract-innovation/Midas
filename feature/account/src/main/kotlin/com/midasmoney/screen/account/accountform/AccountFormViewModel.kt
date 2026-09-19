@@ -85,7 +85,13 @@ class AccountFormViewModel
                 accountRepository.insert(accountToPersist)
                     .onSuccess {
                         if (initialAmount != 0.0) {
-                            createInitialBalanceTransaction(accountToPersist, initialAmount)
+                            createBalanceTransaction(
+                                account = accountToPersist,
+                                amount = initialAmount,
+                                title = "Initial Balance",
+                                description = "Account opening balance",
+                                type = TransactionType.INITIAL_BALANCE,
+                            )
                         }
                         Log.d(TAG, "Account created successfully")
                         _formState.value = AccountFormState.Success
@@ -101,10 +107,50 @@ class AccountFormViewModel
             }
         }
 
+        fun updateAccount(
+            account: Account,
+            newBalance: Double,
+        ) {
+            if (hasSubmitted) return
+            hasSubmitted = true
+            _formState.value = AccountFormState.Loading
+            viewModelScope.launch(Dispatchers.IO) {
+                accountRepository.update(account)
+                    .onSuccess {
+                        val delta = newBalance - account.balance.currentBalance
+                        if (delta != 0.0) {
+                            createBalanceTransaction(
+                                account = account,
+                                amount = delta,
+                                title = "Balance Adjustment",
+                                description = "Manual balance correction",
+                                type = TransactionType.BALANCE_ADJUSTMENT,
+                            )
+                        }
+                        Log.d(TAG, "Account updated successfully")
+                        _formState.value = AccountFormState.Success
+                    }
+                    .onFailure { e ->
+                        Log.e(TAG, "Failed to update account", e)
+                        hasSubmitted = false
+                        _formState.value =
+                            AccountFormState.Error(
+                                e.message ?: "Failed to update account",
+                            )
+                    }
+            }
+        }
+
+        // Records an initial-balance or balance-adjustment amount as its own
+        // transaction, then recomputes and persists the account's balance/income/
+        // expense from the full transaction ledger so they stay consistent with it.
         @OptIn(ExperimentalTime::class)
-        private suspend fun createInitialBalanceTransaction(
+        private suspend fun createBalanceTransaction(
             account: Account,
             amount: Double,
+            title: String,
+            description: String,
+            type: TransactionType,
         ) {
             val transaction =
                 Transaction(
@@ -112,9 +158,9 @@ class AccountFormViewModel
                     accountId = account.id,
                     icon = account.icon,
                     color = account.color,
-                    title = "Initial Balance",
-                    description = "Account opening balance",
-                    type = TransactionType.INITIAL_BALANCE,
+                    title = title,
+                    description = description,
+                    type = type,
                     status = TransactionStatus.COMPLETED,
                     amount = amount,
                     date = Clock.System.getCurrentLocalDate().toString(),
@@ -122,7 +168,7 @@ class AccountFormViewModel
                     createAt = Clock.System.now(),
                 )
             transactionRepository.insert(transaction)
-                .onFailure { e -> Log.e(TAG, "Failed to create initial balance transaction", e) }
+                .onFailure { e -> Log.e(TAG, "Failed to create $title transaction", e) }
 
             val accountId = account.id.toString()
             val currentBalance = transactionRepository.getTotalAmountForAccount(accountId)
@@ -138,33 +184,6 @@ class AccountFormViewModel
                         ),
                 ),
             )
-        }
-
-        fun updateAccount(account: Account) {
-            if (hasSubmitted) return
-            hasSubmitted = true
-            _formState.value = AccountFormState.Loading
-            viewModelScope.launch {
-                accountRepository.update(account)
-                    .onSuccess {
-                        Log.d(TAG, "Account updated successfully")
-                        _formState.value = AccountFormState.Success
-                        resetForm()
-                    }
-                    .onFailure { e ->
-                        Log.e(TAG, "Failed to update account", e)
-                        hasSubmitted = false
-                        _formState.value =
-                            AccountFormState.Error(
-                                e.message ?: "Failed to update account",
-                            )
-                    }
-            }
-        }
-
-        fun resetForm() {
-            _formData.value = AccountFormData()
-            _formState.value = AccountFormState.Idle
         }
 
         fun resetFormState() {
