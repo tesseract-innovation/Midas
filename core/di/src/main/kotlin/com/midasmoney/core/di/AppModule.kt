@@ -40,14 +40,17 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAccountRepository(accountDao: AccountDao): IAccountRepository {
-        return AccountRepository(accountDao)
+    fun provideTransactionDao(db: MidasDatabase): TransactionDao {
+        return db.transactionDao()
     }
 
     @Provides
     @Singleton
-    fun provideTransactionDao(db: MidasDatabase): TransactionDao {
-        return db.transactionDao()
+    fun provideAccountRepository(
+        accountDao: AccountDao,
+        transactionDao: TransactionDao,
+    ): IAccountRepository {
+        return AccountRepository(accountDao, transactionDao)
     }
 
     @Provides

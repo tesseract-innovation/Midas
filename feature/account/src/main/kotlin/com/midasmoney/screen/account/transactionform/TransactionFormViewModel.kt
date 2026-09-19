@@ -89,6 +89,11 @@ class TransactionFormViewModel
         private val _isEditMode = MutableStateFlow(false)
         val isEditMode: StateFlow<Boolean> = _isEditMode.asStateFlow()
 
+        // Guards against duplicate inserts/updates from a fast double-tap: the Room
+        // write can complete (Loading -> Success) before Compose disables the button
+        // or navigates away, so this flag - unlike formState - is never reset on success.
+        private var hasSubmitted = false
+
         fun initArgs(
             account: Account?,
             transaction: Transaction?,
@@ -110,6 +115,7 @@ class TransactionFormViewModel
                     .onFailure {
                         Log.d(TAG, "Failed to create transaction")
                         it.printStackTrace()
+                        hasSubmitted = false
                         _formState.value =
                             TransactionFormState.Error(it.message ?: "Failed to create transaction")
                     }
@@ -128,6 +134,7 @@ class TransactionFormViewModel
                     .onFailure {
                         Log.d(TAG, "Failed to update transaction")
                         it.printStackTrace()
+                        hasSubmitted = false
                         _formState.value =
                             TransactionFormState.Error(it.message ?: "Failed to update transaction")
                     }
@@ -180,6 +187,9 @@ class TransactionFormViewModel
 
         @OptIn(ExperimentalTime::class)
         fun saveTransaction() {
+            if (hasSubmitted) return
+            hasSubmitted = true
+            _formState.value = TransactionFormState.Loading
             var newTransaction =
                 Transaction(
                     id = UUID.randomUUID(),
@@ -221,7 +231,7 @@ class TransactionFormViewModel
                 TransactionFormData(
                     title = mutableStateOf(this.title),
                     description = mutableStateOf(this.description),
-                    amount = mutableDoubleStateOf(this.amount),
+                    amount = mutableDoubleStateOf(abs(this.amount)),
                     icon = mutableStateOf(this.icon.iconType),
                     type = mutableStateOf(this.type),
                     status = mutableStateOf(this.status),

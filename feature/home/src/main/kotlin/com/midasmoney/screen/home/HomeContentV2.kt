@@ -287,7 +287,7 @@ private fun HeroBalanceCard(uiState: HomeUiStateV2, onToggleBalance: () -> Unit)
                 HeroStat(
                     modifier = Modifier.weight(1f),
                     label = "Entradas",
-                    value = "R$ ${"%.0f".format(uiState.totalIncome)}",
+                    value = "+R$ ${"%.0f".format(uiState.totalIncome)}",
                     icon = Icons.Outlined.ArrowDownward,
                     iconColor = MidasColors.Green.primary,
                 )
@@ -301,7 +301,7 @@ private fun HeroBalanceCard(uiState: HomeUiStateV2, onToggleBalance: () -> Unit)
                 HeroStat(
                     modifier = Modifier.weight(1f),
                     label = "Saídas",
-                    value = "R$ ${"%.0f".format(uiState.totalExpense)}",
+                    value = "-R$ ${"%.0f".format(uiState.totalExpense)}",
                     icon = Icons.Outlined.ArrowUpward,
                     iconColor = MidasColors.Red.primary,
                 )

@@ -2,6 +2,7 @@ package com.midasmoney.core.domain.model.extension
 
 import java.text.NumberFormat
 import java.util.Locale
+import kotlin.math.abs
 
 /**
  * Extension function to format a Double as currency.
@@ -37,4 +38,20 @@ fun Int.toCurrency(): String {
  */
 fun Long.toCurrency(): String {
     return this.toDouble().toCurrency()
+}
+
+/**
+ * Formats a value as currency prefixed with "+", for income-style stats.
+ * The magnitude is shown regardless of the value's underlying sign.
+ */
+fun Double.toIncomeCurrency(): String {
+    return "+${abs(this).toCurrency()}"
+}
+
+/**
+ * Formats a value as currency prefixed with "-", for expense-style stats.
+ * The magnitude is shown regardless of the value's underlying sign.
+ */
+fun Double.toExpenseCurrency(): String {
+    return "-${abs(this).toCurrency()}"
 }

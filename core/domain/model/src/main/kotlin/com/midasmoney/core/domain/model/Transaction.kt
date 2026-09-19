@@ -75,6 +75,18 @@ enum class TransactionType(val displayName: String) {
      * Represents payments made toward loans or credit card debt.
      */
     LOAN_PAYMENT("Loan Payment"),
+
+    /**
+     * Represents the opening balance recorded automatically when an account is created.
+     */
+    INITIAL_BALANCE("Initial Balance"),
+
+    /**
+     * Represents a manual correction to an account's balance made from the edit
+     * account screen, recorded automatically as the difference between the old
+     * and new balance.
+     */
+    BALANCE_ADJUSTMENT("Balance Adjustment"),
     ;
 
     companion object {

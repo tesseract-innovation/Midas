@@ -40,11 +40,34 @@ class AccountDetailViewModel
         private val _totalBalance = MutableStateFlow(0.0)
         val totalBalance: StateFlow<Double> = _totalBalance.asStateFlow()
 
+        private val _income = MutableStateFlow(0.0)
+        val income: StateFlow<Double> = _income.asStateFlow()
+
+        private val _expense = MutableStateFlow(0.0)
+        val expense: StateFlow<Double> = _expense.asStateFlow()
+
         fun loadTransactions(accountId: String) {
             viewModelScope.launch(Dispatchers.IO) {
                 _transactions.value = transactionRepository.getTransactionForAccount(accountId).first()
-                _totalBalance.value =
-                    accountRepository.getById(accountId)?.balance?.currentBalance ?: 0.0
+                val account = accountRepository.getById(accountId)
+                _totalBalance.value = account?.balance?.currentBalance ?: 0.0
+                _income.value = account?.balance?.income ?: 0.0
+                _expense.value = account?.balance?.expense ?: 0.0
+            }
+        }
+
+        fun deleteAccount(accountId: String) {
+            if (_accountDetailState.value is AccountDetailState.Loading || _accountDetailState.value is AccountDetailState.Success) return
+            _accountDetailState.value = AccountDetailState.Loading
+            viewModelScope.launch(Dispatchers.IO) {
+                accountRepository.deleteAccountById(accountId)
+                    .onSuccess {
+                        _accountDetailState.value = AccountDetailState.Success
+                    }
+                    .onFailure { e ->
+                        _accountDetailState.value =
+                            AccountDetailState.Error(e.message ?: "Failed to delete account")
+                    }
             }
         }
 

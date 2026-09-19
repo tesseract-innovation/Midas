@@ -20,8 +20,21 @@ private val expenses =
         TransactionType.EXPENSE,
     )
 
+// Balance-level types can legitimately go either way (e.g. an account can open
+// or be adjusted to a negative balance), so they're shown by their actual sign
+// instead of the fixed by-type sign used for ordinary transactions.
+private val signedByAmount =
+    listOf(
+        TransactionType.INITIAL_BALANCE,
+        TransactionType.BALANCE_ADJUSTMENT,
+    )
+
 fun Transaction.formatAmount(): String {
-    return this.amount.toCurrency()
+    return when {
+        this.type in signedByAmount -> if (this.amount < 0) this.amount.toExpenseCurrency() else this.amount.toIncomeCurrency()
+        this.type in expenses -> this.amount.toExpenseCurrency()
+        else -> this.amount.toIncomeCurrency()
+    }
 }
 
 fun Transaction.formatAmountValue(): Double {
@@ -30,7 +43,8 @@ fun Transaction.formatAmountValue(): Double {
 
 @Composable
 fun Transaction.formatAmountColor(): Color {
-    return if (this.type in expenses) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
+    val isNegative = if (this.type in signedByAmount) this.amount < 0 else this.type in expenses
+    return if (isNegative) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
 }
 
 @OptIn(ExperimentalTime::class)

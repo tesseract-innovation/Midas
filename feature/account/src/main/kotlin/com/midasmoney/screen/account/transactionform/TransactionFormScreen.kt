@@ -63,6 +63,7 @@ import com.midasmoney.core.ui.theme.MidasTheme
 import com.midasmoney.screen.account.AccountRoute
 import com.midasmoney.screen.account.component.DeleteDialog
 import kotlinx.datetime.LocalDate
+import kotlin.math.abs
 import kotlin.time.ExperimentalTime
 
 @Composable
@@ -86,7 +87,6 @@ fun TransactionFormScreen(
         transaction = transaction,
         onSaveTransaction = {
             viewModel.saveTransaction()
-            navController.popBackStack()
         },
         onDeleteTransaction = { transaction ->
             viewModel.deleteTransaction(transaction)
@@ -163,7 +163,7 @@ fun TransactionFormScreenImp(
             // Value
             OutlinedTextField(
                 value = formData.amount.value.toString(),
-                onValueChange = { formData.amount.value = it.toDouble() },
+                onValueChange = { formData.amount.value = it.toDoubleOrNull()?.let(::abs) ?: 0.0 },
                 label = { Text("Value") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 modifier = Modifier.fillMaxWidth(),
@@ -384,7 +384,7 @@ fun TransactionTypePicker(
     selected: TransactionType?,
     onSelected: (TransactionType) -> Unit,
 ) {
-    val types = TransactionType.entries
+    val types = TransactionType.entries.filterNot { it == TransactionType.INITIAL_BALANCE }
     MidasCard(Modifier.fillMaxWidth()) {
         LazyVerticalGrid(
             columns = GridCells.Fixed(3),

@@ -34,7 +34,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -81,7 +80,10 @@ fun AccountFormScreen(
     var name by remember { mutableStateOf("") }
     var selectedIcon by remember { mutableStateOf<IconType?>(IconType.CREDIT_CARD) }
     var selectedColor by remember { mutableStateOf<Color?>(defaultColor) }
-    var initialBalance by remember { mutableDoubleStateOf(0.0) }
+    // Kept as raw text rather than a Double, so what's on screen is exactly what
+    // was typed - converting through Double on every keystroke reformats the
+    // field as you type (e.g. forcing a trailing ".0"), which fights the user.
+    var balanceText by remember { mutableStateOf("0.0") }
     var selectedType by remember { mutableStateOf(AccountType.CHECKING) }
     var creditLimitText by remember { mutableStateOf("") }
     var dueDayText by remember { mutableStateOf("") }
@@ -103,7 +105,7 @@ fun AccountFormScreen(
             name = it.name
             selectedIcon = it.icon.iconType
             selectedColor = ColorConverter.aRgbToColor(it.color)
-            initialBalance = it.balance.currentBalance
+            balanceText = it.balance.currentBalance.toString()
             selectedType = it.type
             creditLimitText = it.creditLimit?.toString() ?: ""
             dueDayText = it.dueDay?.toString() ?: ""
@@ -148,6 +150,7 @@ fun AccountFormScreen(
                 actions = {
                     IconButton(
                         onClick = {
+                            val initialBalance = balanceText.toDoubleOrNull() ?: 0.0
                             val formData =
                                 AccountFormData(
                                     name = name,
@@ -172,12 +175,20 @@ fun AccountFormScreen(
                                     icon = IconModel(selectedIcon!!),
                                     color = selectedColor!!.toArgb(),
                                     balance =
-                                        Balance(
-                                            initialBalance = initialBalance,
-                                            currentBalance = initialBalance,
-                                            income = if (initialBalance > 0) initialBalance else 0.0,
-                                            expense = if (initialBalance < 0) initialBalance else 0.0,
-                                        ),
+                                        if (isEditMode) {
+                                            // Balance/income/expense are left untouched here - any
+                                            // change to the balance field is applied separately as
+                                            // a BalanceAdjustment transaction, so they stay correct
+                                            // relative to the account's real transaction history.
+                                            account.balance
+                                        } else {
+                                            Balance(
+                                                initialBalance = initialBalance,
+                                                currentBalance = initialBalance,
+                                                income = if (initialBalance > 0) initialBalance else 0.0,
+                                                expense = if (initialBalance < 0) initialBalance else 0.0,
+                                            )
+                                        },
                                     transactions = emptyList(),
                                     type = formData.type,
                                     creditLimit = formData.creditLimit,
@@ -186,11 +197,10 @@ fun AccountFormScreen(
                                 )
 
                             if (isEditMode) {
-                                viewModel.updateAccount(account)
+                                viewModel.updateAccount(account, initialBalance)
                             } else {
                                 viewModel.createAccount(account)
                             }
-                            navController.popBackStack()
                         },
                         enabled = formState !is AccountFormState.Loading,
                     ) {
@@ -245,15 +255,45 @@ fun AccountFormScreen(
                     enabled = formState !is AccountFormState.Loading,
                 )
 
-                // Initial Balance
+                // Balance (shown as "Initial Balance" only when creating a new account;
+                // editing it afterwards records the difference as its own transaction)
                 OutlinedTextField(
-                    value = initialBalance.toString(),
-                    onValueChange = {
-                        initialBalance = it.toDoubleOrNull() ?: 0.0
-                        errorMessage = null
+                    value = balanceText,
+                    onValueChange = { new ->
+                        // Accepts partial input while typing (an empty string, a lone
+                        // "-", a trailing ".") instead of a fully-formed number - it's
+                        // only parsed to a Double once, on save.
+                        if (new.matches(Regex("^-?\\d*\\.?\\d*$"))) {
+                            balanceText = new
+                            errorMessage = null
+                        }
                     },
-                    label = { Text(stringResource(R.string.label_initial_balance)) },
+                    label = {
+                        Text(
+                            stringResource(
+                                if (isEditMode) R.string.label_balance else R.string.label_initial_balance,
+                            ),
+                        )
+                    },
                     placeholder = { Text(stringResource(R.string.placeholder_initial_balance)) },
+                    // The decimal keypad has no "-" key, so a negative balance (e.g. an
+                    // account opened already overdrawn) would otherwise be untypeable.
+                    leadingIcon = {
+                        val isNegative = balanceText.startsWith("-")
+                        IconButton(
+                            onClick = {
+                                balanceText =
+                                    if (isNegative) balanceText.removePrefix("-") else "-$balanceText"
+                            },
+                            enabled = formState !is AccountFormState.Loading,
+                        ) {
+                            Text(
+                                if (isNegative) "−" else "+",
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold,
+                            )
+                        }
+                    },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
