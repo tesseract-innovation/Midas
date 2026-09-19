@@ -85,6 +85,19 @@ fun AccountDetails(
     val totalBalance by viewModel.totalBalance.collectAsStateWithLifecycle()
     val income by viewModel.income.collectAsStateWithLifecycle()
     val expense by viewModel.expense.collectAsStateWithLifecycle()
+    // `account` is a nav argument frozen at whatever it was when this screen was
+    // first opened; the edit screen needs the real current balance (it's the
+    // baseline it diffs against to create a balance-adjustment transaction), so
+    // it's given this copy with the reactively-refreshed balance merged in.
+    val currentAccount =
+        account.copy(
+            balance =
+                account.balance.copy(
+                    currentBalance = totalBalance,
+                    income = income,
+                    expense = expense,
+                ),
+        )
     val accountDetailState by viewModel.accountDetailState.collectAsStateWithLifecycle()
     var showDeleteDialog by remember { mutableStateOf(false) }
 
@@ -119,7 +132,7 @@ fun AccountDetails(
             topBar = {
                 AccountDetailTopBar(
                     onBack = { navController.popBackStack() },
-                    onEdit = { navController.navigate(AccountRoute.AccountForm(account)) },
+                    onEdit = { navController.navigate(AccountRoute.AccountForm(currentAccount)) },
                     onDelete = { showDeleteDialog = true },
                 )
             },
